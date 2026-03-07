@@ -35,7 +35,8 @@ WORKDIR /app/backend
 RUN npm install
 
 # Copy prisma schema and generate client
-COPY prisma ./prisma/
+# Context is root, so prisma is at backend/prisma
+COPY backend/prisma ./prisma/
 RUN npx prisma generate
 
 # Copy the backend code and shared code
