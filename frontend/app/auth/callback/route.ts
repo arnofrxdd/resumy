@@ -3,10 +3,13 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 
 export async function GET(request: Request) {
-    const { searchParams, origin } = new URL(request.url)
+    const { searchParams } = new URL(request.url)
     const code = searchParams.get('code')
-    // if "next" is in search params, use it as the redirection URL
-    const next = searchParams.get('next') ?? '/resume-creator'
+
+    // Find the real host and protocol from Nginx headers, or fallback to the request URL
+    const host = request.headers.get('x-forwarded-host') || request.headers.get('host') || 'localhost:3000'
+    const protocol = (request.headers.get('x-forwarded-proto') || 'http').split(',')[0]
+    const publicOrigin = `${protocol}://${host}`
 
     if (code) {
         const cookieStore = cookies()
@@ -29,9 +32,11 @@ export async function GET(request: Request) {
         )
         const { error } = await supabase.auth.exchangeCodeForSession(code)
         if (!error) {
-            return NextResponse.redirect(new URL('/resume-creator/', request.url))
+            // Force the redirect to the public domain with the /resumy subpath
+            return NextResponse.redirect(`${publicOrigin}/resumy/resume-creator/`)
         }
     }
 
-    return NextResponse.redirect(new URL('/resume-creator/', request.url))
+    // fallback: return the user to the creator page
+    return NextResponse.redirect(`${publicOrigin}/resumy/resume-creator/`)
 }
