@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: '/resumy',
   images: {
     remotePatterns: [
       {
@@ -16,7 +17,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:3001/api/:path*',
+        destination: 'http://resumy-backend:3001/api/:path*',
       },
     ];
   },
