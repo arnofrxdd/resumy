@@ -10,7 +10,7 @@ import {
     User, Globe, Award, FileText, Cpu, Users, Heart, Briefcase, Info, Check, Filter, Target,
     Zap, Monitor, Eye, Copy, Move, Settings, Sparkles, ChevronRight, LogOut, Share2,
     Shield, AlertCircle, ArrowLeft, ArrowRight, Home, Loader2, SpellCheck2,
-    PanelRightClose, PanelRightOpen, Cloud, CheckCircle2, RefreshCcw, ShieldCheck
+    PanelRightClose, PanelRightOpen, Cloud, CheckCircle2, RefreshCcw, ShieldCheck, Star
 } from 'lucide-react';
 import { useAnalytics } from '@/lib/analytics';
 import { supabaseClient } from '@/lib/supabaseClient';
