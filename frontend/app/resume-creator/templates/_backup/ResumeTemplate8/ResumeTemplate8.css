@@ -1,0 +1,170 @@
+/* ResumeTemplate8.css */
+
+:root {
+  /* Change this value to update the color across the entire resume */
+  --theme-color: #071044; 
+}
+
+.template8-body {
+  background: #f4f7f6;
+  line-height: 1.4;
+  color: #333;
+}
+
+.template8-resume {
+  width: 794px;
+  min-height: 1123px;
+  margin: 0 auto;
+  background: white;
+  display: flex;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+/* --- Left Main Content --- */
+.template8-main {
+  width: 65%;
+  padding: 40px;
+}
+
+.template8-header {
+  margin-bottom: 30px;
+}
+
+.template8-name {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--theme-color); /* Updated to variable */
+  letter-spacing: 1px;
+}
+
+.template8-title {
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.template8-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 10px;
+  color: #7f8c8d;
+}
+
+.template8-contact a {
+  color: var(--theme-color); /* Updated to variable */
+  text-decoration: none;
+}
+
+.template8-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  /* Updated to variable per request */
+  color: var(--theme-color); 
+  border-bottom: 2px solid var(--theme-color); 
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  margin-top: 25px;
+}
+
+.template8-item { margin-bottom: 20px; }
+.template8-item-header { display: flex; justify-content: space-between; font-size: 12px; }
+.template8-bold {
+  font-weight: 700;
+  color: var(--theme-color);
+}
+.template8-item-header a {
+  color: var(--theme-color);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+
+/* Company Name & School Name Updated to variable */
+.template8-company { color: var(--theme-color); font-weight: 600; font-size: 11px; } 
+.template8-school { color: var(--theme-color); font-weight: 600; font-size: 11px; }
+
+.template8-date { color: #95a5a6; font-size: 10px; }
+.template8-list { padding-left: 15px; font-size: 10.5px; color: #555; margin-top: 5px; }
+
+/* --- RIGHT SIDEBAR --- */
+.template8-sidebar {
+  width: 35%;
+  /* Note: This is still hardcoded. To make the sidebar match the theme automatically,
+     you could change this to `background-color: var(--theme-color);` */
+  background-color: #071044 !important; 
+  color: white;
+  padding: 40px 25px;
+}
+
+.template8-photo-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: white;
+  margin: 0 auto 30px;
+  overflow: hidden;
+  /* Updated to variable per request (originally white) */
+  border: 4px solid var(--theme-color); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+
+.template8-photo-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+.template8-side-title {
+  font-size: 11px;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255,255,255,0.4);
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  margin-top: 30px;
+  letter-spacing: 0.5px;
+  color: white;
+}
+
+.template8-side-bold { font-size: 10.5px; font-weight: 600; margin-bottom: 3px; color: white; }
+.template8-side-text { font-size: 9.5px; color: rgba(255,255,255,0.9); line-height: 1.3; }
+.template8-skills-text { font-size: 10px; color: rgba(255,255,255,0.95); line-height: 1.5; }
+
+/* --- WYSIWYG EDITOR RENDER FIXES FOR TEMPLATE 8 --- */
+
+.template8-edu-desc {
+  font-size: 10.5px;
+  color: #555;
+  margin-top: 5px;
+  line-height: 1.4;
+}
+
+/* Force bullet points to show up properly */
+.template8-edu-desc ul, 
+.template8-text ul {
+    list-style-type: disc !important;
+    padding-left: 15px !important;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.template8-edu-desc li, 
+.template8-text li {
+    margin-bottom: 3px !important;
+    display: list-item !important;
+    line-height: 1.4;
+}
+
+/* Make the replaced [ ] placeholder text BOLD */
+/* We target spans inside the main white area */
+.template8-main span {
+    font-weight: 700 !important;
+    color: var(--theme-color) !important;
+}
+
+/* Adjust links inside descriptions */
+.template8-main a {
+    color: var(--theme-color);
+    text-decoration: underline;
+    font-weight: 600;
+}

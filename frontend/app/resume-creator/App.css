@@ -1,0 +1,21 @@
+/* src/App.css - The Layout Controller */
+
+/* This container holds the Sidebar (Left) and Form (Right) */
+.app-container {
+  width: 100vw;
+  /* Full screen width */
+  height: 100vh;
+  /* Full screen height */
+  display: flex;
+  /* Enables side-by-side layout */
+  flex-direction: row;
+  /* Forces items to sit horizontally */
+  align-items: stretch;
+  /* Forces full height */
+  overflow: hidden;
+  /* Prevents double scrollbars */
+  background-color: #000;
+  /* Dark background behind everything */
+  margin: 0;
+  padding: 0;
+}

@@ -1,0 +1,331 @@
+/* --- RESET & BODY --- */
+.template5-body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f0f0f0;
+  /* Light grey background outside the paper */
+  padding: 30px 20px;
+  line-height: 1.6;
+  color: #333;
+  display: flex;
+  justify-content: center;
+}
+
+/* --- RESUME PAGE CONTAINER --- */
+.template5-resume {
+  width: 100%;
+  max-width: 850px;
+  /* Forces standard A4-like width */
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+  min-height: 1123px;
+  /* Standard A4 Height */
+}
+
+/* --- HEADER SECTION --- */
+.template5-header {
+  background: white;
+  padding: 40px 50px 30px;
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.template5-photo-container {
+  flex-shrink: 0;
+}
+
+.template5-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  background: #f5f5f5;
+  border: 3px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.template5-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.template5-header-content {
+  flex: 1;
+  padding-top: 10px;
+}
+
+.template5-name {
+  font-size: 32px;
+  font-weight: 300;
+  /* Light font weight per the design */
+  color: #333;
+  margin: 0 0 5px 0;
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+
+.template5-profession {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 0 0 15px 0;
+  color: #4a4a4a;
+  /* Grey/Blue */
+}
+
+.template5-objective {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.7;
+  text-align: justify;
+  margin: 0;
+}
+
+/* --- CONTACT BANNER --- */
+.template5-contact-banner {
+  background: #4a4a4a;
+  /* Grey/Blue Background */
+  color: white;
+  padding: 20px 50px;
+  display: flex;
+  flex-wrap: wrap;
+  /* Allows items to wrap to next line if needed */
+  gap: 20px 30px;
+  /* Row gap 20px, Column gap 30px */
+  font-size: 11px;
+  align-items: center;
+}
+
+.template5-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  /* Prevents breaking email/phone in half */
+}
+
+.template5-contact-item a {
+  color: white;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.4);
+  padding-bottom: 1px;
+}
+
+.template5-contact-item a:hover {
+  border-bottom-style: solid;
+  opacity: 0.9;
+}
+
+/* --- MAIN CONTENT GRID --- */
+.template5-content {
+  display: grid;
+  /* Left column (1.2fr) is wider than Right column (0.8fr) */
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 50px;
+  /* Spacing between columns */
+  padding: 40px 50px;
+}
+
+/* --- SECTIONS --- */
+.template5-section {
+  margin-bottom: 40px;
+}
+
+.template5-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.template5-section-icon {
+  width: 24px;
+  height: 24px;
+  background: #e5e5e5;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #555;
+}
+
+.template5-section-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin: 0;
+}
+
+/* --- JOB / WORK ITEMS --- */
+.template5-job {
+  margin-bottom: 30px;
+}
+
+.template5-job-title {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #4a4a4a;
+  /* Grey/Blue */
+}
+
+.template5-company-info {
+  font-size: 11px;
+  color: #888;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.template5-job-description {
+  font-size: 11px;
+  color: #555;
+  line-height: 1.7;
+  padding-left: 5px;
+  /* Slight offset */
+  margin: 0;
+  list-style-type: none;
+}
+
+.template5-job-description li {
+  margin-left: 15px;
+  margin-bottom: 6px;
+  position: relative;
+}
+
+.template5-job-description li::before {
+  content: "•";
+  position: absolute;
+  left: -15px;
+  color: #999;
+  font-size: 14px;
+  line-height: 14px;
+  top: 2px;
+}
+
+/* --- EDUCATION --- */
+.template5-education-item {
+  margin-bottom: 25px;
+}
+
+.template5-degree {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: #4a4a4a;
+  /* Grey/Blue */
+}
+
+.template5-school {
+  font-size: 11px;
+  color: #666;
+}
+
+/* --- SKILLS GRID --- */
+.template5-skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* Two columns for skills */
+  column-gap: 15px;
+  row-gap: 8px;
+}
+
+.template5-skill-item {
+  font-size: 11px;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+/* --- CERTIFICATIONS / ACHIEVEMENTS --- */
+.template5-cert-item {
+  margin-bottom: 15px;
+}
+
+.template5-cert-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4a4a4a;
+  /* Grey/Blue */
+  margin-bottom: 2px;
+}
+
+.template5-cert-org {
+  font-size: 10px;
+  color: #999;
+  font-style: italic;
+}
+
+/* --- LANGUAGES --- */
+.template5-languages-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.template5-language-item {
+  font-size: 11px;
+}
+
+.template5-language-name {
+  font-weight: 600;
+  color: #4a4a4a;
+  /* Grey/Blue */
+  margin-bottom: 2px;
+}
+
+/* --- INTERESTS --- */
+.template5-interests-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.template5-interest-item {
+  font-size: 11px;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+/* --- WYSIWYG EDITOR RENDER FIXES FOR TEMPLATE 5 --- */
+
+.template5-edu-desc {
+  font-size: 11px;
+  color: #555;
+  margin-top: 8px;
+  line-height: 1.6;
+}
+
+/* Force bullet points to show up properly */
+.template5-edu-desc ul,
+.template5-objective ul {
+  list-style-type: disc !important;
+  padding-left: 18px !important;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+}
+
+.template5-edu-desc li,
+.template5-objective li {
+  margin-bottom: 4px !important;
+  display: list-item !important;
+  line-height: 1.5;
+}
+
+/* Make the replaced [ ] placeholder text BOLD */
+.template5-edu-desc span {
+  font-weight: 700 !important;
+  /* Makes the text bold */
+  color: #333 !important;
+  /* Changes the editor's blue color to a professional dark grey/black */
+}

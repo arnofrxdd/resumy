@@ -1,0 +1,26 @@
+.modern-resume {
+  display: grid;
+  grid-template-columns: 1fr 2.5fr;
+  min-height: 297mm;
+  background: white;
+  color: #333;
+}
+.sidebar { color: white; padding: 30px 20px; font-size: 13px; }
+.profile-initials { 
+  width: 80px; height: 80px; background: rgba(255,255,255,0.1); 
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 32px; font-weight: bold; margin: 0 auto 30px auto; 
+}
+.sidebar h3 { border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; margin-bottom: 10px; text-transform: uppercase; font-size: 14px; margin-top: 20px; }
+.sidebar p, .sidebar li { margin-bottom: 6px; opacity: 0.9; word-break: break-all; }
+.main-content { padding: 40px; }
+.name { font-size: 32px; margin: 0; line-height: 1; text-transform: uppercase; }
+.title { font-size: 16px; color: #666; margin-top: 5px; font-weight: 500; text-transform: uppercase; }
+.summary { margin-top: 15px; font-size: 14px; line-height: 1.5; color: #444; }
+.section-header { margin-top: 25px; font-size: 15px; text-transform: uppercase; border-bottom: 2px solid #ccc; padding-bottom: 5px; color: #333; }
+.job-item { margin-top: 15px; font-size: 14px; }
+.job-header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.bullets { padding-left: 18px; color: #555; }
+.expert-item { display: flex; align-items: center; gap: 10px; font-size: 12px; margin-top: 5px; }
+.expert-bar { width: 100px; height: 6px; background: #eee; border-radius: 3px; }
+.expert-fill { height: 100%; border-radius: 3px; }

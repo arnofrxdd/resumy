@@ -1,0 +1,28 @@
+.ivy-league-resume {
+    line-height: 1.5;
+    color: #000;
+}
+
+.ivy-league-resume h1,
+.ivy-league-resume h2,
+.ivy-league-resume h3,
+.ivy-league-resume h4,
+.ivy-league-resume h5,
+.ivy-league-resume h6 {
+    margin: 0;
+    font-weight: 700;
+}
+
+.ivy-league-resume p {
+    margin: 0;
+}
+
+.ivy-league-resume ul {
+    margin: 0;
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+.ivy-league-resume li {
+    margin-bottom: 4px;
+}

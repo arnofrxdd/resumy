@@ -1,0 +1,291 @@
+/* ResumeTemplate4.css */
+.resume-body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.resume-container {
+  max-width: 850px;
+  margin: 0 auto;
+  background: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  padding: 50px;
+}
+
+/* Header Section */
+.resume-body .rt4-header {
+  grid-column: 1 / -1;
+  border-bottom: 2px solid var(--theme-color) !important;
+  padding-bottom: 25px;
+  margin-bottom: 10px;
+}
+
+.rt4-name {
+  font-size: 36px;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+
+.rt4-job-title {
+  font-size: 16px;
+  color: #7f8c8d;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.rt4-summary {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+/* --- FORCE VISIBILITY FIX --- */
+.resume-body .rt4-contact-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 13px;
+  color: #000000;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.resume-body .rt4-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: #000000;
+  opacity: 1;
+}
+
+.resume-body .rt4-contact-item:hover {
+  color: var(--theme-color);
+  cursor: pointer;
+}
+
+/* --------------------------- */
+
+/* Columns */
+.rt4-left-column {
+  grid-column: 1;
+}
+
+.rt4-right-column {
+  grid-column: 2;
+}
+
+/* Sections */
+.rt4-section {
+  margin-bottom: 30px;
+}
+
+/* Pseudo-element method to prevent border width/inheritance conflicts */
+.resume-body .rt4-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--theme-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  position: relative;
+  display: inline-block;
+}
+
+.resume-body .rt4-section-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--theme-color) !important;
+}
+
+/* Jobs / Experience */
+.rt4-job-item {
+  margin-bottom: 25px;
+}
+
+.rt4-job-header {
+  margin-bottom: 8px;
+}
+
+.rt4-job-position {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.rt4-company {
+  font-size: 13px;
+  color: #7f8c8d;
+  font-style: italic;
+}
+
+.rt4-job-date {
+  font-size: 11px;
+  color: #95a5a6;
+  margin-bottom: 10px;
+}
+
+.rt4-job-description {
+  font-size: 12px;
+  color: #555;
+  line-height: 1.6;
+  padding-left: 18px;
+}
+
+.rt4-job-description li {
+  margin-bottom: 5px;
+}
+
+/* Education */
+.rt4-edu-item {
+  margin-bottom: 15px;
+}
+
+.rt4-degree {
+  font-weight: 700;
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 3px;
+}
+
+.rt4-school {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--theme-color);
+  margin-bottom: 3px;
+}
+
+.rt4-edu-date {
+  font-size: 11px;
+  color: #95a5a6;
+}
+
+/* Skills */
+.rt4-skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.rt4-skill-tag {
+  background-color: var(--theme-color);
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Projects & Items */
+.rt4-project,
+.rt4-cert-item,
+.rt4-language-item {
+  margin-bottom: 12px;
+}
+
+.rt4-item-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Interests */
+.rt4-interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  font-size: 12px;
+  color: #555;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .resume-container {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .rt4-left-column,
+  .rt4-right-column {
+    grid-column: 1;
+  }
+}
+
+/* --- WYSIWYG EDITOR RENDER FIXES --- */
+
+.rt4-edu-desc ul {
+  list-style-type: disc !important;
+  padding-left: 20px !important;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+}
+
+.rt4-edu-desc li {
+  margin-bottom: 4px !important;
+  display: list-item !important;
+  line-height: 1.5;
+}
+
+.rt4-edu-desc span {
+  font-weight: 700 !important;
+  color: #1e293b !important;
+}
+
+/* =========================================
+   FORCE BULLET POINTS TO SHOW IN BUILDER
+========================================= */
+.summary-description-preview ul,
+.rsw-editor ul {
+  list-style-type: disc !important;
+  padding-left: 24px !important;
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+}
+
+.summary-description-preview li,
+.rsw-editor li {
+  display: list-item !important;
+  list-style-position: outside !important;
+  margin-bottom: 4px !important;
+  line-height: 1.6;
+}
+
+.rsw-editor ul ul {
+  list-style-type: circle !important;
+  margin-top: 4px !important;
+  margin-bottom: 4px !important;
+}
+
+/* =========================================
+   FORCE BULLET POINTS IN TEMPLATE
+========================================= */
+.rt4-job-description ul,
+.rt4-edu-desc ul {
+  list-style-type: disc !important;
+  padding-left: 20px !important;
+  margin-top: 6px !important;
+  margin-bottom: 6px !important;
+}
+
+.rt4-job-description li,
+.rt4-edu-desc li {
+  display: list-item !important;
+  list-style-position: outside !important;
+  margin-bottom: 5px !important;
+  line-height: 1.5;
+}

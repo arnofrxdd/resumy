@@ -1,0 +1,229 @@
+/* 1. FONT IMPORT */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* 2. PRINT SETTINGS (Crucial for PDF Generation) */
+@media print {
+  @page {
+    margin: 0;
+    size: A4;
+  }
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .resume-container {
+    box-shadow: none !important; /* Remove shadow on print */
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+/* 3. MAIN CONTAINER */
+.resume-container {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  padding: 12mm 15mm 20mm 15mm;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  color: #333;
+  position: relative;
+  line-height: 1.5; /* Better readability */
+  overflow: hidden; /* Prevents overflow content from breaking layout */
+}
+
+/* --- THE GRID SYSTEM --- */
+
+/* 1. LAYOUT: 1 COLUMN (Stacked) */
+.layout-1col .grid-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 2. LAYOUT: 2 COLUMNS (Standard) */
+/* Main Left (66%), Side+Extra Right (33%) */
+.layout-2col .grid-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px; /* Increased gap slightly for breathing room */
+  grid-template-areas: 
+    "main side"
+    "main extra";
+  align-items: start; /* Prevents stretching if one column is short */
+}
+.layout-2col .col-main { grid-area: main; }
+.layout-2col .col-side { grid-area: side; }
+.layout-2col .col-extra { grid-area: extra; }
+
+/* 3. LAYOUT: 3 COLUMNS (Wide) */
+.layout-3col .grid-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+.layout-3col .col-side { order: 1; } /* Left */
+.layout-3col .col-main { order: 2; } /* Center */
+.layout-3col .col-extra { order: 3; } /* Right */
+
+/* --- STYLING & COMPONENTS --- */
+
+/* Watermark */
+.watermark {
+  position: absolute;
+  bottom: 5mm;
+  right: 15mm;
+  font-size: 8pt;
+  font-weight: 600;
+  color: #ccc; /* Lighter color to be less intrusive */
+  pointer-events: none;
+  z-index: 10;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Header */
+.header { 
+  text-align: center; 
+  margin-bottom: 30px; 
+  border-bottom: 2px solid #f0f0f0; /* Thicker, lighter border */
+  padding-bottom: 25px; 
+}
+.header h1 { 
+  font-size: 28pt; /* Slightly larger */
+  margin: 0 0 5px 0; 
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
+  font-weight: 800;
+  color: #000;
+}
+.header .role { 
+  font-size: 11pt; 
+  font-weight: 500; 
+  color: #666; 
+  margin: 0 0 10px 0; 
+  text-transform: uppercase; 
+  letter-spacing: 2px;
+}
+.contact-info { 
+  font-size: 9pt; 
+  color: #555; 
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.links {
+  margin-top: 5px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+.links a { 
+  color: #333; 
+  text-decoration: none; 
+  font-size: 9pt; 
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+.links a:hover {
+  border-bottom-color: #333;
+}
+
+/* Sections */
+.section { margin-bottom: 25px; }
+.section h3 { 
+  font-size: 10pt; 
+  border-bottom: 2px solid #000; 
+  margin-bottom: 12px; 
+  padding-bottom: 4px; 
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
+  font-weight: 700;
+}
+
+/* Text Content */
+.italic { 
+  font-style: italic; 
+  color: #555; 
+  background: #f9f9f9;
+  border-left: 3px solid #ddd; 
+  padding: 8px 12px; 
+  margin: 10px 0; 
+  font-size: 9pt;
+}
+
+p, .item {
+  white-space: pre-line; /* CRITICAL: Preserves user line breaks */
+  margin-bottom: 8px;
+  font-size: 9.5pt;
+  color: #444;
+}
+
+/* Experience Items */
+.exp-item { margin-bottom: 20px; }
+.exp-head { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: baseline;
+  margin-bottom: 4px; 
+}
+.exp-head strong { font-size: 11pt; font-weight: 700; color: #000; }
+.exp-head .date { 
+  font-weight: 500; 
+  color: #666; 
+  font-size: 9pt; 
+  white-space: nowrap; 
+}
+.role { 
+  font-weight: 600; 
+  font-size: 9.5pt; 
+  color: #555; 
+  margin-bottom: 6px; 
+}
+
+/* Lists */
+ul { padding-left: 18px; margin: 5px 0; }
+li { margin-bottom: 4px; font-size: 9.5pt; color: #444; }
+
+.list-simple { padding-left: 0; list-style: none; margin: 0; }
+.list-simple li { margin-bottom: 6px; font-size: 9.5pt; }
+
+/* Skills / Visuals */
+.slider-viz { 
+  display: flex; 
+  align-items: center; 
+  gap: 12px; 
+  font-size: 9pt; 
+  margin-bottom: 8px; 
+}
+.slider-viz span {
+    width: 30%; /* Fixed width for label */
+    font-weight: 500;
+}
+.bar-container { 
+  flex: 1; 
+  height: 6px; 
+  background: #eee; 
+  border-radius: 3px; 
+  overflow: hidden; 
+}
+.bar-fill { 
+  height: 100%; 
+  background-color: #333; /* Fallback color */
+  border-radius: 3px;
+}
+
+/* Tag Cloud */
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 8px; }
+.tag { 
+  border: 1px solid #e0e0e0; 
+  background: #fafafa;
+  color: #333;
+  padding: 4px 10px; 
+  border-radius: 4px; 
+  font-size: 8.5pt; 
+  font-weight: 500; 
+}

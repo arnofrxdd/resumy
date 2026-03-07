@@ -1,0 +1,79 @@
+/* form-header.css - Modern Minimalistic Refinement */
+
+.photo-upload-section {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    margin-bottom: 40px;
+    padding: 32px;
+    background: #fafaf9;
+    /* stone-50 */
+    border: 1.5px solid var(--gap-border-light);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.photo-upload-section:hover {
+    border-color: var(--gap-border-dark);
+    background: #f5f5f4;
+    /* stone-100 */
+}
+
+.avatar-placeholder {
+    width: 120px;
+    height: 120px;
+    background: #f5f5f4;
+    border: 1.5px solid var(--gap-border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: var(--gap-shadow);
+}
+
+.btn-upload-link {
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    color: var(--gap-text-main);
+    background: white;
+    border: 2px solid var(--gap-border);
+    padding: 10px 20px;
+    border-radius: 99px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: var(--gap-shadow-sm);
+}
+
+.btn-upload-link:hover {
+    border-color: var(--gap-text-main);
+    transform: translateY(-1px);
+    box-shadow: var(--gap-shadow);
+}
+
+.header-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+}
+
+/* Ensure full width for certain fields */
+.header-form-grid>[style*="grid-column: span 2"] {
+    grid-column: 1 / -1;
+}
+
+.additional-fields-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .header-form-grid {
+        grid-template-columns: 1fr;
+    }
+}

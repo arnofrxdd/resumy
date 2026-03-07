@@ -1,0 +1,303 @@
+/* ResumeTemplate7.css */
+
+/* --- Page Layout --- */
+.template7-body {
+  background: #f0f0f0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  font-family: 'Roboto', 'Arial', sans-serif; /* Clean, modern font */
+}
+
+.template7-resume {
+  width: 210mm; /* Standard A4 width */
+  min-height: 297mm; /* Standard A4 height */
+  background: white;
+  display: flex;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* --- SIDEBAR (Dark Background / White Text) --- */
+.template7-sidebar {
+  width: 32%;
+  /* Uses the theme color, defaults to Purple if not set */
+  background-color: var(--accent, #5C03BC); 
+  padding: 30px 20px;
+  color: white; /* Forces text to be white */
+  box-sizing: border-box;
+}
+
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo-hex {
+  width: 60px;
+  height: 60px;
+  background: rgba(255,255,255,0.15); /* Semi-transparent white */
+  border: 1px solid rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 auto 15px auto;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.sidebar-name {
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+
+.sidebar-role {
+  font-size: 14px;
+  opacity: 0.9;
+  font-weight: 300;
+  margin-bottom: 0;
+}
+
+/* Sidebar Contact */
+.sidebar-contact {
+  margin-bottom: 30px;
+  font-size: 13px;
+}
+
+.sidebar-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  word-break: break-word;
+}
+
+.sidebar-contact-item a {
+  color: white;
+  text-decoration: none;
+}
+
+.icon {
+  width: 16px;
+  text-align: center;
+  opacity: 0.8;
+}
+
+/* Sidebar Section Titles */
+.sidebar-section {
+  margin-bottom: 30px;
+}
+
+.sidebar-title {
+  font-size: 14px;
+  font-weight: 700;
+  border-bottom: 1px solid rgba(255,255,255,0.3);
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* Education & Skills in Sidebar */
+.sidebar-edu-item {
+  margin-bottom: 15px;
+}
+
+.edu-school {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.edu-meta {
+  font-size: 11px;
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
+.edu-degree {
+  font-size: 12px;
+  margin-top: 2px;
+  font-style: italic;
+}
+
+.dot-skill-item {
+  margin-bottom: 10px;
+}
+
+.skill-name {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+/* Dots: Sidebar uses White dots */
+.dots-row {
+  display: flex;
+  gap: 5px;
+}
+
+.template7-sidebar .dot {
+  width: 8px;
+  height: 8px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+}
+
+.template7-sidebar .dot.filled {
+  background: white;
+}
+
+/* --- MAIN CONTENT (White Background / Dark Text) --- */
+.template7-main {
+  width: 68%;
+  padding: 40px;
+  background-color: white;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.main-section {
+  margin-bottom: 35px;
+}
+
+/* 🔥 THE FIX: VISIBLE HEADINGS */
+.main-title {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 15px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--accent, #A678E2); 
+  
+  /* 👇 This is the specific matching border for Option 3 */
+  border-bottom: 2px solid rgba(166, 120, 226, 0.3); 
+  
+  padding-bottom: 5px;
+}
+
+.objective-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #444;
+}
+
+/* Jobs */
+.main-job {
+  margin-bottom: 20px;
+}
+
+.job-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 5px;
+}
+
+.job-role {
+  font-size: 14px;
+  font-weight: 700;
+  color: #000;
+}
+
+.job-company {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent, #5C03BC); /* Company name in color */
+}
+
+.job-meta {
+  font-size: 11px;
+  color: #777;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.job-bullets {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #444;
+  padding-left: 18px;
+}
+
+.job-bullets li {
+  margin-bottom: 4px;
+}
+
+/* Languages (Main Section) - Dots need to be Dark/Colored */
+.languages-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.lang-name {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.template7-main .dot {
+  width: 8px;
+  height: 8px;
+  background: #e0e0e0; /* Grey empty dots */
+  border-radius: 50%;
+}
+
+.template7-main .dot.filled {
+  background: var(--accent, #5C03BC); /* Colored filled dots */
+}
+
+/* Projects Link */
+.project-link {
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* --- WYSIWYG EDITOR RENDER FIXES FOR TEMPLATE 7 --- */
+
+/* 1. Sidebar Education Description */
+.sidebar-edu-desc {
+  font-size: 11px;
+  opacity: 0.9;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.sidebar-edu-desc ul {
+  list-style-type: circle !important; /* Lighter style for sidebar */
+  padding-left: 15px !important;
+  margin: 5px 0 !important;
+}
+
+.sidebar-edu-desc li {
+  margin-bottom: 3px !important;
+  display: list-item !important;
+}
+
+/* 2. Main Column Objective/Summary Bullets */
+.objective-text ul {
+  list-style-type: disc !important;
+  padding-left: 20px !important;
+  margin: 10px 0 !important;
+}
+
+.objective-text li {
+  margin-bottom: 5px !important;
+  display: list-item !important;
+}
+
+/* 3. Make [ ] placeholder text BOLD */
+/* Sidebar bolding (white) */
+.template7-sidebar span {
+  font-weight: 700 !important;
+  color: #ffffff !important;
+}
+
+/* Main column bolding (Accent color) */
+.template7-main span {
+  font-weight: 700 !important;
+  color: var(--accent, #5C03BC) !important;
+}

@@ -1,0 +1,43 @@
+.tech-resume {
+    line-height: 1.6;
+    color: #c9d1d9;
+    background-color: #0d1117;
+}
+
+.tech-resume ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin: 5px 0;
+}
+
+.tech-resume h1,
+.tech-resume h2,
+.tech-resume h3 {
+    font-family: inherit;
+    font-weight: 600;
+    margin: 0;
+}
+
+.tech-resume a {
+    color: #58a6ff;
+    text-decoration: none;
+}
+
+.tech-resume .section-header {
+    border-bottom: 1px solid #30363d;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    color: var(--theme-color, #58a6ff);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tech-resume .skill-tag {
+    background: #21262d;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.85em;
+    font-family: monospace;
+}

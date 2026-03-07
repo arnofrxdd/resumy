@@ -1,0 +1,332 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Skill {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  @@map("skills")
+}
+
+model User {
+  id                  String           @id @db.Uuid
+  email               String           @unique
+  password            String?
+  name                String?
+  bio                 String?
+  preferences         String?
+  plan                String           @default("Free")
+  subscriptionId      String?          @map("subscription_id")
+  subscriptionStatus  String?          @map("subscription_status")
+  subscriptionEndDate DateTime?        @map("subscription_end_date")
+  careerDna           String?          @map("career_dna")
+  masterResumeId      String?          @map("master_resume_id")
+  dnaLastSynced       DateTime?        @default(now()) @map("dna_last_synced")
+  createdAt           DateTime         @default(now()) @map("created_at")
+  updatedAt           DateTime         @updatedAt @map("updated_at")
+  enrollments         Enrollment[]
+  likes               Like[]
+  notebooks           Notebook[]
+  payments            Payment[]
+  pdfDownloads        PdfDownload[]
+  roadmaps            Roadmap[]
+  skillInventory      SkillInventory[]
+  studyProgress       StudyProgress[]
+  studySessions       StudySession[]
+
+  @@map("profiles")
+}
+
+model Notebook {
+  id          String   @id @default(uuid())
+  userId      String   @db.Uuid
+  title       String
+  sources     String?
+  roadmapData String?
+  assets      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notebooks")
+}
+
+model Payment {
+  id        String   @id @default(uuid())
+  userId    String   @db.Uuid
+  amount    Float
+  currency  String
+  status    String
+  orderId   String
+  paymentId String?
+  signature String?
+  plan      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@map("payments")
+}
+
+model Roadmap {
+  id            Int             @id @default(autoincrement())
+  title         String
+  description   String
+  category      String?
+  difficulty    String          @default("Beginner")
+  tags          String?
+  content       String?
+  metadata      String?
+  isPublic      Boolean         @default(true)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  authorId      String?         @db.Uuid
+  enrollments   Enrollment[]
+  likes         Like[]
+  pdfDownloads  PdfDownload[]
+  nodes         RoadmapNode[]
+  author        User?           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  studyProgress StudyProgress[]
+  studySessions StudySession[]
+
+  @@map("roadmaps")
+}
+
+model RoadmapNode {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  type        String   @default("learning")
+  order       Int
+  position    String?
+  data        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  roadmapId   Int
+  roadmap     Roadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+
+  @@map("roadmap_nodes")
+}
+
+model Enrollment {
+  id             Int      @id @default(autoincrement())
+  progress       Float    @default(0)
+  completedNodes String?
+  enrolledAt     DateTime @default(now())
+  lastAccessedAt DateTime @default(now())
+  userId         String   @db.Uuid
+  roadmapId      Int
+  roadmap        Roadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roadmapId])
+  @@map("enrollments")
+}
+
+model Like {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  userId    String   @db.Uuid
+  roadmapId Int
+  roadmap   Roadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roadmapId])
+  @@map("likes")
+}
+
+model StudyProgress {
+  id            Int      @id @default(autoincrement())
+  userId        String   @db.Uuid
+  roadmapId     Int
+  nodeId        String
+  timeSpent     Int?     @default(0)
+  isCompleted   Boolean  @default(false)
+  notes         String?
+  lastStudiedAt DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  roadmap       Roadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roadmapId, nodeId])
+  @@map("study_progress")
+}
+
+model StudySession {
+  id          Int      @id @default(autoincrement())
+  userId      String   @db.Uuid
+  roadmapId   Int
+  nodeId      String?
+  sessionType String   @default("study")
+  duration    Int      @default(0)
+  notes       String?
+  completedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  roadmap     Roadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("study_sessions")
+}
+
+model PdfDownload {
+  id              Int      @id @default(autoincrement())
+  userId          String   @db.Uuid
+  roadmapId       Int
+  downloadType    String   @default("roadmap")
+  fileName        String?
+  fileSize        Int?
+  includeProgress Boolean  @default(false)
+  downloadedAt    DateTime @default(now())
+  ipAddress       String?
+  userAgent       String?
+  roadmap         Roadmap  @relation(fields: [roadmapId], references: [id], onDelete: Cascade)
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("pdf_downloads")
+}
+
+model RoadmapGeneration {
+  id               Int      @id @default(autoincrement())
+  userId           String?  @db.Uuid
+  skill            String
+  title            String?
+  currentLevel     String?
+  targetLevel      String?
+  timeframe        String?
+  preferences      String?
+  roadmap          String?
+  generationSource String?
+  createdAt        DateTime @default(now())
+
+  @@map("roadmap_generations")
+}
+
+model SkillTestRecord {
+  id                  Int      @id @default(autoincrement())
+  userId              String?  @db.Uuid
+  attemptId           String?  @map("attempt_id")
+  testName            String
+  score               Float?
+  percentScore        Float?
+  timeInvestedSeconds Int?     @default(0)
+  difficultyLevel     String?
+  medium              String?
+  metadata            String?
+  createdAt           DateTime @default(now())
+
+  @@map("skill_test_records")
+}
+
+model SkillGapResult {
+  id             Int      @id @default(autoincrement())
+  userId         String?  @db.Uuid
+  resumeId       String?
+  jobTitle       String?
+  jobDescription String?
+  overallScore   Int?
+  scoreBreakdown String?
+  missingAreas   String?
+  strongAreas    String?
+  suggestions    String?
+  createdAt      DateTime @default(now())
+
+  @@map("skill_gap_results")
+}
+
+model SkillInventory {
+  id          String   @id @default(uuid())
+  userId      String   @db.Uuid
+  skillName   String
+  proficiency String   @default("Intermediate")
+  isVerified  Boolean  @default(false)
+  updatedAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, skillName])
+  @@map("skill_inventory")
+}
+
+model BuilderResume {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profileId          String   @map("profile_id") @db.Uuid
+  templateId         String?  @map("template_id")
+  title              String?  @default("Untitled Resume")
+  data               Json?    @default("{}")
+  designSettings     Json?    @default("{}") @map("design_settings")
+  onboardingMetadata Json?    @default("{}") @map("onboarding_metadata")
+  lastStepIndex      Int?     @default(1) @map("last_step_index")
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @default(now()) @map("updated_at")
+  slotId             String?  @map("slot_id")
+
+  @@map("builder_resumes")
+}
+
+model Resume {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId        String    @map("user_id") @db.Uuid
+  title         String?
+  status        String?   @default("active")
+  parsedJson    Json?     @map("parsed_json")
+  template      String?
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @default(now()) @map("updated_at")
+  completedAt   DateTime? @map("completed_at")
+  downloadCount Int?      @default(0) @map("download_count")
+  filename      String?
+  parsedText    String?   @map("parsed_text")
+  startedAt     DateTime? @map("started_at")
+  storagePath   String?   @map("storage_path")
+  style         Json?
+  visibility    String?   @default("private")
+
+  @@map("resumes")
+}
+
+model AIJob {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  type      String
+  input     Json?
+  status    String   @default("queued")
+  result    Json?
+  lastError Json?    @map("last_error")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  @@map("ai_jobs")
+}
+
+model UserActivityAnalytics {
+  id                  String   @id
+  userId              String?  @map("user_id") @db.Uuid
+  userEmail           String?  @map("user_email")
+  userName            String?  @map("user_name")
+  sessionId           String?  @map("session_id")
+  isFirstSession      Boolean? @map("is_first_session")
+  pageHistory         Json?    @default("[]") @map("page_history")
+  timePerPage         Json?    @default("{}") @map("time_per_page")
+  actions             Json?    @default("[]") @map("actions")
+  totalTimeSpentSec   Int?     @default(0) @map("total_time_spent_sec")
+  featureModule       String?  @map("feature_module")
+  maxFunnelStage      String?  @map("max_funnel_stage")
+  coreActionPerformed Boolean? @default(false) @map("core_action_performed")
+  ttvSeconds          Int?     @map("ttv_seconds")
+  referralCount       Int?     @default(0) @map("referral_count")
+  premiumIntentCount  Int?     @default(0) @map("premium_intent_count")
+  browserInfo         Json?    @map("browser_info")
+  lastActiveAt        DateTime @default(now()) @map("last_active_at")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @default(now()) @map("updated_at")
+
+  @@map("user_activity_analytics")
+}

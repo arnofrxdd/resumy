@@ -1,0 +1,217 @@
+/* 1. FONT IMPORTS */
+/* Merriweather for headings (Executive feel), Open Sans for readable text */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Open+Sans:wght@400;600;700&display=swap');
+
+/* 2. PRINT SETTINGS (Essential) */
+@media print {
+  @page {
+    margin: 0;
+    size: A4;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .executive-resume {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+}
+
+/* 3. MAIN CONTAINER */
+.executive-resume {
+  width: 210mm;
+  min-height: 297mm;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Merriweather', 'Georgia', serif;
+  color: #1f2937;
+  background: white;
+  line-height: 1.6;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* 4. HEADER SECTION */
+.exec-header {
+  padding: 40px 40px 30px 40px;
+  border-bottom: 4px solid #1f2937;
+  /* Thick executive border */
+  background-color: #fff;
+}
+
+.exec-name {
+  margin: 0 0 5px 0;
+  font-size: 32pt;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 900;
+  color: #111;
+  line-height: 1;
+}
+
+.exec-role {
+  margin: 0 0 15px 0;
+  font-size: 14pt;
+  color: #4b5563;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-family: 'Open Sans', sans-serif;
+  /* Sans-serif for contrast */
+}
+
+.exec-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 10pt;
+  color: #374151;
+  font-family: 'Open Sans', sans-serif;
+  margin-top: 10px;
+}
+
+.exec-link a {
+  color: #374151;
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid transparent;
+}
+
+.exec-link a:hover {
+  border-bottom-color: #374151;
+}
+
+/* 5. LAYOUT STRUCTURE */
+.exec-body {
+  display: flex;
+  flex: 1;
+  /* Fills remaining height */
+}
+
+/* LEFT COLUMN (Main Content) */
+.exec-main {
+  width: 65%;
+  padding: 30px 40px;
+  box-sizing: border-box;
+}
+
+/* RIGHT COLUMN (Sidebar) */
+.exec-sidebar {
+  width: 35%;
+  background: #f8fafc;
+  /* Subtle grey background */
+  padding: 30px;
+  box-sizing: border-box;
+  border-left: 1px solid #e5e7eb;
+  font-family: 'Open Sans', sans-serif;
+  /* Sidebar uses Sans-serif for lists */
+}
+
+/* 6. TYPOGRAPHY & SECTIONS */
+
+/* Main Column Titles */
+.exec-section-title {
+  font-size: 12pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-bottom: 1px solid #d1d5db;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  font-weight: 800;
+  color: #111;
+  font-family: 'Open Sans', sans-serif;
+}
+
+/* Sidebar Titles */
+.exec-sidebar-title {
+  font-size: 11pt;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border-bottom: 2px solid #1f2937;
+  /* Darker border for contrast on grey */
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  font-weight: 800;
+  color: #1f2937;
+}
+
+/* Body Text */
+.exec-text {
+  font-size: 10.5pt;
+  font-family: 'Merriweather', serif;
+  /* Serif for reading flow */
+  color: #333;
+  text-align: justify;
+  margin-bottom: 10px;
+  white-space: pre-line;
+  /* CRITICAL: Respects line breaks */
+}
+
+/* 7. JOB / EXPERIENCE ITEMS */
+.exec-job {
+  margin-bottom: 25px;
+  page-break-inside: avoid;
+  /* Prevents splitting job across pages */
+}
+
+.exec-job-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+}
+
+.exec-job-title {
+  font-size: 13pt;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
+}
+
+.exec-job-date {
+  font-size: 10pt;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  color: #4b5563;
+  white-space: nowrap;
+}
+
+.exec-company {
+  font-size: 11pt;
+  font-style: italic;
+  margin-bottom: 8px;
+  color: #374151;
+  border-left: 3px solid #e5e7eb;
+  padding-left: 10px;
+  display: inline-block;
+}
+
+/* 8. LIST ITEMS (Sidebar & Main) */
+.exec-list-item {
+  margin-bottom: 8px;
+  font-size: 10pt;
+  line-height: 1.4;
+  color: #333;
+}
+
+/* Education Specifics */
+.exec-edu-item {
+  margin-bottom: 20px;
+}
+
+.exec-edu-degree {
+  font-weight: 700;
+  font-size: 11pt;
+  color: #000;
+  display: block;
+}
+
+.exec-edu-sub {
+  font-size: 10pt;
+  color: #555;
+}

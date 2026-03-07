@@ -1,0 +1,313 @@
+/* 
+  Templates.css - THE ENGINE KERNEL
+  Focus: Structure, Pagination, and Dynamic Variable Support.
+  Avoid: Template-specific "Skins" or "Blue/Fancy" styles.
+*/
+
+:root {
+    /* DEFAULT DESIGN PANEL TOKENS */
+    --theme-color: #1e293b;
+    --theme-font: 'Inter', sans-serif;
+    --theme-page-margin: 40px;
+    --theme-section-margin: 25px;
+    --theme-paragraph-margin: 15px;
+    --theme-font-scale: 1;
+    --theme-line-height: 1.5;
+
+    /* TYPOGRAPHY SCALE (Base values, scaled by --theme-font-scale) */
+    --font-size-section-title: 14px;
+    --font-size-item-title: 13px;
+    --font-size-item-subtitle: 12px;
+    --font-size-body: 11px;
+    --font-size-small: 10px;
+
+    /* NEUTRAL COLOR TOKENS */
+    --theme-text-primary: #1e293b;
+    --theme-text-muted: #475569;
+    --theme-text-dim: #64748b;
+    --theme-border-color: #f1f5f9;
+    --theme-bg-subtle: #f8fafc;
+}
+
+/* 1. SECTION TITLES */
+.template-section-title {
+    font-family: var(--theme-font);
+    font-size: calc(var(--font-size-section-title) * var(--theme-font-scale, 1));
+    font-weight: 800;
+    color: var(--theme-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--theme-border-color);
+    padding-bottom: 4px;
+    margin-bottom: calc(var(--theme-section-margin, 25px));
+    display: flex;
+    align-items: center;
+}
+
+/* 2. ITEM CONTAINERS */
+.experience-item,
+.education-item,
+.project-item,
+.certification-item,
+.custom-item {
+    margin-bottom: calc(var(--theme-paragraph-margin, 15px));
+    position: relative;
+}
+
+.section-item-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* 3. TEXT HIERARCHY */
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+}
+
+.item-title {
+    font-size: calc(var(--font-size-item-title) * var(--theme-font-scale, 1));
+    font-weight: 700;
+    color: var(--theme-text-primary);
+    margin: 0;
+}
+
+.item-subtitle {
+    font-size: calc(var(--font-size-item-subtitle) * var(--theme-font-scale, 1));
+    font-weight: 600;
+    color: var(--theme-text-muted);
+    margin-bottom: 2px;
+}
+
+.item-date {
+    font-size: calc(var(--font-size-body) * var(--theme-font-scale, 1));
+    font-weight: 700;
+    color: var(--theme-text-dim);
+}
+
+/* 4. CONTENT / RICH TEXT */
+.resume-rich-text {
+    font-size: calc(var(--font-size-body) * var(--theme-font-scale, 1));
+    line-height: var(--theme-line-height, 1.5);
+    color: var(--theme-text-muted);
+}
+
+.resume-rich-text ul,
+.splittable-rich-text ul {
+    margin: 4px 0 8px 0;
+    padding-left: 18px !important;
+    list-style-type: disc !important;
+}
+
+.resume-rich-text li,
+.splittable-rich-text li {
+    margin-bottom: 4px;
+    padding-left: 4px;
+    display: list-item !important;
+}
+
+.resume-rich-text li::marker,
+.splittable-rich-text li::marker {
+    color: var(--theme-color);
+    font-size: 1.1em;
+}
+
+.resume-rich-text p,
+.splittable-rich-text p {
+    margin: 0 0 8px 0;
+}
+
+/* 5. SKILLS & TAGS */
+.skill-tag {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 3px 10px;
+    border-radius: 100px;
+    /* Fully rounded pills look more modern */
+    font-size: calc(var(--font-size-body) * var(--theme-font-scale, 1));
+    font-weight: 600;
+    color: var(--theme-text-muted);
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.skill-tag:hover {
+    border-color: var(--theme-color);
+    background: #ffffff;
+}
+
+/* 6. STAR RATINGS */
+.star-rating svg {
+    color: var(--theme-color);
+    fill: var(--theme-color);
+}
+
+.star-rating svg.empty {
+    color: var(--theme-border-color);
+    fill: var(--theme-border-color);
+}
+
+/* 7. PAGINATION HELPERS */
+[is-continued="true"] .template-section-title::after {
+    content: "(CONTINUED)";
+    font-size: 10px;
+    margin-left: 8px;
+    opacity: 0.5;
+}
+
+/* 8. UNIFIED DRAG & DROP UI */
+.draggable-section {
+    position: relative;
+    transition: outline-color 0.2s ease, transform 0.2s ease;
+    border-radius: 4px;
+}
+
+.draggable-section:hover {
+    z-index: 100 !important;
+}
+
+
+
+.draggable-section.dragging {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.drag-handle-overlay {
+    position: absolute;
+    top: -14px;
+    left: 4px;
+    background: #4f46e5;
+    color: white;
+    padding: 6px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 9999;
+    cursor: grab;
+    line-height: 1;
+    touch-action: none;
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    width: 28px;
+    height: 28px;
+}
+
+.draggable-section:hover .drag-handle-overlay,
+.drag-handle-overlay.visible {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transform: scale(1) !important;
+}
+
+
+
+
+.drag-handle-overlay:hover {
+    background: var(--theme-color, #3b82f6);
+    filter: brightness(1.1);
+    transform: none;
+    box-shadow: none;
+}
+
+
+.drag-handle-overlay:active {
+    cursor: grabbing;
+}
+
+.drag-handle-overlay span {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: inherit;
+}
+
+/* Drag Preview Styling */
+.dragging-preview {
+    background: white;
+    padding: 20px;
+    border: 1px solid var(--theme-color, #3b82f6);
+    border-radius: 8px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 350px;
+    /* Sensible default width for preview */
+    opacity: 0.95;
+}
+
+
+.draggable-section:hover .drag-handle-overlay,
+.drag-handle-overlay.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.draggable-section.reorder-mode-active {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.45);
+    z-index: 50;
+    cursor: grab;
+    border: 1px dashed rgba(var(--theme-color-rgb, 59, 130, 246), 0.5);
+    border-radius: 8px;
+    touch-action: none;
+    /* CRITICAL: Prevents scroll from stealing drag */
+}
+
+.reorder-handle-indicator {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: #4f46e5;
+    color: white;
+    padding: 6px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    z-index: 60;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+    pointer-events: none;
+}
+
+.draggable-section.reorder-mode-active:active {
+    cursor: grabbing;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    /* Match active state if needed */
+}
+
+/* Page margin adjustments for DND */
+.page-container {
+    overflow: visible !important;
+    /* Allow handles to peek out if needed */
+}
+
+/* --- REORDER MODE OVERRIDES --- */
+/* Disable the "Edit" label so it doesn't overlap shakes */
+.reorder-mode-active .edit-overlay {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Ensure the wrapper doesn't capture clicks for editing anymore */
+.reorder-mode-active .interactive-section-wrapper {
+    cursor: grab !important;
+    pointer-events: none !important;
+    /* Block children from getting clicks if needed */
+    touch-action: none !important;
+}
+
+/* Re-enable pointer events for the handle only */
+.reorder-mode-active .drag-handle-overlay {
+    pointer-events: auto !important;
+    opacity: 1 !important;
+}

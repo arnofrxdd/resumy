@@ -1,0 +1,150 @@
+/* Import clean font */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
+
+/* --- PRINT SETTINGS --- */
+@media print {
+  @page {
+    margin: 0;
+    size: A4;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .minimal-resume {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+  }
+}
+
+/* --- MAIN CONTAINER --- */
+.minimal-resume {
+  font-family: 'Open Sans', 'Arial', sans-serif;
+  /* Clean, safe font */
+  color: #222;
+  padding: 12mm 15mm;
+  background: white;
+  min-height: 297mm;
+  width: 210mm;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+/* --- HEADER --- */
+.min-header {
+  text-align: center;
+  border-bottom: 2px solid #222;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.min-name {
+  text-transform: uppercase;
+  font-size: 26pt;
+  margin: 0 0 8px 0;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.min-role {
+  text-transform: uppercase;
+  font-size: 11pt;
+  margin-bottom: 8px;
+  letter-spacing: 1px;
+  color: #555;
+  font-weight: 600;
+}
+
+.min-contact {
+  font-size: 9pt;
+  color: #444;
+}
+
+.min-links a {
+  color: #222;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* --- SECTIONS --- */
+.min-section {
+  margin-bottom: 20px;
+}
+
+.min-heading {
+  font-size: 10pt;
+  text-transform: uppercase;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+  padding-bottom: 3px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #000;
+}
+
+.min-text {
+  font-size: 9.5pt;
+  margin-bottom: 5px;
+  text-align: justify;
+  white-space: pre-line;
+  /* Respects line breaks */
+}
+
+/* --- JOBS & EDUCATION --- */
+.min-item {
+  margin-bottom: 15px;
+  page-break-inside: avoid;
+}
+
+.min-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2px;
+  font-size: 10.5pt;
+}
+
+.min-item-head strong {
+  font-weight: 700;
+}
+
+.min-date {
+  font-weight: normal;
+  font-size: 9pt;
+  color: #555;
+}
+
+.min-subline {
+  font-style: italic;
+  font-size: 9.5pt;
+  margin-bottom: 4px;
+  color: #444;
+}
+
+/* --- LISTS --- */
+.min-list {
+  margin: 4px 0 0 0;
+  padding-left: 18px;
+  font-size: 9.5pt;
+}
+
+.min-list li {
+  margin-bottom: 3px;
+}
+
+/* --- SKILLS GRID --- */
+.min-skills-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 15px;
+  font-size: 9.5pt;
+}
+
+.min-skill-label {
+  font-weight: 700;
+  color: #444;
+}

@@ -1,0 +1,446 @@
+/* ResumeRenderer.css */
+
+/* 
+  Reset global styles inside the resume preview to prevent 
+  App/Global styles (like Tailwind base styles) from affecting the resume design.
+*/
+
+.resume-theme-provider {
+    -webkit-text-size-adjust: none !important;
+    text-size-adjust: none !important;
+    -moz-text-size-adjust: none !important;
+}
+
+.resume-theme-provider h1,
+.resume-theme-provider h2,
+.resume-theme-provider h3,
+.resume-theme-provider h4,
+.resume-theme-provider h5,
+.resume-theme-provider h6 {
+    color: inherit;
+    /* Prevent globals.css #0a2540 from overriding template inheritance */
+    font-family: inherit;
+    /* Prevent global font override if specific template sets font on wrapper */
+    line-height: inherit;
+}
+
+.resume-theme-provider p {
+    color: inherit;
+    margin: 0;
+    /* Reset global margins if any */
+}
+
+.resume-theme-provider .resume-rich-text p {
+    margin-bottom: calc(1em * var(--theme-paragraph-margin, 1));
+}
+
+.resume-theme-provider ul,
+.resume-theme-provider ol {
+    color: inherit;
+    margin: 0;
+    padding: 0;
+    /* Templates usually define their own padding */
+    list-style: none;
+    /* Reset default bullets, templates re-add them if needed */
+}
+
+.resume-theme-provider a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Restore styles for Rich Text Content */
+.resume-theme-provider .resume-rich-text ul {
+    list-style: disc;
+    margin-left: 1.5em;
+    padding-left: 0;
+}
+
+.resume-theme-provider .resume-rich-text ol {
+    list-style: decimal;
+    margin-left: 1.5em;
+    padding-left: 0;
+}
+
+.resume-theme-provider .resume-rich-text li {
+    margin-bottom: 0.25em;
+}
+
+.resume-theme-provider .resume-rich-text i,
+.resume-theme-provider .resume-rich-text em {
+    font-style: italic;
+}
+
+.resume-theme-provider .resume-rich-text b,
+.resume-theme-provider .resume-rich-text strong {
+    font-weight: 700;
+}
+
+.resume-theme-provider .resume-rich-text u {
+    text-decoration: underline;
+}
+
+/* --- PAGE BREAK GUIDES --- */
+.resume-theme-provider.paged-mode {
+    /* When paged, the outer container acts as a viewport backdrop */
+    background-color: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+.paginated-resume-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+/* Page in paged mode (Targeting divs that templates use for pages) */
+.resume-theme-provider.paged-mode>div>div[style*="height: 297mm"],
+.resume-theme-provider.paged-mode div[style*="height: 297mm"],
+.resume-page {
+    box-shadow: 0 10px 60px rgba(0, 0, 0, 0.15) !important;
+    background: white;
+    border-radius: 0 !important;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.resume-theme-provider.paged-mode div[style*="height: 297mm"]:hover,
+.resume-page:hover {
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.2) !important;
+}
+
+.resume-theme-provider.seamless-mode {
+    box-shadow: 0 10px 60px rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border-radius: 0 !important;
+}
+
+.resume-theme-provider.seamless-mode:hover {
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Page Guide Labels */
+.page-guides-overlay div span {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.resume-theme-provider:hover .page-guides-overlay div span {
+    opacity: 1;
+}
+
+/* Ensure overflow is visible everywhere to allow highlight box to pop out */
+.resume-theme-provider,
+.resume-page,
+.paginated-resume-container,
+.resume-theme-provider>div,
+.interactive-section-wrapper,
+.draggable-section,
+.section-item-container {
+    overflow: visible !important;
+}
+
+/* Ensure images don't get sliced */
+.resume-theme-provider img {
+    break-inside: avoid;
+}
+
+/* --- INTERACTIVE SECTIONS & HIGHLIGHT BOX --- */
+.interactive-section-wrapper {
+    position: relative;
+    border: 2px solid transparent;
+    border-radius: 0;
+    /* Sharp corners */
+    transition: all 0.2s ease;
+}
+
+/* HOVER EFFECT */
+@media (hover: hover) {
+    .interactive-section-wrapper.active:hover {
+        background-color: rgba(99, 102, 241, 0.05);
+        outline: 1px dashed rgba(99, 102, 241, 0.4);
+        cursor: pointer;
+    }
+}
+
+.edit-overlay {
+    position: absolute;
+    top: -24px;
+    right: 0;
+    background: #4f46e5;
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 0;
+    /* Sharp corners */
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 50;
+    white-space: nowrap;
+}
+
+@media (hover: hover) {
+    .interactive-section-wrapper.active:hover .edit-overlay {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- SMART REORDER OVERLAY --- */
+.section-reorder-overlay {
+    position: absolute;
+    left: -40px;
+    top: 50%;
+    transform: translateY(-50%) translateX(-10px);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1000;
+}
+
+@media (hover: hover) {
+    .interactive-section-wrapper.active:hover .section-reorder-overlay {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+        pointer-events: auto;
+    }
+}
+
+.reorder-btn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border: 1px solid #f1f5f9;
+    color: #64748b;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.reorder-btn:hover {
+    background: #f5f3ff;
+    color: #7c3aed;
+    border-color: #ddd6fe;
+}
+
+.reorder-drag-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #cbd5e1;
+    height: 12px;
+}
+
+
+
+.interactive-section-wrapper.reorder-mode-active {
+    outline: 2px dashed #7c3aed !important;
+    background-color: rgba(124, 58, 237, 0.05) !important;
+    cursor: move;
+}
+
+/* --- THE HIGHLIGHT BOX --- */
+/* BOLD static highlight. No animation.
+   6px inset border because sidebar is at 0.42 zoom → 6px × 0.42 ≈ 2.5px visible.
+   If border were 2px it would be <1px at that scale (invisible). */
+.interactive-section-wrapper.highlighted-section {
+    position: relative;
+    z-index: 100;
+    isolation: isolate;
+
+    /* RESET: Ensure highlight doesn't push ANYTHING around */
+    margin: 0 !important;
+    padding: 0 !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* External Visual Box */
+.interactive-section-wrapper.highlighted-section::before {
+    content: "";
+    position: absolute;
+    /* Expand slightly outward to create a visual "editing zone" 
+       without moving the base element's box */
+    top: -6px;
+    left: -10px;
+    right: -10px;
+    bottom: -6px;
+
+    background-color: rgba(var(--theme-color-rgb, 99, 91, 255), 0.1) !important;
+    border: 2px solid var(--theme-color, #635bff) !important;
+    border-radius: 8px;
+    box-shadow:
+        0 4px 24px rgba(var(--theme-color-rgb, 99, 91, 255), 0.2),
+        0 0 0 4px rgba(var(--theme-color-rgb, 99, 91, 255), 0.05);
+
+    z-index: -1;
+    /* Stay behind text content */
+    pointer-events: none;
+    /* User clicks pass through to content */
+
+    /* Force GPU rendering for smooth transitions */
+    will-change: transform, opacity;
+}
+
+.section-highlight-overlay {
+    display: none;
+}
+
+/* ---- ZEN MODE: fully disable section interaction ---- */
+/* pointer-events:none on all interactive wrappers blocks hover + click completely */
+.zen-preview-container .interactive-section-wrapper {
+    pointer-events: none !important;
+    cursor: default !important;
+}
+
+.zen-preview-container .interactive-section-wrapper.active:hover {
+    background-color: transparent !important;
+    outline: none !important;
+}
+
+.zen-preview-container .edit-overlay {
+    display: none !important;
+}
+
+/* --- PRINT OPTIMIZATION --- */
+@media print {
+
+    .page-guides-overlay,
+    .section-highlight-overlay,
+    /* Hide highlight box */
+    .edit-overlay {
+        display: none !important;
+    }
+
+    .resume-theme-provider {
+        /* Ensure background colors are printed */
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        box-shadow: none !important;
+        border: none !important;
+    }
+
+    /* Prevent breaking headers, titles, and list items in the middle */
+    .resume-theme-provider h1,
+    .resume-theme-provider h2,
+    .resume-theme-provider h3,
+    .resume-theme-provider h4,
+    .resume-theme-provider h5,
+    .resume-theme-provider h6,
+    .resume-theme-provider li,
+    .resume-theme-provider .draggable-section,
+    .resume-theme-provider .interactive-section-wrapper {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    /* Try to keep simplified sections together if possible */
+    .resume-theme-provider div[style*="margin-bottom"] {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}
+
+/* ============================================================
+   DEBUG HIGHLIGHTS ENGINE
+   Triggered via .debug-highlights-enabled on provider
+   ============================================================ */
+
+.debug-highlights-enabled [data-section-id] {
+    position: relative;
+    outline: 2px solid rgba(239, 68, 68, 0.4) !important;
+    /* Red for sections */
+    background-color: rgba(239, 68, 68, 0.02);
+}
+
+.debug-highlights-enabled [data-section-id]::before {
+    content: "SECTION: " attr(data-section-id);
+    position: absolute;
+    top: -14px;
+    left: 0;
+    background: #ef4444;
+    color: white;
+    font-size: 8px;
+    font-weight: 900;
+    padding: 1px 4px;
+    text-transform: uppercase;
+    z-index: 1000;
+    pointer-events: none;
+    line-height: 1;
+}
+
+.debug-highlights-enabled [data-item-index] {
+    outline: 1.5px solid rgba(59, 130, 246, 0.4) !important;
+    /* Blue for items */
+    background-color: rgba(59, 130, 246, 0.02);
+    position: relative;
+}
+
+.debug-highlights-enabled [data-sub-item-index] {
+    outline: 1px dashed rgba(16, 185, 129, 0.5) !important;
+    /* Green for sub-items/bullets */
+    background-color: rgba(16, 185, 129, 0.03);
+}
+
+/* Bottom Gap / Buffer Highlight */
+.debug-highlights-enabled .resume-page,
+.debug-highlights-enabled [style*="height: 297mm"],
+.debug-highlights-enabled [style*="height:297mm"] {
+    position: relative !important;
+}
+
+.debug-highlights-enabled .resume-page::after,
+.debug-highlights-enabled [style*="height: 297mm"]::after,
+.debug-highlights-enabled [style*="height:297mm"]::after {
+    content: "BOTTOM BUFFER (SAFETY GAP)";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--theme-page-margin, 40px);
+    background: repeating-linear-gradient(45deg,
+            rgba(245, 158, 11, 0.1),
+            rgba(245, 158, 11, 0.1) 10px,
+            rgba(245, 158, 11, 0.2) 10px,
+            rgba(245, 158, 11, 0.2) 20px);
+    border-top: 2px dashed #f59e0b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #b45309;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    pointer-events: none;
+    z-index: 999;
+}
+
+.debug-highlights-enabled .resume-rich-text,
+.debug-highlights-enabled .item-header,
+.debug-highlights-enabled .item-subtitle,
+.debug-highlights-enabled [data-debug-box="textbox"] {
+    outline: 1.5px dotted rgba(79, 70, 229, 0.4) !important;
+    background-color: rgba(79, 70, 229, 0.01);
+}

@@ -1,0 +1,49 @@
+/* Simple Column Template Styles */
+
+.simple-column {
+    font-family: var(--theme-font, 'Inter', sans-serif);
+    color: var(--theme-text, #334155);
+    background: var(--theme-background, #ffffff);
+}
+
+/* Drag Handle Styling */
+.sortable-section-wrapper {
+    position: relative;
+    /* Ensure content is positioned relative for the handle */
+}
+
+.section-drag-handle {
+    position: absolute;
+    left: -25px;
+    /* Position to the left of the content */
+    top: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+    opacity: 0;
+    /* Hidden by default */
+    transition: opacity 0.2s;
+    color: #94a3b8;
+    font-weight: bold;
+    font-size: 18px;
+    user-select: none;
+}
+
+.sortable-section-wrapper:hover .section-drag-handle {
+    opacity: 1;
+    /* Show on hover */
+}
+
+.section-drag-handle:active {
+    cursor: grabbing;
+    color: var(--theme-color, #3b82f6);
+}
+
+/* Page Break Visualization (Optional override) */
+.page-guides-overlay {
+    z-index: 50;
+    pointer-events: none;
+}

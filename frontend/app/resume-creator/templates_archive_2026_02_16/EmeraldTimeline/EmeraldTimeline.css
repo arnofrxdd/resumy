@@ -1,0 +1,212 @@
+:root {
+    --emerald-primary: #10b981;
+    --emerald-dark: #064e3b;
+    --emerald-light: #d1fae5;
+    --emerald-slate: #1e293b;
+    --emerald-text-muted: #64748b;
+}
+
+.emerald-timeline-root {
+    font-family: 'Inter', sans-serif;
+    color: var(--emerald-slate);
+    background-color: white;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Styles */
+.emerald-header {
+    background-color: var(--emerald-primary);
+    color: white;
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
+    /* Slight rounding as seen in image */
+}
+
+.emerald-header-info {
+    flex: 1;
+}
+
+.emerald-name {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -1px;
+}
+
+.emerald-profession {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin: 5px 0 20px 0;
+    opacity: 0.9;
+}
+
+.emerald-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.emerald-contact-item {
+    display: flex;
+    gap: 10px;
+}
+
+.emerald-contact-label {
+    font-weight: 700;
+    text-transform: uppercase;
+    width: 60px;
+}
+
+.emerald-photo-container {
+    width: 120px;
+    height: 120px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.emerald-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Body & Timeline Styles */
+.emerald-body {
+    padding: 40px 0;
+    position: relative;
+    flex: 1;
+}
+
+/* The vertical line */
+.emerald-body::before {
+    content: '';
+    position: absolute;
+    left: 35px;
+    /* Aligned with diamonds */
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: var(--emerald-light);
+    z-index: 0;
+}
+
+.emerald-section {
+    position: relative;
+    padding-left: 80px;
+    /* Space for timeline and diamond */
+    margin-bottom: 40px;
+    z-index: 1;
+}
+
+/* Diamond Header */
+.diamond-marker {
+    position: absolute;
+    left: 20px;
+    top: 0;
+    width: 32px;
+    height: 32px;
+    background-color: var(--emerald-primary);
+    transform: rotate(45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2);
+}
+
+.diamond-icon {
+    transform: rotate(-45deg);
+    /* Counter-rotate to keep icon upright */
+    color: white;
+}
+
+.emerald-section {
+    position: relative;
+    padding-left: 80px;
+    /* Space for timeline and diamond */
+    margin-bottom: 40px;
+    z-index: 1;
+}
+
+.emerald-section.is-continued {
+    margin-top: 10px;
+}
+
+.emerald-section-header-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.emerald-section.is-continued .emerald-section-header-container {
+    margin-bottom: 10px;
+}
+
+.emerald-section-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--emerald-slate);
+    margin: 0;
+}
+
+.emerald-content {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--emerald-slate);
+}
+
+/* Skills Rating Pills */
+.skill-pill-emerald {
+    background-color: #f3f4f6;
+    padding: 6px 14px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.skill-rating-dots {
+    display: flex;
+    gap: 3px;
+}
+
+.skill-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #d1d5db;
+}
+
+.skill-dot.active {
+    background-color: var(--emerald-primary);
+}
+
+/* Continuation Header */
+.emerald-continuation {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--emerald-text-muted);
+    margin-bottom: 15px;
+}
+
+/* Timeline Node (for sub-items) */
+.timeline-node-small {
+    position: absolute;
+    left: 32px;
+    top: 10px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--emerald-primary);
+    border: 2px solid white;
+    border-radius: 50%;
+    z-index: 2;
+}

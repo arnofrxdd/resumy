@@ -1,0 +1,98 @@
+/* builder.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Main Container */
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background: #0a2540;
+  /* Unified Dark Slate */
+  /* Dark Slate Background */
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* Scrollbar Styling for the Preview Area */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a2540;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #425466;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #635bff;
+}
+
+/* Left Sidebar Form Area */
+.form-panel-container {
+  background: #0a2540;
+  color: white;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade {
+  animation: fadeIn 0.15s linear forwards;
+}
+
+/* Buttons in Builder */
+.btn-change-template {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-change-template:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+  border-color: #635bff;
+}
+
+/* Preview Card Area */
+.preview-header {
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  /* background: rgba(18, 18, 18, 0.8);  Glassmorphism */
+  backdrop-filter: blur(8px);
+}
+
+.preview-label {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}

@@ -1,0 +1,40 @@
+.designer-resume {
+    color: #333;
+    line-height: 1.6;
+}
+
+.designer-resume ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.designer-resume h1,
+.designer-resume h2,
+.designer-resume h3 {
+    margin: 0;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.designer-resume .header-bg {
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+}
+
+.designer-resume .section-title {
+    font-size: 24px;
+    position: relative;
+    margin-bottom: 20px;
+    color: #000;
+}
+
+.designer-resume .section-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 40px;
+    height: 4px;
+    background: var(--theme-color);
+}

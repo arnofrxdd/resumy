@@ -1,0 +1,133 @@
+/* --- GLOBAL RESUME HIGHLIGHT STYLES --- */
+/* This file should be imported in your main App.js or index.js to ensure global availability */
+
+/* The highlighting container */
+.resume-native-highlight {
+    position: relative !important;
+    border: 4px solid #22c55e !important;
+    border-radius: 8px !important;
+    background-color: rgba(34, 197, 94, 0.1) !important;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1) !important;
+    z-index: 10 !important;
+    transition: all 0.3s ease !important;
+    /* Ensure it doesn't break layout */
+    box-sizing: border-box !important;
+    margin: -8px !important;
+    /* Counteract padding to keep flow mostly same */
+    padding: 8px !important;
+}
+
+/* The label snippet */
+.resume-native-highlight::before {
+    content: "✔ " attr(data-label);
+    position: absolute;
+    top: -16px;
+    left: 12px;
+    background-color: #22c55e;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 20;
+    white-space: nowrap;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    font-family: 'Inter', sans-serif;
+    /* Ensure readable font */
+}
+
+/* Pulse animation for extra visibility */
+@keyframes highlightPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    }
+}
+
+.resume-native-highlight {
+    animation: highlightPulse 2s infinite;
+}
+
+/* --- INTERACTIVE SECTION STYLES --- */
+
+.interactive-section-wrapper {
+    position: relative !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    cursor: pointer !important;
+    border: 1px dashed transparent !important;
+    border-radius: 4px !important;
+    z-index: 5;
+}
+
+@media (hover: hover) {
+    .interactive-section-wrapper:hover {
+        transform: scale(1.02) !important;
+        border-color: var(--theme-color, #3b82f6) !important;
+        background-color: rgba(var(--theme-color-rgb, 59, 130, 246), 0.05) !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+        z-index: 100 !important;
+    }
+}
+
+
+.edit-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--theme-color, #3b82f6);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 0 4px 0 4px;
+    font-size: 10px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 110;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+
+@media (hover: hover) {
+    .interactive-section-wrapper:hover .edit-overlay {
+        opacity: 1;
+    }
+}
+
+/* Add a subtle indicator when not hovered but interactive */
+.interactive-section-wrapper::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: border-color 0.2s;
+    pointer-events: none;
+}
+
+@media (hover: hover) {
+    .interactive-section-wrapper:hover::after {
+        border-color: var(--theme-color, #3b82f6);
+    }
+}
+
+
+/* Ensure no clipping during magnification */
+.resume-container,
+.resume-body {
+    overflow: visible !important;
+}

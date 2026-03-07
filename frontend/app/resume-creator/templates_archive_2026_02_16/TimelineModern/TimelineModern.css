@@ -1,0 +1,173 @@
+.timeline-modern-container {
+    --timeline-line-color: #93c5fd;
+    --timeline-node-color: #60a5fa;
+    --timeline-header-bg: #93c5fd;
+    --timeline-header-text: #ffffff;
+
+    min-height: 100%;
+    width: 100%;
+    background: var(--theme-background, white);
+    color: var(--theme-text, #334155);
+    font-family: var(--theme-font, 'Inter', sans-serif);
+    display: flex;
+    flex-direction: column;
+}
+
+.timeline-modern-header {
+    background-color: var(--theme-color, var(--timeline-header-bg));
+    color: var(--timeline-header-text);
+    padding: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.timeline-modern-header-info {
+    flex: 1;
+}
+
+.timeline-modern-name {
+    font-size: calc(3.5em * var(--theme-font-scale, 1));
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -1px;
+}
+
+.timeline-modern-profession {
+    font-size: calc(1.5em * var(--theme-font-scale, 1));
+    font-weight: 500;
+    margin: 5px 0 20px 0;
+    opacity: 0.9;
+}
+
+.timeline-modern-contact {
+    font-size: calc(0.95em * var(--theme-font-scale, 1));
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.timeline-modern-contact-item {
+    display: flex;
+    gap: 10px;
+}
+
+.timeline-modern-contact-label {
+    font-weight: 700;
+    min-width: 60px;
+}
+
+.timeline-modern-photo-container {
+    width: 140px;
+    height: 140px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timeline-modern-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.timeline-modern-body {
+    padding: 40px 40px 40px 100px;
+    position: relative;
+    flex: 1;
+}
+
+.timeline-vertical-line {
+    position: absolute;
+    left: 50px;
+    top: 40px;
+    bottom: 40px;
+    width: 2px;
+    background-color: var(--timeline-line-color);
+}
+
+.timeline-section {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.timeline-section-icon {
+    position: absolute;
+    left: -66px;
+    /* Centered on the 50px line relative to the 100px padding: 50 - 16 = 34. 34 - 100 = -66 */
+    top: 0;
+    width: 32px;
+    height: 32px;
+    background: var(--theme-color, var(--timeline-node-color));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(45deg);
+    border-radius: 4px;
+    z-index: 2;
+}
+
+.timeline-section-icon svg {
+    transform: rotate(-45deg);
+}
+
+.timeline-section-title {
+    font-size: calc(1.6em * var(--theme-font-scale, 1));
+    font-weight: 700;
+    color: var(--theme-color, var(--timeline-node-color));
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.timeline-item-node {
+    position: absolute;
+    left: -54px;
+    /* Centered on the 50px line: 50 - 5 = 45. 45 - 100 = -55. Let's use -55 */
+    top: 8px;
+    width: 10px;
+    height: 10px;
+    background: var(--theme-color, var(--timeline-node-color));
+    transform: rotate(45deg);
+    z-index: 1;
+}
+
+.timeline-item-content {
+    margin-left: 10px;
+}
+
+.timeline-summary {
+    font-size: calc(1.05em * var(--theme-font-scale, 1));
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.timeline-experience-title {
+    font-weight: 700;
+    font-size: calc(1.2em * var(--theme-font-scale, 1));
+}
+
+.timeline-experience-company {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.timeline-experience-date {
+    font-size: 0.9em;
+    opacity: 0.7;
+    margin-bottom: 10px;
+}
+
+/* Base Component Overrides if needed */
+.timeline-modern-container .section-title {
+    display: none;
+    /* We use our own section title */
+}

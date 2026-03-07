@@ -1,0 +1,151 @@
+/* src/components/summary.css */
+/* Studio Workspace Styling for Summary */
+
+/* Sidebar Suggestions */
+.summary-suggestion-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    /* For absolute positioning if needed */
+}
+
+.summary-suggestion-card:hover {
+    border-color: #94a3b8;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background: #fdfdfd;
+}
+
+.suggestion-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.suggestion-badge {
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.suggestion-badge::before {
+    content: '';
+    display: block;
+    width: 6px;
+    height: 6px;
+    background: #ef4444;
+    /* Red dot for expert/hot */
+    border-radius: 50%;
+}
+
+/* FIXED VISIBILITY PLUS BUTTON - FORCED CIRCLE */
+.add-suggestion-btn {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    background: white;
+    border: 1px solid #e2e8f0 !important;
+    color: #635bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    aspect-ratio: 1 / 1;
+    margin: 0;
+    line-height: 0;
+}
+
+.summary-suggestion-card:hover .add-suggestion-btn {
+    background: #635bff;
+    color: white;
+    border-color: #635bff !important;
+    box-shadow: 0 4px 12px rgba(99, 91, 255, 0.25);
+    transform: scale(1.05);
+}
+
+.suggestion-text {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: #334155;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Scrollbar refinement for the sidebar */
+.studio-ws-sidebar-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.studio-ws-sidebar-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.studio-ws-sidebar-scroll::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+/* --- MOBILE RESPONSIVENESS (768px) --- */
+@media (max-width: 768px) {
+    .studio-workstation {
+        flex-direction: column !important;
+        height: auto !important;
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        gap: 24px;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .studio-ws-sidebar,
+    .studio-ws-editor {
+        width: 100% !important;
+        max-width: 100% !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 16px !important;
+        background: white !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+
+    .studio-ws-sidebar {
+        overflow-y: visible !important;
+    }
+
+    .studio-ws-editor {
+        height: 400px !important;
+        max-height: 400px !important;
+        overflow-y: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .studio-editor-canvas {
+        flex: 1 !important;
+        height: 100% !important;
+        overflow-y: auto !important;
+        padding: 12px !important;
+    }
+}

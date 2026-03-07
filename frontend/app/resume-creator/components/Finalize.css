@@ -1,0 +1,129 @@
+/* Finalize.css */
+.finalize-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+.icon-wrapper-success {
+    width: 60px;
+    height: 60px;
+    background: #635bff;
+    /* Unified Purple-Blue */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+    box-shadow: 0 4px 10px rgba(34, 197, 94, 0.3);
+}
+
+.finalize-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    padding: 30px;
+    margin-top: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.section-block {
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.section-header h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.section-desc {
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+/* Color Grid */
+.color-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.color-swatch {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.color-swatch.active {
+    border-color: #1e293b;
+    transform: scale(1.1);
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #1e293b;
+}
+
+.divider {
+    border: 0;
+    height: 1px;
+    background: #e2e8f0;
+    margin: 24px 0;
+}
+
+/* Download Button */
+.btn-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px;
+    background: #635bff;
+    /* Unified Purple-Blue */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-download:hover {
+    background: #0a2540;
+    /* Darker Slate on Hover */
+}
+
+.btn-download:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+.btn-download.loading {
+    opacity: 0.8;
+}
+
+/* Footer override for single button */
+.zety-footer.single-btn {
+    justify-content: center;
+}

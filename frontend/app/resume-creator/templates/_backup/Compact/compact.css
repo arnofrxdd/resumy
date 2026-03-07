@@ -1,0 +1,195 @@
+/* Import fonts - Verdana is standard, but Open Sans is a good backup */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap');
+
+/* --- PRINT SETTINGS --- */
+@media print {
+  @page {
+    margin: 0;
+    size: A4;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .compact-resume {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+  }
+}
+
+/* --- MAIN CONTAINER --- */
+.compact-resume {
+  width: 210mm;
+  min-height: 297mm;
+  background: white;
+  color: #333;
+  padding: 12mm 15mm;
+  /* Tight margins for compact feel */
+  box-sizing: border-box;
+  font-family: 'Verdana', 'Open Sans', sans-serif;
+  font-size: 9.5pt;
+  /* Slightly smaller font for density */
+  line-height: 1.45;
+}
+
+/* --- HEADER --- */
+.com-header {
+  border-bottom: 2px solid #2c3e50;
+  padding-bottom: 12px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.com-name {
+  margin: 0;
+  font-size: 22pt;
+  color: #2c3e50;
+  text-transform: uppercase;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.com-role {
+  font-size: 11pt;
+  font-weight: 700;
+  color: #7f8c8d;
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+
+.com-contact {
+  text-align: right;
+  font-size: 8.5pt;
+  color: #444;
+}
+
+.com-contact-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.com-link {
+  color: #2c3e50;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* --- COMPETENCIES BAR --- */
+.com-bar {
+  background: #f1f3f5;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  border-left: 5px solid #2c3e50;
+  font-size: 9pt;
+  line-height: 1.5;
+  text-align: justify;
+}
+
+/* --- LAYOUT COLUMNS --- */
+.com-grid {
+  display: flex;
+  gap: 25px;
+}
+
+.com-col-main {
+  flex: 7;
+}
+
+/* 70% width */
+.com-col-side {
+  flex: 3;
+}
+
+/* 30% width */
+
+/* --- SECTIONS --- */
+.com-section {
+  margin-bottom: 20px;
+}
+
+.com-sec-title {
+  font-size: 10.5pt;
+  text-transform: uppercase;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding-bottom: 3px;
+  color: #2c3e50;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* --- TEXT CONTENT --- */
+.com-text {
+  margin: 0;
+  text-align: justify;
+  white-space: pre-line;
+  /* Respects line breaks */
+  font-size: 9.5pt;
+}
+
+/* --- JOBS & PROJECTS --- */
+.com-item {
+  margin-bottom: 15px;
+}
+
+.com-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 10pt;
+  margin-bottom: 2px;
+}
+
+.com-item-title {
+  font-weight: 700;
+  color: #000;
+}
+
+.com-item-date {
+  font-size: 8.5pt;
+  color: #666;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.com-item-sub {
+  font-style: italic;
+  font-size: 9pt;
+  color: #2c3e50;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+/* --- SIDEBAR LISTS --- */
+.com-list-item {
+  margin-bottom: 8px;
+  font-size: 9pt;
+}
+
+.com-list-item strong {
+  color: #2c3e50;
+}
+
+.com-tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.com-tag {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 2px 6px;
+  font-size: 8pt;
+  border-radius: 3px;
+  color: #444;
+}

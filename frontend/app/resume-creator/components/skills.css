@@ -1,0 +1,289 @@
+/* skills.css */
+
+/* Re-imagined Skills Styling to match Studio Aesthetic */
+
+/* --- SUMMARY VIEW --- */
+.skills-summary-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.skill-category-card {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.skill-category-card:hover {
+    border-color: #cbd5e1;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+    /* More subtle premium shadow */
+    transform: translateY(-2px);
+}
+
+.skill-category-header {
+    padding: 16px 24px;
+    background: #f8fafc;
+    /* Very subtle grey header */
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.skill-category-title {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #334155;
+    text-transform: uppercase;
+}
+
+.btn-edit-category {
+    background: white;
+    border: 1px solid #e2e8f0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.btn-edit-category:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+    border-color: #cbd5e1;
+}
+
+.skill-chips-wrapper {
+    padding: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    min-height: 100px;
+    align-content: flex-start;
+}
+
+.skill-summary-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    /* Slightly more squarish for modern feel */
+    font-size: 13.5px;
+    color: #334155;
+    font-weight: 500;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+    transition: all 0.2s;
+}
+
+.skill-summary-chip:hover {
+    border-color: #cbd5e1;
+    transform: translateY(-1px);
+}
+
+.chip-rating-dots {
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    margin-left: 4px;
+}
+
+.chip-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    transition: background 0.2s;
+}
+
+.chip-dot.filled {
+    background: #2563eb;
+    /* Use a specific blue to pop */
+}
+
+/* --- WORKSTATION SPECIFIC --- */
+
+.skills-count-badge {
+    background: #f1f5f9;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+}
+
+.hover-delete {
+    opacity: 0;
+    transition: all 0.2s;
+    background: #fee2e2;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+.skill-rating-row:hover .hover-delete {
+    opacity: 1;
+    color: #dc2626 !important;
+}
+
+.skill-input-box::placeholder {
+    color: #94a3b8;
+    opacity: 0.8;
+}
+
+/* Editor List Fixes */
+.skills-rich-editor ul {
+    list-style-type: disc !important;
+    padding-left: 24px !important;
+    margin: 8px 0 !important;
+}
+
+.skills-rich-editor ol {
+    list-style-type: decimal !important;
+    padding-left: 24px !important;
+    margin: 8px 0 !important;
+}
+
+.skills-rich-editor li {
+    display: list-item !important;
+    margin-bottom: 4px !important;
+}
+
+/* Floating AI Button */
+.floating-enhance-btn {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    color: #2563eb;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.floating-enhance-btn:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px -5px rgba(37, 99, 235, 0.2);
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+    .skills-summary-container {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .skill-category-card {
+        border-radius: 12px;
+    }
+
+    .skill-chips-wrapper {
+        padding: 16px;
+        gap: 8px;
+    }
+
+    .skill-summary-chip {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    /* Workstation Fixes */
+    .studio-workstation {
+        flex-direction: column !important;
+        height: auto !important;
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        gap: 24px;
+        overflow-x: hidden !important;
+        overflow-y: visible !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .studio-ws-sidebar,
+    .studio-ws-editor {
+        width: 100% !important;
+        max-width: 100% !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 16px !important;
+        background: white !important;
+        box-sizing: border-box !important;
+        overflow-x: hidden !important;
+    }
+
+    .studio-ws-sidebar {
+        overflow-y: visible !important;
+    }
+
+    .studio-ws-editor {
+        height: 400px !important;
+        max-height: 400px !important;
+        overflow-y: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .studio-ws-sidebar-scroll {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+    /* Rating Rows on Mobile */
+    .skill-rating-row {
+        position: relative !important;
+        padding: 16px !important;
+        gap: 12px !important;
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+
+    .skill-rating-row>div:first-child {
+        width: 100% !important;
+        padding-right: 40px;
+    }
+
+    .star-rating {
+        width: 100%;
+        justify-content: space-between;
+        padding-top: 12px;
+        border-top: 1px solid #f1f5f9;
+        margin-top: 4px;
+    }
+
+    .hover-delete {
+        opacity: 1 !important;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: #fef2f2 !important;
+        color: #dc2626 !important;
+    }
+}

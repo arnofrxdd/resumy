@@ -1,0 +1,318 @@
+/* ResumeTemplate9.css */
+
+.t9-body {
+    background: #f4f7f6;
+    /* Viewer background */
+    color: #333;
+    line-height: 1.5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Default fallback color */
+    --theme-color: #5C03BC;
+}
+
+.t9-resume {
+    width: 210mm;
+    /* Standard A4 width */
+    min-height: 297mm;
+    /* Standard A4 height */
+    margin: 20px auto;
+    background: white;
+    padding: 40px;
+    box-sizing: border-box;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- HEADER SECTION --- */
+.t9-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-bottom: 2px solid var(--theme-color);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.t9-header-left {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.t9-name {
+    font-size: 34px;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1;
+    color: var(--theme-color);
+}
+
+.t9-profession {
+    font-size: 14px;
+    color: #555;
+    font-weight: 600;
+    margin: 6px 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.t9-contact-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    /* Row gap | Column gap */
+    font-size: 10px;
+    color: #555;
+}
+
+.t9-contact-bar span {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.t9-header-right {
+    flex-shrink: 0;
+}
+
+.t9-profile-img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* --- 3-COLUMN GRID LAYOUT --- */
+.t9-grid {
+    display: grid;
+    /* Left (Summary) | Center (Exp/Projects) | Right (Edu/Skills) */
+    grid-template-columns: 0.85fr 1.3fr 0.85fr;
+    gap: 25px;
+    align-items: start;
+}
+
+/* Common Section Styles */
+.t9-section {
+    margin-bottom: 25px;
+}
+
+.t9-section-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--theme-color);
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 4px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.t9-text {
+    font-size: 10.5px;
+    color: #444;
+    margin-bottom: 6px;
+    text-align: left;
+}
+
+/* --- LEFT COLUMN: Achievements & Interests --- */
+.t9-ach-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.t9-ach-icon {
+    width: 20px;
+    height: 20px;
+    background: #f4f6f8;
+    color: var(--theme-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    flex-shrink: 0;
+}
+
+.t9-ach-text {
+    font-size: 10px;
+    font-weight: 500;
+    color: #333;
+    line-height: 1.3;
+    padding-top: 2px;
+}
+
+/* --- CENTER COLUMN: Experience & Projects --- */
+.t9-job {
+    margin-bottom: 20px;
+}
+
+.t9-job-role {
+    font-size: 12px;
+    font-weight: 700;
+    color: #000;
+}
+
+.t9-job-company {
+    color: var(--theme-color);
+    font-weight: 600;
+    font-size: 11px;
+}
+
+.t9-job-meta {
+    font-size: 9.5px;
+    color: #888;
+    margin-bottom: 6px;
+}
+
+.t9-bullets {
+    padding-left: 15px;
+    margin: 0;
+}
+
+.t9-bullets li {
+    font-size: 10.5px;
+    color: #444;
+    margin-bottom: 3px;
+}
+
+/* Project Specifics */
+.t9-proj-link {
+    text-decoration: none;
+    color: var(--theme-color);
+    font-size: 12px;
+    margin-left: 4px;
+    opacity: 0.8;
+}
+
+.t9-proj-link:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* --- RIGHT COLUMN: Education, Skills, Languages --- */
+.t9-edu {
+    margin-bottom: 15px;
+}
+
+.t9-edu-degree {
+    font-size: 11px;
+    font-weight: 700;
+    color: #000;
+    line-height: 1.2;
+}
+
+.t9-edu-school {
+    font-size: 10px;
+    color: var(--theme-color);
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.t9-edu-meta {
+    font-size: 9px;
+    color: #777;
+    margin-top: 1px;
+}
+
+/* Skills & Tech Pills */
+.t9-skills-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.t9-skill-pill {
+    padding: 3px 8px;
+    background: #f8f9fa;
+    font-size: 9.5px;
+    font-weight: 600;
+    color: #333;
+    border-radius: 3px;
+    border-bottom: 2px solid var(--theme-color);
+}
+
+.t9-tech-pill {
+    display: inline-block;
+    padding: 2px 6px;
+    background: #fff;
+    border: 1px solid #eee;
+    font-size: 8.5px;
+    color: #666;
+    border-radius: 4px;
+    margin-right: 4px;
+    margin-top: 4px;
+}
+
+.t9-lang {
+    margin-bottom: 6px;
+}
+
+.t9-lang-name {
+    font-size: 10px;
+    font-weight: 500;
+    color: #333;
+}
+
+/* --- PRINT SETTINGS --- */
+@media print {
+    .t9-body {
+        background: white;
+    }
+
+    .t9-resume {
+        width: 100%;
+        margin: 0;
+        padding: 0 20px;
+        box-shadow: none;
+    }
+
+    @page {
+        margin: 10mm;
+    }
+}
+
+/* --- WYSIWYG EDITOR RENDER FIXES FOR TEMPLATE 9 --- */
+
+/* Small Description text for Education */
+.t9-edu-desc {
+    font-size: 9px;
+    color: #555;
+    margin-top: 5px;
+    line-height: 1.3;
+}
+
+/* Force bullet points in both Center Experience and Side Columns */
+.t9-bullets,
+.t9-text ul,
+.t9-edu-desc ul {
+    list-style-type: disc !important;
+    padding-left: 15px !important;
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}
+
+.t9-bullets li,
+.t9-text li,
+.t9-edu-desc li {
+    font-size: 10px !important;
+    margin-bottom: 3px !important;
+    display: list-item !important;
+    line-height: 1.3;
+}
+
+/* Make the replaced [ ] placeholder text BOLD */
+/* Targets all spans inside the grid columns */
+.t9-grid span {
+    font-weight: 700 !important;
+    color: #000 !important;
+}
+
+/* Ensure links in rich text are visible */
+.t9-grid a {
+    color: var(--theme-color);
+    text-decoration: underline;
+}
