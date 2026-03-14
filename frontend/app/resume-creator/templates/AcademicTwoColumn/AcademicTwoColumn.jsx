@@ -139,10 +139,28 @@ const AcademicTwoColumn = ({
         nameLine: {
             display: "flex",
             justifyContent: "center",
-            alignItems: "baseline",
-            gap: "10px",
+            alignItems: "center",
+            gap: "20px",
             marginBottom: "6px",
             flexWrap: "wrap",
+        },
+        photo: {
+            width: "80px",
+            height: "80px",
+            borderRadius: "50%",
+            objectFit: "cover",
+            border: `1.5px solid ${ruleColor}`,
+        },
+        nameBlock: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "4px",
+        },
+        nameRow: {
+            display: "flex",
+            alignItems: "baseline",
+            gap: "10px",
         },
         nameFirst: {
             fontSize: "calc(44px * var(--theme-font-scale, 1))",
@@ -420,12 +438,14 @@ const AcademicTwoColumn = ({
         const lastName = nameParts.pop() || "";
         const firstName = nameParts.join(" ");
 
+        const locationStr = [personal?.city, personal?.state, personal?.country].filter(Boolean).join(", ");
         const contactItems = [
+            locationStr,
             personal?.email,
+            personal?.phone,
             personal?.linkedin ? "LinkedIn" : null,
             personal?.github ? "GitHub" : null,
             personal?.website ? "Portfolio" : null,
-            personal?.phone,
         ].filter(Boolean);
 
         return (
@@ -437,26 +457,37 @@ const AcademicTwoColumn = ({
             >
                 <div style={styles.headerWrap}>
                     <div style={styles.nameLine}>
-                        <span style={styles.nameFirst}>
-                            <SpellCheckText
-                                text={firstName}
-                                isActive={isSpellCheckActive}
-                                onIgnore={onSpellCheckIgnore}
-                                onReplace={(val) =>
-                                    onSpellCheckReplace?.("personal", "name", val)
-                                }
+                        {personal?.photo && (
+                            <img
+                                src={personal.photo}
+                                alt={personal.name}
+                                style={styles.photo}
                             />
-                        </span>
-                        <span style={styles.nameLast}>
-                            <SpellCheckText
-                                text={lastName}
-                                isActive={isSpellCheckActive}
-                                onIgnore={onSpellCheckIgnore}
-                                onReplace={(val) =>
-                                    onSpellCheckReplace?.("personal", "name", val)
-                                }
-                            />
-                        </span>
+                        )}
+                        <div style={styles.nameBlock}>
+                            <div style={styles.nameRow}>
+                                <span style={styles.nameFirst}>
+                                    <SpellCheckText
+                                        text={firstName}
+                                        isActive={isSpellCheckActive}
+                                        onIgnore={onSpellCheckIgnore}
+                                        onReplace={(val) =>
+                                            onSpellCheckReplace?.("personal", "name", val)
+                                        }
+                                    />
+                                </span>
+                                <span style={styles.nameLast}>
+                                    <SpellCheckText
+                                        text={lastName}
+                                        isActive={isSpellCheckActive}
+                                        onIgnore={onSpellCheckIgnore}
+                                        onReplace={(val) =>
+                                            onSpellCheckReplace?.("personal", "name", val)
+                                        }
+                                    />
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <hr style={styles.headerRule} />
                     <div style={styles.contactRow}>
@@ -477,6 +508,8 @@ const AcademicTwoColumn = ({
         // ── Summary ──────────────────────────────────────────────────────────
         summary: ({ subItemRanges, zoneId }) => {
             if (!data.summary || data.summary === "<p><br></p>") return null;
+            const isSidebar = zoneId?.includes("sidebar");
+
             return (
                 <SectionWrapper
                     sectionId="summary"
@@ -484,7 +517,7 @@ const AcademicTwoColumn = ({
                     isInteractive={isInteractive}
                     label="Summary"
                 >
-                    <div>
+                    <div style={{ marginBottom: isSidebar ? "4px" : "0px" }}>
                         <SectionTitle title="Professional Summary" />
                         <div
                             className="resume-rich-text"
@@ -511,6 +544,7 @@ const AcademicTwoColumn = ({
                 ? itemIndices.map((idx) => data.experience?.[idx])
                 : data.experience;
             if (!items || items.length === 0) return null;
+            const isSidebar = zoneId?.includes("sidebar");
 
             return (
                 <SectionWrapper
@@ -519,7 +553,7 @@ const AcademicTwoColumn = ({
                     isInteractive={isInteractive}
                     label="Experience"
                 >
-                    <div>
+                    <div style={{ paddingLeft: isSidebar ? "2px" : "0px" }}>
                         <SectionTitle title="Experience" />
                         {items.map((exp, i) => {
                             if (!exp) return null;
@@ -607,6 +641,7 @@ const AcademicTwoColumn = ({
                 ? itemIndices.map((idx) => data.education?.[idx])
                 : data.education;
             if (!items || items.length === 0) return null;
+            const isSidebar = zoneId?.includes("sidebar");
 
             return (
                 <SectionWrapper
@@ -615,7 +650,7 @@ const AcademicTwoColumn = ({
                     isInteractive={isInteractive}
                     label="Education"
                 >
-                    <div>
+                    <div style={{ paddingLeft: isSidebar ? "2px" : "0px" }}>
                         <SectionTitle title="Education" />
                         {items.map((edu, i) => {
                             if (!edu) return null;
@@ -696,6 +731,7 @@ const AcademicTwoColumn = ({
                 ? itemIndices.map((idx) => data.skills?.[idx]).filter(Boolean)
                 : data.skills || [];
             const hasDesc = data.skillsDescription?.trim();
+            const isSidebar = zoneId?.includes("sidebar");
 
             if (items.length > 0) {
                 // Group items by category if they have one
@@ -1009,6 +1045,7 @@ const AcademicTwoColumn = ({
 
         // ── Languages ─────────────────────────────────────────────────────────
         languages: ({ itemIndices, zoneId }) => {
+            const isSidebar = zoneId?.includes("sidebar");
             const items = itemIndices
                 ? itemIndices.map((idx) => data.languages?.[idx])
                 : data.languages;
@@ -1119,10 +1156,9 @@ const AcademicTwoColumn = ({
             );
         },
 
-        // ── Contact ───────────────────────────────────────────────────────────
         contact: ({ zoneId }) => {
-            const hasContact =
-                personal?.phone || personal?.email || personal?.city;
+            const hasLocation = personal?.city || personal?.state || personal?.country || personal?.zipCode;
+            const hasContact = personal?.phone || personal?.email || hasLocation;
             if (!hasContact) return null;
 
             return (
@@ -1134,12 +1170,12 @@ const AcademicTwoColumn = ({
                 >
                     <div>
                         <SectionTitle title="Contact" />
-                        {personal?.city && (
+                        {hasLocation && (
                             <>
                                 <div style={styles.contactLabel}>Location</div>
                                 <div style={styles.contactValue}>
                                     <SpellCheckText
-                                        text={[personal.city, personal.state, personal.country].filter(Boolean).join(", ")}
+                                        text={[personal.city, personal.state, personal.country, personal.zipCode].filter(Boolean).join(", ")}
                                         isActive={isSpellCheckActive}
                                         onIgnore={onSpellCheckIgnore}
                                         onReplace={(val) => onSpellCheckReplace?.("personal", "city", val)}
@@ -1229,8 +1265,10 @@ const AcademicTwoColumn = ({
 
         // ── Personal Details ──────────────────────────────────────────────────
         personalDetails: ({ zoneId }) => {
+            const isSidebar = zoneId?.includes("sidebar");
             const details = [
                 { label: "Born", value: personal?.dob, field: "dob" },
+                { label: "Place of Birth", value: personal?.placeOfBirth, field: "placeOfBirth" },
                 { label: "Nationality", value: personal?.nationality, field: "nationality" },
                 { label: "Gender", value: personal?.gender, field: "gender" },
                 { label: "Marital Status", value: personal?.maritalStatus, field: "maritalStatus" },
@@ -1310,6 +1348,7 @@ const AcademicTwoColumn = ({
 
         // ── Interests ─────────────────────────────────────────────────────────
         interests: ({ itemIndices, zoneId }) => {
+            const isSidebar = zoneId?.includes("sidebar");
             const items = itemIndices
                 ? itemIndices.map((idx) => data.interests?.[idx])
                 : data.interests;
@@ -1729,6 +1768,7 @@ const AcademicTwoColumn = ({
                                             display: "flex",
                                             flexDirection: "column",
                                             gap: "calc(22px * var(--theme-section-margin, 1))",
+                                            flex: 1,
                                         })}
                                     </div>
                                     <div style={styles.main}>
@@ -1736,6 +1776,7 @@ const AcademicTwoColumn = ({
                                             display: "flex",
                                             flexDirection: "column",
                                             gap: "calc(22px * var(--theme-section-margin, 1))",
+                                            flex: 1,
                                         })}
                                     </div>
                                 </div>
@@ -1762,6 +1803,7 @@ const AcademicTwoColumn = ({
                                         display: "flex",
                                         flexDirection: "column",
                                         gap: "calc(22px * var(--theme-section-margin, 1))",
+                                        flex: 1,
                                     })}
                                 </div>
                                 <div style={styles.main}>
@@ -1769,6 +1811,7 @@ const AcademicTwoColumn = ({
                                         display: "flex",
                                         flexDirection: "column",
                                         gap: "calc(22px * var(--theme-section-margin, 1))",
+                                        flex: 1,
                                     })}
                                 </div>
                             </div>
