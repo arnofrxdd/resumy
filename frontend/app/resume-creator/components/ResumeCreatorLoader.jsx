@@ -1,193 +1,205 @@
-"use client";
+"use client"
 
-import React, { useState, useEffect } from 'react';
-import ResumyLogo from './Logo';
-import { motion, AnimatePresence } from 'framer-motion';
-import { SparkleDoodle, CurvyArrowDoodle, ScribbleDoodle, StarDoodle } from '@/components/landing-redesign/DoodleAnimations';
-import Image from 'next/image';
+import React, { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const ResumeCreatorLoader = () => {
-    const [name, setName] = useState('');
-    const [phase, setPhase] = useState(0); // 0: Name, 1: Formatting
-
-    const full_name = "ALEX DEV";
-
-    const [isMobile, setIsMobile] = useState(false);
+    const [subText, setSubText] = useState("Preparing your workspace...")
+    const [templateType, setTemplateType] = useState('modern')
 
     useEffect(() => {
-        const checkMobile = () => setIsMobile(window.innerWidth < 768);
-        checkMobile();
-        window.addEventListener('resize', checkMobile);
-        return () => window.removeEventListener('resize', checkMobile);
-    }, []);
+        const phrases = [
+            "Preparing your workspace...",
+            "Loading design tools...",
+            "Setting up the canvas...",
+            "Applying your preferences...",
+            "Almost ready..."
+        ]
+        const templates = ['modern', 'classic', 'creative', 'executive']
+        let i = 0
+        const interval = setInterval(() => {
+            setSubText(phrases[i % phrases.length])
+            setTemplateType(templates[i % templates.length])
+            i++
+        }, 2500)
+        return () => clearInterval(interval)
+    }, [])
 
-    useEffect(() => {
-        let nameIdx = 0;
-        const typeName = setInterval(() => {
-            if (nameIdx <= full_name.length) {
-                setName(full_name.slice(0, nameIdx));
-                nameIdx++;
-            } else {
-                clearInterval(typeName);
-                setTimeout(() => setPhase(1), 500);
-            }
-        }, 100);
-        return () => clearInterval(typeName);
-    }, []);
-
-    if (isMobile) {
-        return (
-            <div className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center font-sans">
-                <div className="relative flex flex-col items-center gap-12 text-center p-8 w-full max-w-xs">
-                    {/* Simplified Mobile Icon */}
-                    <motion.div
-                        animate={{
-                            scale: [1, 1.05, 1],
-                            rotate: [0, 5, -5, 0]
-                        }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center border border-emerald-100/50 shadow-sm relative"
-                    >
-                        <ResumyLogo size={32} showText={false} />
-                        <div className="absolute -top-1 -right-1">
-                            <SparkleDoodle color="#4f46e5" className="w-5 h-5 opacity-40" />
-                        </div>
-                    </motion.div>
-
-                    <div className="space-y-4 w-full">
-                        <h2 className="text-2xl font-black text-slate-900 tracking-tighter">
-                            Resume <span className="text-indigo-500 italic font-serif">Creator</span>
-                        </h2>
-
-                        <div className="relative w-full h-1.5 bg-slate-50 rounded-full overflow-hidden border border-slate-100">
-                            <motion.div
-                                initial={{ width: "0%" }}
-                                animate={{ width: "100%" }}
-                                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                                className="absolute top-0 left-0 h-full bg-gradient-to-r from-indigo-400 to-violet-500"
-                            />
-                        </div>
-
-                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] animate-pulse">
-                            {phase === 0 ? 'Getting things ready...' : 'Applying final touches...'}
-                        </p>
-                    </div>
-                </div>
-            </div>
-        );
+    const getThemeColor = () => {
+        switch (templateType) {
+            case 'creative': return '#059669'
+            case 'modern': return '#1e293b'
+            case 'executive': return '#0f172a'
+            default: return '#444'
+        }
     }
 
     return (
-        <div className="fixed inset-0 z-[9999] bg-white flex flex-col items-center justify-center overflow-hidden font-sans">
-            {/* AMBIENT BACKGROUND */}
-            <div className="absolute inset-0 pointer-events-none opacity-20">
-                <div className="absolute top-1/4 right-1/4 w-[300px] h-[300px] bg-emerald-200 blur-[80px] rounded-full" />
-                <div className="absolute bottom-1/4 left-1/4 w-[250px] h-[250px] bg-teal-200 blur-[80px] rounded-full" />
-            </div>
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100000] bg-white/95 backdrop-blur-2xl flex flex-col items-center justify-center overflow-hidden"
+        >
+            <div className="relative z-10 flex flex-col items-center w-full max-w-sm px-8">
+                
+                {/* Hero-Art Style Visualization - SCALED DOWN */}
+                <div className="relative w-36 aspect-[1/1.414] mb-12" style={{ perspective: '1200px' }}>
+                    
+                    {/* Main Resume Sheet (Matches ResumeCreatorArt) */}
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={templateType}
+                            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 1.05, y: -10 }}
+                            transition={{ duration: 0.8, ease: "easeInOut" }}
+                            className="absolute inset-0 bg-white shadow-[0_15px_40px_rgba(0,0,0,0.08)] border border-stone-200 flex flex-col p-4 overflow-hidden rounded-md"
+                        >
+                            {/* Executive Header Bar */}
+                            {templateType === 'executive' && (
+                                <div className="absolute top-0 left-0 w-full h-8 bg-slate-900" />
+                            )}
 
-            <div className="relative flex flex-col items-center justify-center gap-16 z-10 w-full max-w-sm">
+                            <div className="relative z-10 space-y-3">
+                                {/* Skeleton Header - MORE REFINED */}
+                                <div className={`space-y-1.5 pt-1 ${templateType === 'classic' ? 'text-center border-b pb-3' : ''}`}>
+                                    <div className={`h-2.5 w-2/3 rounded-full ${templateType === 'executive' ? 'bg-white/20' : 'bg-stone-200'} ${templateType === 'classic' ? 'mx-auto' : ''}`} />
+                                    <div className={`h-1 w-1/3 rounded-full ${templateType === 'executive' ? 'bg-white/10' : 'bg-stone-100'} ${templateType === 'classic' ? 'mx-auto' : ''}`} />
+                                </div>
 
-                {/* MINI COMPACT STAGE */}
-                <div className="relative w-[300px] h-[320px] flex items-center justify-center">
+                                {/* Body Content */}
+                                <div className="space-y-4 pt-2">
+                                    <div className="space-y-1.5">
+                                        <div className="h-[1px] w-full bg-stone-100" />
+                                        <div className="space-y-1">
+                                            <div className="h-1 w-full bg-stone-50 rounded-full" />
+                                            <div className="h-1 w-full bg-stone-50 rounded-full" />
+                                            <div className="h-1 w-3/4 bg-stone-50 rounded-full" />
+                                        </div>
+                                    </div>
 
-                    {/* Background Doodles */}
-                    <div className="absolute top-4 right-0 opacity-40 rotate-12 scale-125">
-                        <StarDoodle color="#10B981" className="w-16 h-16" />
-                    </div>
-                    <div className="absolute top-1/2 -left-8 opacity-30 -rotate-12">
-                        <SparkleDoodle color="#14B8A6" className="w-16 h-16" />
-                    </div>
+                                    <div className="space-y-1.5">
+                                        <div className="h-[1px] w-full bg-stone-100" />
+                                        <div className="space-y-1">
+                                            <div className="h-1 w-full bg-stone-50 rounded-full" />
+                                            <div className="h-1 w-[80%] bg-stone-50 rounded-full" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                    {/* 1. THE MINI RESUME SHEET */}
+                            {/* Sidebar Indicator */}
+                            {(templateType === 'creative' || templateType === 'modern') && (
+                                <div className={`absolute top-0 right-0 w-12 h-full p-2.5 space-y-4 ${templateType === 'creative' ? 'bg-emerald-600' : 'bg-slate-800'}`}>
+                                    <div className="w-5 h-5 bg-white/10" />
+                                    <div className="space-y-1.5">
+                                        <div className="h-1 w-full bg-white/20 rounded-full" />
+                                        <div className="h-1 w-full bg-white/20 rounded-full" />
+                                        <div className="h-1 w-full bg-white/20 rounded-full" />
+                                    </div>
+                                </div>
+                            )}
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {/* Floating Editor Box (Matches the hero-art form) - SCALED DOWN */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="relative w-[220px] h-[280px] bg-white border border-slate-100 shadow-[0_20px_40px_-15px_rgba(16,185,129,0.1)] flex flex-col p-6 overflow-hidden rounded-none"
+                        className="absolute -bottom-4 -right-10 w-28 z-20"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5 }}
                     >
-                        {/* Skeleton Header */}
-                        <div className="flex flex-col gap-2">
-                            <span className="text-[16px] font-black tracking-tighter text-slate-900 leading-none">
-                                {name || (phase === 0 ? '' : 'ALEX DEV')}
-                                {phase === 0 && <span className="w-[2px] h-3.5 bg-emerald-500 ml-1 inline-block align-middle animate-pulse rounded-none" />}
-                            </span>
-                            <div className="h-1 bg-slate-100 w-1/2 rounded-none" />
-                        </div>
-
-                        {/* Skeleton Body */}
-                        <div className="mt-8 flex flex-col gap-4">
-                            <div className="flex flex-col gap-2">
-                                <div className="h-1.5 bg-slate-50 w-full rounded-none" />
-                                <div className="h-1.5 bg-slate-50 w-[90%] rounded-none" />
-                                <div className="h-1.5 bg-slate-50 w-[95%] rounded-none" />
+                        <div className="bg-white shadow-[0_15px_30px_rgba(0,0,0,0.12)] border border-stone-100 flex flex-col overflow-hidden rounded-sm">
+                            <div className="px-2 py-1.5 border-b border-stone-50 flex items-center justify-between" style={{ background: `${getThemeColor()}08` }}>
+                                <span className="font-black text-[6px] uppercase tracking-widest" style={{ color: getThemeColor() }}>EDITOR</span>
+                                <div className="w-1 h-1 rounded-full animate-pulse" style={{ background: getThemeColor() }} />
                             </div>
-
-                            <div className="mt-4 flex flex-col gap-2.5">
-                                <div className="h-[2px] bg-emerald-100/80 w-1/3 rounded-none" />
-                                <div className="h-1.5 bg-slate-50 w-full rounded-none" />
-                                <div className="h-1.5 bg-slate-50 w-[85%] rounded-none" />
-                            </div>
-                        </div>
-
-                        {/* Scanner Beam (Subtle Version) */}
-                        {phase === 1 && (
-                            <motion.div
-                                animate={{ top: ['-10%', '110%', '-10%'] }}
-                                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute left-0 w-full h-8 bg-gradient-to-b from-transparent via-emerald-400/10 to-transparent z-20 pointer-events-none"
-                            />
-                        )}
-                    </motion.div>
-
-                    {/* 2. THE MINI EDITOR OVERLAY */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 20, y: 10 }}
-                        animate={{ opacity: 1, x: 0, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.3 }}
-                        className="absolute bottom-6 right-[-10px] w-[140px] bg-white border border-slate-100 shadow-xl shadow-slate-200/50 z-20 p-4 flex flex-col gap-3 rounded-none"
-                    >
-                        <div className="flex items-center gap-2 mb-1">
-                            <div className="w-2 h-2 bg-indigo-500 rounded-none animate-ping" />
-                            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Resumy Core</span>
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <div className="h-6 bg-slate-50 border border-slate-100 rounded-none flex items-center px-3">
-                                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-tight">
-                                    {phase === 0 ? name : 'ALEX DEV'}
-                                </span>
-                            </div>
-                            <div className="flex gap-1.5">
-                                <div className="h-1 bg-emerald-400 flex-1 rounded-none" />
-                                <div className="h-1 bg-slate-200 flex-1 rounded-none" />
+                            <div className="p-2 space-y-1.5 bg-white">
+                                <div className="h-2.5 bg-stone-50 border border-stone-100 flex items-center px-1.5">
+                                    <div className="h-0.5 w-1/2 bg-stone-200" />
+                                </div>
+                                <div className="h-2.5 bg-stone-50 border border-stone-100 flex items-center px-1.5">
+                                    <div className="h-0.5 w-3/4 bg-stone-200" />
+                                </div>
                             </div>
                         </div>
                     </motion.div>
                 </div>
 
-                {/* STATUS TYPOGRAPHY - MATCHING LANDING PAGE */}
-                <div className="text-center flex flex-col items-center gap-4">
-                    <div className="flex flex-col gap-1 relative">
-                        <h2 className="text-3xl font-black text-slate-900 tracking-tighter">
-                            Resume <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-violet-500 italic font-serif relative inline-block capitalize">
-                                Creator
-                                <ScribbleDoodle color="#4f46e5" className="absolute -bottom-2 left-0 w-full h-4 opacity-40 rotate-[1deg]" />
-                            </span>
-                        </h2>
+                {/* Typography & Status - REMOVED FIXED UPPERCASE */}
+                <div className="text-center space-y-3">
+                    <h2 className="text-2xl font-black text-stone-900 tracking-tight leading-tight">
+                        Resume Creator
+                    </h2>
 
-                        <div className="flex items-center justify-center gap-3 mt-4">
-                            <div className="h-px bg-slate-200 flex-1 w-8" />
-                            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest animate-pulse">
-                                {phase === 0 ? 'Preparing your workspace' : 'Polishing designs'}
-                            </span>
-                            <div className="h-px bg-slate-200 flex-1 w-8" />
-                        </div>
-                    </div>
+                    <AnimatePresence mode="wait">
+                        <motion.p
+                            key={subText}
+                            initial={{ opacity: 0, y: 5 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -5 }}
+                            className="text-[10px] font-bold text-stone-400 uppercase tracking-[0.2em]"
+                        >
+                            {subText}
+                        </motion.p>
+                    </AnimatePresence>
+                </div>
+
+                {/* Progress Indicator - SYNCED WITH OTHER LOADERS */}
+                <div className="mt-10 relative">
+                    <svg className="w-8 h-8 rotate-[-90deg]">
+                        <circle
+                            cx="16"
+                            cy="16"
+                            r="14"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            fill="transparent"
+                            className="text-stone-100"
+                        />
+                        <motion.circle
+                            cx="16"
+                            cy="16"
+                            r="14"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            fill="transparent"
+                            strokeDasharray="88"
+                            initial={{ strokeDashoffset: 88 }}
+                            animate={{ strokeDashoffset: [88, 0, -88] }}
+                            transition={{ 
+                                duration: 2, 
+                                repeat: Infinity, 
+                                ease: "easeInOut" 
+                            }}
+                            className="text-stone-900"
+                        />
+                    </svg>
                 </div>
             </div>
-        </div>
 
-    );
-};
+            {/* Ambient Background - SUBTLE */}
+            <div className="absolute inset-x-0 bottom-0 top-0 -z-10 opacity-30 pointer-events-none">
+                <motion.div 
+                    animate={{ 
+                        scale: [1, 1.1, 1],
+                        opacity: [0.3, 0.5, 0.3]
+                    }}
+                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] blur-[100px] rounded-full"
+                    style={{ backgroundColor: `${getThemeColor()}15` }}
+                />
+            </div>
 
-export default ResumeCreatorLoader;
+            {/* Subtle Footer */}
+            <div className="absolute bottom-12 left-0 w-full text-center px-6">
+                <p className="text-[10px] text-stone-400 font-medium tracking-wide">
+                    Crafting your professional future
+                </p>
+            </div>
+        </motion.div>
+    )
+}
+
+export default ResumeCreatorLoader

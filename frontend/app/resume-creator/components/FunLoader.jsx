@@ -2,26 +2,25 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Sparkles, FileText, Search, Cpu, Database, Check } from 'lucide-react'
-import { StarDoodle, SparkleDoodle, ScribbleDoodle, BoxDoodle, UnderlineDoodle } from '@/components/landing-redesign/DoodleAnimations'
+import { FileText, Sparkles, Layout, Palette, PenTool } from 'lucide-react'
 
 const FunLoader = ({ text }) => {
-    const [subText, setSubText] = useState("Initializing AI Engine...")
+    const [subText, setSubText] = useState("Getting everything ready...")
 
     useEffect(() => {
-        const subTexts = [
-            "Deconstructing PDF layers...",
-            "Mapping professional nodes...",
-            "Identifying hidden strengths...",
-            "Optimizing semantic structure...",
-            "Finalizing digital twin...",
-            "Polishing experience tokens..."
+        const professionalPhrases = [
+            "Setting up your workspace...",
+            "Applying your design...",
+            "Organizing sections...",
+            "Preparing the document...",
+            "Optimizing the layout...",
+            "Polishing details..."
         ]
         let i = 0
         const interval = setInterval(() => {
-            setSubText(subTexts[i % subTexts.length])
+            setSubText(professionalPhrases[i % professionalPhrases.length])
             i++
-        }, 3000)
+        }, 2500)
         return () => clearInterval(interval)
     }, [])
 
@@ -30,138 +29,114 @@ const FunLoader = ({ text }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[2000] bg-white/90 backdrop-blur-xl flex flex-col items-center justify-center overflow-hidden"
+            className="fixed inset-0 z-[100000] bg-white/95 backdrop-blur-2xl flex flex-col items-center justify-center overflow-hidden"
         >
-            {/* Background Doodles */}
-            <div className="absolute inset-0 pointer-events-none">
-                <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                    className="absolute top-1/4 left-1/4 opacity-10"
-                >
-                    <StarDoodle color="#8B5CF6" className="w-32 h-32" />
-                </motion.div>
-                <motion.div
-                    animate={{ y: [0, -20, 0] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute bottom-1/4 right-1/4 opacity-10"
-                >
-                    <BoxDoodle color="#10B981" className="w-40 h-40" />
-                </motion.div>
-                <motion.div
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-1/2 right-1/3 opacity-10"
-                >
-                    <SparkleDoodle color="#F59E0B" className="w-24 h-24" />
-                </motion.div>
+            {/* Soft Ambient Background Glows */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-indigo-50/50 blur-[120px] rounded-full" />
+                <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-emerald-50/50 blur-[120px] rounded-full" />
             </div>
 
-            {/* Central Animation */}
-            <div className="relative z-10 flex flex-col items-center">
-                {/* Resume Icon with Scanning Effect */}
-                <div className="relative w-32 h-44 mb-12">
-                    {/* The "Resume" Card */}
+            <div className="relative z-10 flex flex-col items-center max-w-sm w-full px-8">
+                {/* Minimalist Document Loading Visual */}
+                <div className="relative mb-16">
+                    {/* The "Primary Document" Shape */}
                     <motion.div
-                        animate={{
-                            y: [0, -10, 0],
-                            rotateZ: [-1, 1, -1]
+                        animate={{ 
+                            y: [0, -8, 0],
+                            rotateZ: [-0.5, 0.5, -0.5] 
                         }}
                         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-full h-full bg-stone-900 rounded-xl shadow-2xl flex flex-col p-4 relative overflow-hidden"
+                        className="w-24 h-32 bg-white border border-stone-200 rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.08)] flex flex-col p-4 relative"
                     >
-                        {/* Mock Content */}
-                        <div className="w-12 h-2 bg-stone-700 rounded-full mb-3" />
+                        {/* Abstract Resume Content Lines */}
+                        <div className="w-8 h-1.5 bg-stone-100 rounded-full mb-4" />
                         <div className="space-y-2">
-                            <div className="w-full h-1.5 bg-stone-800 rounded-full" />
-                            <div className="w-4/5 h-1.5 bg-stone-800 rounded-full" />
-                            <div className="w-full h-1.5 bg-stone-800 rounded-full" />
+                            <div className="w-full h-1 bg-stone-50 rounded-full" />
+                            <div className="w-full h-1 bg-stone-50 rounded-full" />
+                            <div className="w-2/3 h-1 bg-stone-50 rounded-full" />
                         </div>
-                        <div className="mt-8 space-y-2">
-                            <div className="w-full h-1.5 bg-stone-800 rounded-full" />
-                            <div className="w-3/4 h-1.5 bg-stone-800 rounded-full" />
+                        <div className="mt-6 space-y-2">
+                            <div className="w-full h-1 bg-stone-50 rounded-full" />
+                            <div className="w-3/4 h-1 bg-stone-50 rounded-full" />
                         </div>
 
-                        {/* Scanner Bar */}
-                        <motion.div
-                            animate={{ top: ['-10%', '110%'] }}
-                            transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-                            className="absolute left-0 w-full h-1 bg-gradient-to-r from-transparent via-violet-400 to-transparent shadow-[0_0_15px_rgba(139,92,246,0.8)] z-20"
-                        />
-
-                        {/* Glow effect behind scanner */}
-                        <motion.div
-                            animate={{ opacity: [0, 0.5, 0] }}
-                            transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-                            className="absolute inset-0 bg-violet-500/10 z-10"
-                        />
+                        {/* Infinite Orbiting Icons (The "Activities") */}
+                        <div className="absolute inset-0">
+                            {[
+                                { Icon: Layout, delay: 0, color: 'text-indigo-500' },
+                                { Icon: Palette, delay: 1, color: 'text-emerald-500' },
+                                { Icon: PenTool, delay: 2, color: 'text-rose-500' }
+                            ].map((item, idx) => (
+                                <motion.div
+                                    key={idx}
+                                    className={`absolute -inset-4 flex items-center justify-center pointer-events-none`}
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 8, repeat: Infinity, ease: "linear", delay: item.delay }}
+                                >
+                                    <motion.div 
+                                        className={`w-10 h-10 bg-white border border-stone-100 shadow-lg rounded-xl flex items-center justify-center ${item.color}`}
+                                        animate={{ rotate: -360 }}
+                                        transition={{ duration: 8, repeat: Infinity, ease: "linear", delay: item.delay }}
+                                        style={{ translate: '60px' }}
+                                    >
+                                        <item.Icon size={18} strokeWidth={2.5} />
+                                    </motion.div>
+                                </motion.div>
+                            ))}
+                        </div>
                     </motion.div>
 
-                    {/* Surrounding Floating Icons */}
-                    <motion.div
-                        animate={{ x: [0, 15, 0], y: [0, -10, 0] }}
-                        transition={{ duration: 3, repeat: Infinity }}
-                        className="absolute -top-6 -right-6 w-12 h-12 bg-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-lg shadow-indigo-200 rotate-12"
-                    >
-                        <Cpu size={20} />
-                    </motion.div>
-                    <motion.div
-                        animate={{ x: [0, -15, 0], y: [0, 10, 0] }}
-                        transition={{ duration: 4, repeat: Infinity }}
-                        className="absolute -bottom-4 -left-8 w-14 h-14 bg-rose-500 rounded-full flex items-center justify-center text-white shadow-lg shadow-rose-200 -rotate-12"
-                    >
-                        <Database size={24} />
-                    </motion.div>
+                    {/* Subtle Pulsing Shadow */}
+                    <motion.div 
+                        animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                        className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-16 h-4 bg-stone-900/10 blur-md rounded-full -z-10"
+                    />
                 </div>
 
-                {/* Text Content */}
-                <div className="text-center space-y-4 px-6 max-w-md">
-                    <motion.div
-                        key={text}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="relative inline-block"
-                    >
-                        <h2 className="text-3xl font-black text-stone-900 tracking-tighter mb-2">
-                            {text}
-                        </h2>
-                        <motion.div
-                            className="absolute -bottom-1 left-0 w-full h-3 -z-10 opacity-30"
-                            initial={{ scaleX: 0 }}
-                            animate={{ scaleX: 1 }}
-                            transition={{ duration: 1 }}
-                        >
-                            <UnderlineDoodle color="#8B5CF6" className="w-full h-full" />
-                        </motion.div>
-                    </motion.div>
-
+                {/* Typography: Professional & Clean */}
+                <div className="text-center space-y-3">
+                    <h2 className="text-2xl font-black text-stone-900 tracking-tight leading-tight">
+                        {text || "Getting Started"}
+                    </h2>
+                    
                     <AnimatePresence mode="wait">
-                        <motion.p
+                        <motion.div
                             key={subText}
-                            initial={{ opacity: 0, y: 5 }}
+                            initial={{ opacity: 0, y: 4 }}
                             animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -5 }}
-                            className="text-stone-500 font-bold tracking-wide text-sm uppercase flex items-center justify-center gap-2"
+                            exit={{ opacity: 0, y: -4 }}
+                            className="flex items-center justify-center gap-2"
                         >
-                            <Sparkles size={14} className="text-amber-400 animate-pulse" />
-                            {subText}
-                        </motion.p>
+                            <span className="text-stone-400 font-bold uppercase tracking-[0.2em] text-[10px]">
+                                {subText}
+                            </span>
+                        </motion.div>
                     </AnimatePresence>
                 </div>
 
-                {/* Fun Scribble below everything */}
-                <div className="mt-12 opacity-40">
-                    <ScribbleDoodle color="#10B981" className="w-24 h-6" />
+                {/* Clean Infinite Loader Bar */}
+                <div className="mt-10 w-48 h-1 bg-stone-100 rounded-full overflow-hidden relative">
+                    <motion.div 
+                        animate={{ 
+                            x: ['-100%', '100%'],
+                        }}
+                        transition={{ 
+                            duration: 2, 
+                            repeat: Infinity, 
+                            ease: "easeInOut" 
+                        }}
+                        className="absolute inset-0 w-2/3 bg-stone-900"
+                    />
                 </div>
             </div>
 
-            {/* Bottom Progress Bar (Visual only) */}
-            <div className="absolute bottom-12 left-1/2 -translate-x-1/2 w-64 h-2 bg-stone-100 rounded-full overflow-hidden">
-                <motion.div
-                    animate={{ x: ['-100%', '100%'] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                    className="w-1/2 h-full bg-gradient-to-r from-transparent via-violet-600 to-transparent"
-                />
+            {/* Mobile Footer Message (Subtle) */}
+            <div className="absolute bottom-12 left-0 w-full text-center px-6">
+                <p className="text-[10px] text-stone-400 font-medium tracking-wide">
+                    This usually takes a few seconds
+                </p>
             </div>
         </motion.div>
     )

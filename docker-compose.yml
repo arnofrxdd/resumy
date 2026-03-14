@@ -23,6 +23,8 @@ services:
     container_name: resumy-backend
     ports:
       - "4501:3001" # Maps Host 4501 to Container 3001
+    environment:
+      - PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
     env_file:
       - ./backend/.env
     restart: always

@@ -15,10 +15,13 @@ const nextConfig = {
     ],
   },
   async rewrites() {
+    const isDev = process.env.NODE_ENV === 'development';
+    const backendUrl = isDev ? 'http://localhost:3001' : 'http://resumy-backend:3001';
+    
     return [
       {
         source: '/api/:path*',
-        destination: 'http://resumy-backend:3001/api/:path*',
+        destination: `${backendUrl}/api/:path*`,
       },
     ];
   },

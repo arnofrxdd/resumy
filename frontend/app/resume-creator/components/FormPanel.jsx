@@ -41,6 +41,7 @@ import Finalize from './Finalize';
 import FunLoader from './FunLoader';
 import PremiumTemplateSelection from "./PremiumTemplateSelection";
 import DraftExplorer from "./DraftExplorer";
+import DraftSwitchLoader from "./DraftSwitchLoader";
 import OnboardingGuide from "./OnboardingGuide";
 import {
     LOCATION_DATA, TITLE_SUGGESTIONS, toTitleCase,
@@ -2167,7 +2168,11 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
             <AnimatePresence>
                 {(isSwitching || !isLoadedFromDB) && (
                     <div style={{ position: 'fixed', inset: 0, zIndex: 9999 }}>
-                        <FunLoader text={lastInitializedId.current ? "Switching Draft..." : "Assembling Workspace..."} />
+                        {lastInitializedId.current ? (
+                            <DraftSwitchLoader text="Switching Draft" />
+                        ) : (
+                            <FunLoader text="Assembling Workspace" />
+                        )}
                     </div>
                 )}
             </AnimatePresence>

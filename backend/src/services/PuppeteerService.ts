@@ -18,15 +18,23 @@ export class PuppeteerService {
         // or effectively manage a pool. For low volume, launching per request is safer but slower.
         // Actually, Puppeteer launch is heavy. Let's try to reuse or just launch.
         // Given local dev, launching new is fine.
-        let executablePath: string | undefined = undefined;
-        if (process.platform === 'linux') {
+        let executablePath: string | undefined = process.env.PUPPETEER_EXECUTABLE_PATH;
+        
+        if (!executablePath && process.platform === 'linux') {
             const fs = require('fs');
-            if (fs.existsSync('/usr/bin/google-chrome')) {
-                executablePath = '/usr/bin/google-chrome';
-            } else if (fs.existsSync('/usr/bin/google-chrome-stable')) {
-                executablePath = '/usr/bin/google-chrome-stable';
-            } else if (fs.existsSync('/usr/bin/chromium-browser')) {
-                executablePath = '/usr/bin/chromium-browser';
+            const paths = [
+                '/usr/bin/google-chrome',
+                '/usr/bin/google-chrome-stable',
+                '/usr/bin/chromium',
+                '/usr/bin/chromium-browser',
+                '/usr/lib/chromium/chromium'
+            ];
+            
+            for (const path of paths) {
+                if (fs.existsSync(path)) {
+                    executablePath = path;
+                    break;
+                }
             }
         }
 

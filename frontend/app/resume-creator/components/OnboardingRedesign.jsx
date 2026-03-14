@@ -22,6 +22,7 @@ import { templatesConfig } from "../templates/TemplateManager";
 import TemplatePreview from "./TemplatePreview";
 import AIGreeting from "./AIGreeting";
 import FunLoader from "./FunLoader";
+import ResumeImportLoader from "./ResumeImportLoader";
 import ResumeCreatorArt from "@/components/landing-redesign/features/ResumeCreatorArt";
 import PremiumTemplateSelection from "./PremiumTemplateSelection";
 import OnboardingLogin from "./OnboardingLogin";
@@ -660,7 +661,13 @@ export default function OnboardingRedesign({ onComplete, onBack, mode = "new", d
                 <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept=".pdf,.doc,.docx" onChange={handleFileChange} />
 
                 <AnimatePresence>
-                    {loading && <FunLoader text={loadingText} />}
+                    {loading && (
+                        loadingText.toLowerCase().includes("resume") || loadingText.toLowerCase().includes("analyzing") ? (
+                            <ResumeImportLoader text={loadingText} />
+                        ) : (
+                            <FunLoader text={loadingText} />
+                        )
+                    )}
                 </AnimatePresence>
 
                 <div className="step-wrapper">
