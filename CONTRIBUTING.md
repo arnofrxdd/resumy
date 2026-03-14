@@ -4,6 +4,12 @@ First off, thank you for considering contributing to Resumy! It's people like yo
 
 ## 🌈 How Can I Contribute?
 
+Before you start, please review our deep-dive documentation:
+- [System Architecture](./docs/ARCHITECTURE.md)
+- [AI Integration Guide](./docs/AI_INTEGRATION.md)
+- [PDF Generation Engine](./docs/PDF_ENGINE.md)
+- [Design System & UI](./docs/DESIGN_SYSTEM.md)
+
 ### Reporting Bugs
 If you find a bug, please open an issue and include:
 - A clear, descriptive title.
