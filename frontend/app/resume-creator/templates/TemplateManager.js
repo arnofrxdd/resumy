@@ -666,7 +666,25 @@ export const templatesConfig = [
     },
     defaults: { fontSize: 0.95, fontFamily: "EB Garamond", sectionSpacing: 1.1, paragraphSpacing: 1, lineHeight: 1.5, letterSpacing: 0, pageMargin: 40 },
     useRootPadding: false
+  },
+  {
+    id: "academic-two-column",
+    name: "Academic Two Column",
+    thumbnail: "/templates/placeholder.png",
+    description: "A professional academic template with a clean two-column layout.",
+    tags: ["Academic", "2-Column", "Clean", "Professional"],
+    defaultColor: "#1a1a1a",
+    defaultFont: "'Inter', sans-serif",
+    recommendedColors: ["#1a1a1a", "#2c3e50", "#334155"],
+    theme: { background: "#ffffff", text: "#1a1a1a" },
+    layout: {
+      left: ["education", "skills"],
+      main: ["experience", "projects", "awards", "custom"]
+    },
+    defaults: { fontSize: 1, fontFamily: "Inter", sectionSpacing: 1, paragraphSpacing: 1, lineHeight: 1.5, letterSpacing: 0, pageMargin: 40 },
+    useRootPadding: false
   }
 ];
+
 
 export const getTemplateById = (id) => templatesConfig.find(t => t.id === id);

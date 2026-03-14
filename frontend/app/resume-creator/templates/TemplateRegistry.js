@@ -38,6 +38,8 @@ const OchreExecutive = dynamic(() => import("./OchreExecutive/OchreExecutive"), 
 const AzureExecutive = dynamic(() => import("./AzureExecutive/AzureExecutive"), { ssr: false });
 const AmberElite = dynamic(() => import("./AmberElite/AmberElite"), { ssr: false });
 const AcademicLatex = dynamic(() => import("./AcademicLatex/AcademicLatex"), { ssr: false });
+const AcademicTwoColumn = dynamic(() => import("./AcademicTwoColumn/AcademicTwoColumn"), { ssr: false });
+
 
 const TEMPLATE_COMPONENTS = {
     "creative-marketing": CreativeMarketing,
@@ -74,6 +76,8 @@ const TEMPLATE_COMPONENTS = {
     "azure-executive": AzureExecutive,
     "amber-elite": AmberElite,
     "academic-latex": AcademicLatex,
+    "academic-two-column": AcademicTwoColumn,
+
 };
 
 export default TEMPLATE_COMPONENTS;
