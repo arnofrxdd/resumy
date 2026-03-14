@@ -9,6 +9,7 @@ Before you start, please review our deep-dive documentation:
 - [AI Integration Guide](./docs/AI_INTEGRATION.md)
 - [PDF Generation Engine](./docs/PDF_ENGINE.md)
 - [Design System & UI](./docs/DESIGN_SYSTEM.md)
+- [AI Template Creation Guide](./frontend/app/resume-creator/templates/AI_TEMPLATE_CREATION_GUIDE.md)
 
 ### Reporting Bugs
 If you find a bug, please open an issue and include:
@@ -23,6 +24,11 @@ Have a great idea? Open an issue and describe:
 - The problem your suggestion solves.
 - Your proposed solution.
 - Potential edge cases.
+
+### 🎨 Adding Templates
+The fastest way to contribute is by adding new resume templates! We have a streamlined, AI-powered workflow for this:
+- **Fast Workflow**: Use our [AI Template Creation Guide](./frontend/app/resume-creator/templates/AI_TEMPLATE_CREATION_GUIDE.md) to build templates in minutes using Claude.
+- **Auditing**: Always run our audit scripts (`render_audit.js` and `field_audit.js`) to ensure high-quality, bug-free renders.
 
 ### Pull Requests
 Ready to dive in?
