@@ -36,7 +36,8 @@ export default function Certifications({ data, setData, onBack, onNext, isQuickE
             const headers = { 'Content-Type': 'application/json' };
             if (token) headers['Authorization'] = `Bearer ${token}`;
 
-            const res = await fetch('http://localhost:3001/api/ai/generate', {
+            const API_URL = '/resumy';
+            const res = await fetch(`${API_URL}/api/ai/generate`, {
                 method: 'POST',
                 headers,
                 body: JSON.stringify({

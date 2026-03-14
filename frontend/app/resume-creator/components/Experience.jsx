@@ -236,11 +236,15 @@ export default function Experience({ data, setData, templateId, onBack, onNext, 
 
     const getAIHeaderAdvice = async (type, value, context = {}) => {
         try {
-            const response = await fetch('/api/ai/header-intelligence', {
+            const response = await fetch('/resumy/api/ai/header-intelligence', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ type, value, context })
             });
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) return null;
+
             const data = await response.json();
             return data.result;
         } catch (err) {
@@ -504,7 +508,7 @@ export default function Experience({ data, setData, templateId, onBack, onNext, 
         setShowLoadingPopup(true);
         setAiSuggestions([]);
         try {
-            const response = await fetch('/api/ai/header-intelligence', {
+            const response = await fetch('/resumy/api/ai/header-intelligence', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -512,6 +516,11 @@ export default function Experience({ data, setData, templateId, onBack, onNext, 
                     value: term
                 })
             });
+
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) return;
+
             const resData = await response.json();
             if (resData.result) {
                 let cleanJson = resData.result;

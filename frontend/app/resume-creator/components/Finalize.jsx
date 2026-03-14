@@ -834,7 +834,7 @@ export default function Finalize({ data, setData, onChangeTemplate, onDownloadPD
             }
 
             // 6. Request Generation
-            const response = await fetch('/api/pdf/generate', {
+            const response = await fetch('/resumy/api/pdf/generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

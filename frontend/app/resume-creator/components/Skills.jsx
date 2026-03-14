@@ -156,7 +156,7 @@ export default function Skills({ data, setData, templateId, onBack, onNext, onPr
         if (!term) return;
         setShowLoadingPopup(true);
         try {
-            const response = await fetch('/api/ai/header-intelligence', {
+            const response = await fetch('/resumy/api/ai/header-intelligence', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -165,6 +165,16 @@ export default function Skills({ data, setData, templateId, onBack, onNext, onPr
                     context: { userProfession: term }
                 })
             });
+
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                const text = await response.text();
+                console.error("[SKILLS] Expected JSON but got:", text.substring(0, 100));
+                return;
+            }
+
             const resData = await response.json();
             if (resData.result) {
                 let cleanJson = resData.result;
@@ -187,7 +197,7 @@ export default function Skills({ data, setData, templateId, onBack, onNext, onPr
         if (!force && aiSuggestions.length > 0) return;
         setShowLoadingPopup(true);
         try {
-            const response = await fetch('/api/ai/header-intelligence', {
+            const response = await fetch('/resumy/api/ai/header-intelligence', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -199,6 +209,16 @@ export default function Skills({ data, setData, templateId, onBack, onNext, onPr
                     }
                 })
             });
+
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                const text = await response.text();
+                console.error("[SKILLS] Expected JSON but got:", text.substring(0, 100));
+                return;
+            }
+
             const resData = await response.json();
             if (resData.result) {
                 let cleanJson = resData.result;

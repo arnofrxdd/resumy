@@ -365,7 +365,7 @@ export default function Onboarding({ onComplete, onBack, mode = "new", data = {}
       setIsLoadingDna(true);
       try {
         const { data: { session } } = await supabaseClient.auth.getSession();
-        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+        const API_URL = '/resumy';
         const res = await fetch(`${API_URL}/api/user/career-dna`, {
           headers: { 'Authorization': `Bearer ${session?.access_token}` }
         });
@@ -589,7 +589,7 @@ export default function Onboarding({ onComplete, onBack, mode = "new", data = {}
     try {
       const { data: { session } } = await supabaseClient.auth.getSession();
       const token = session?.access_token;
-      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+      const backendUrl = '/resumy';
 
       const formData = new FormData();
       formData.append("file", file);

@@ -61,7 +61,7 @@ const AIGreeting = ({ data, onContinue }) => {
     };
 
     return (
-        <div className="w-full max-w-5xl mx-auto px-6 py-12 relative">
+        <div className="w-full max-w-5xl mx-auto px-4 lg:px-6 py-8 lg:py-12 relative">
             <AnimatePresence mode="wait">
                 {step === 1 ? (
                     <motion.div
@@ -70,22 +70,22 @@ const AIGreeting = ({ data, onContinue }) => {
                         initial="hidden"
                         animate="visible"
                         exit="exit"
-                        className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center text-center lg:text-left"
+                        className="flex flex-col lg:flex-row gap-10 lg:gap-20 items-center text-center lg:text-left"
                     >
-                        <div className="flex-1 relative order-2 lg:order-1">
-                            <div className="relative z-10 rounded overflow-hidden border border-slate-200 shadow-sm bg-slate-50 flex items-center justify-center p-8">
+                        <div className="w-full lg:flex-1 relative order-2 lg:order-1">
+                            <div className="relative z-10 rounded-2xl overflow-hidden border border-slate-200 shadow-sm bg-slate-50 flex items-center justify-center p-8 lg:p-12">
                                 <Trophy size={80} className="text-slate-300" />
                             </div>
                         </div>
 
-                        <div className="flex-[1.5] order-1 lg:order-2">
-                            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-50 text-indigo-700 rounded text-[10px] font-bold uppercase tracking-widest mb-8 border border-indigo-100 shadow-sm mx-auto lg:mx-0">
+                        <div className="w-full lg:flex-[1.5] order-1 lg:order-2">
+                            <div className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6 lg:mb-8 border border-indigo-100 shadow-sm mx-auto lg:mx-0">
                                 <Sparkles className="w-3 h-3 flex-shrink-0" />
                                 <span>Profile Analysis Complete</span>
                             </div>
 
-                            <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-8">
-                                <span className="block text-indigo-600 mb-2">
+                            <h1 className="text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-6 lg:mb-8">
+                                <span className="block text-indigo-600 mb-1 lg:mb-2">
                                     Welcome,
                                 </span>
                                 <span>
@@ -93,22 +93,22 @@ const AIGreeting = ({ data, onContinue }) => {
                                 </span>
                             </h1>
 
-                            <div className="text-lg text-slate-600 font-medium leading-[1.6] space-y-6 max-w-2xl mx-auto lg:mx-0">
+                            <div className="text-base lg:text-lg text-slate-600 font-medium leading-relaxed space-y-4 lg:space-y-6 max-w-2xl mx-auto lg:mx-0">
                                 <p>
-                                    Your experience as a <span className="text-slate-900 font-bold">
+                                    Your background as a <span className="text-slate-900 font-bold">
                                         {formatProfession(personal.profession)}
-                                    </span> provides a strong foundation.
+                                    </span> shows great potential.
                                 </p>
                                 <p>
-                                    We've identified <span className="text-indigo-600 font-bold">{sectionsFound.length} key strengths</span> and a few areas for improvement to make your resume stand out to employers.
+                                    We've benchmarked your profile and identified <span className="text-indigo-600 font-bold">{sectionsFound.length} key strengths</span> to highlight.
                                 </p>
                             </div>
 
                             <button
                                 onClick={() => setStep(2)}
-                                className="group mt-12 px-8 py-3 bg-indigo-600 text-white rounded font-bold text-sm hover:bg-indigo-700 transition-all flex items-center justify-center lg:justify-start gap-3 w-full lg:w-fit mx-auto lg:mx-0 shadow-sm"
+                                className="group mt-8 lg:mt-12 px-8 py-4 bg-indigo-600 text-white rounded-xl font-bold text-sm lg:text-base hover:bg-indigo-700 transition-all flex items-center justify-center lg:justify-start gap-3 w-full lg:w-fit mx-auto lg:mx-0 shadow-lg shadow-indigo-200"
                             >
-                                View Results
+                                View Detailed Results
                                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                             </button>
                         </div>
@@ -120,27 +120,27 @@ const AIGreeting = ({ data, onContinue }) => {
                         initial="hidden"
                         animate="visible"
                         exit="exit"
-                        className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-start"
+                        className="flex flex-col lg:flex-row gap-8 lg:gap-20 items-start"
                     >
-                        <div className="flex-1 sticky top-12">
+                        <div className="w-full lg:flex-1 lg:sticky lg:top-24 z-20">
                             <div className="relative">
-                                <div className="bg-white p-8 rounded border border-slate-200 shadow-sm text-center space-y-6">
-                                    <div className="w-16 h-16 bg-slate-50 rounded mx-auto flex items-center justify-center p-4">
+                                <div className="bg-white p-6 lg:p-8 rounded-2xl border border-slate-200 shadow-xl lg:shadow-sm text-center space-y-4 lg:space-y-6">
+                                    <div className="w-16 h-16 bg-indigo-50 rounded-2xl mx-auto flex items-center justify-center p-4">
                                         <Trophy className="w-full h-full text-indigo-600" />
                                     </div>
                                     <div>
                                         <h3 className="text-xl font-bold text-slate-900">Resume Score</h3>
-                                        <p className="text-slate-500 text-xs mt-1 uppercase tracking-wider font-semibold">Baseline Assessment</p>
+                                        <p className="text-slate-500 text-[10px] mt-1 lg:mt-2 uppercase tracking-widest font-bold">Baseline Assessment</p>
                                     </div>
-                                    <div className="text-4xl font-black text-slate-900">
+                                    <div className="text-5xl lg:text-6xl font-black text-slate-900">
                                         {initial_analysis.score || (sectionsFound.length * 12 + 40)}
-                                        <span className="text-lg text-slate-400 font-medium ml-1">/ 100</span>
+                                        <span className="text-xl lg:text-2xl text-slate-300 font-medium ml-1">/100</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="flex-[1.5] w-full">
+                        <div className="w-full lg:flex-[1.5]">
                             <div className="mb-8">
                                 <h2 className="text-3xl font-bold text-slate-900 mb-3">
                                     Analysis Results
@@ -152,8 +152,8 @@ const AIGreeting = ({ data, onContinue }) => {
 
                             <div className="space-y-6 mb-12">
                                 {/* Success Cards */}
-                                <div className="bg-white border border-slate-200 rounded p-6">
-                                    <h3 className="text-xs font-bold uppercase tracking-wider text-emerald-600 mb-4 flex items-center gap-2">
+                                <div className="bg-white border border-slate-200 rounded-2xl p-5 lg:p-6 shadow-sm">
+                                    <h3 className="text-[10px] font-black uppercase tracking-widest text-emerald-600 mb-5 flex items-center gap-2">
                                         <CheckCircle size={14} /> Established Strengths
                                     </h3>
                                     <div className="space-y-4">
@@ -165,16 +165,16 @@ const AIGreeting = ({ data, onContinue }) => {
                                                 key={i}
                                                 className="flex items-start gap-3"
                                             >
-                                                <div className="mt-0.5">{item.icon}</div>
-                                                <span className="text-sm text-slate-700 font-medium leading-relaxed">{item.label}</span>
+                                                <div className="mt-1 flex-shrink-0">{item.icon}</div>
+                                                <span className="text-sm text-slate-700 font-semibold leading-relaxed">{item.label}</span>
                                             </motion.div>
                                         ))}
                                     </div>
                                 </div>
 
                                 {/* Improvement Cards */}
-                                <div className="bg-white border border-slate-200 rounded p-6">
-                                    <h3 className="text-xs font-bold uppercase tracking-wider text-rose-600 mb-4 flex items-center gap-2">
+                                <div className="bg-white border border-slate-200 rounded-2xl p-5 lg:p-6 shadow-sm">
+                                    <h3 className="text-[10px] font-black uppercase tracking-widest text-rose-600 mb-5 flex items-center gap-2">
                                         <Target size={14} /> Action Items
                                     </h3>
                                     <div className="space-y-4">
@@ -186,12 +186,12 @@ const AIGreeting = ({ data, onContinue }) => {
                                                 key={i}
                                                 className="flex items-start gap-3"
                                             >
-                                                <div className="mt-0.5">{item.icon}</div>
-                                                <span className="text-sm text-slate-700 font-medium leading-relaxed">{item.label}</span>
+                                                <div className="mt-1 flex-shrink-0">{item.icon}</div>
+                                                <span className="text-sm text-slate-700 font-semibold leading-relaxed">{item.label}</span>
                                             </motion.div>
                                         ))}
                                         {improvements.length === 0 && (
-                                            <div className="text-slate-500 text-sm">Profile meets all foundational requirements.</div>
+                                            <div className="text-slate-500 text-sm italic">Profile meets all foundational requirements.</div>
                                         )}
                                     </div>
                                 </div>
@@ -199,10 +199,10 @@ const AIGreeting = ({ data, onContinue }) => {
 
                             <button
                                 onClick={onContinue}
-                                className="w-full md:w-auto px-8 py-3 bg-indigo-600 text-white rounded font-bold text-sm hover:bg-indigo-700 transition-all flex items-center justify-center gap-2 shadow-sm"
+                                className="w-full lg:w-fit px-10 py-4 bg-slate-900 text-white rounded-xl font-bold text-sm lg:text-base hover:bg-black transition-all flex items-center justify-center gap-3 shadow-xl"
                             >
                                 Continue to Builder
-                                <ArrowRight className="w-4 h-4 ml-1" />
+                                <ArrowRight className="w-5 h-5 ml-1" />
                             </button>
                         </div>
                     </motion.div>

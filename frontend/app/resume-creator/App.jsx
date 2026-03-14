@@ -21,7 +21,14 @@ function App() {
       feature_module: 'resume_creator',
       funnel_stage: 'viewed'
     });
+
+    const resumeId = searchParams.get('resumeId');
+    if (resumeId) {
+      setResumeData(prev => ({ ...prev, builder_resume_id: resumeId }));
+      setCurrentView("editor");
+    }
   }, []);
+
 
   // Lock page scroll for the entire resume creator session and restore on exit
   React.useEffect(() => {

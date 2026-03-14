@@ -41,13 +41,18 @@ class SpellCheckManager {
 
         try {
             // CALL INTERNAL AI API
-            const response = await fetch('/api/ai/header-intelligence', {
+            const response = await fetch('/resumy/api/ai/header-intelligence', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ type: 'spellcheck', value: text })
             });
 
             if (!response.ok) throw new Error('AI SpellCheck API Error');
+
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                return [];
+            }
 
             const data = await response.json();
 

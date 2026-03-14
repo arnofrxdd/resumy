@@ -259,7 +259,7 @@ export default function OnboardingRedesign({ onComplete, onBack, mode = "new", d
         let isMounted = true;
         const loadEverything = async () => {
             setIsInitializing(true);
-            const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+            const backendUrl = '/resumy';
 
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
@@ -483,7 +483,7 @@ export default function OnboardingRedesign({ onComplete, onBack, mode = "new", d
         try {
             const { data: { session } } = await supabaseClient.auth.getSession();
             const token = session?.access_token;
-            const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+            const backendUrl = '/resumy';
             const formData = new FormData();
             formData.append("file", file);
 

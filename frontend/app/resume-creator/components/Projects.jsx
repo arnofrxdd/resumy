@@ -247,7 +247,7 @@ export default function Projects({ data, setData, templateId, onBack, onNext, on
         if (!term) return;
         setIsLoadingSuggestions(true);
         try {
-            const res = await fetch('http://localhost:3001/api/ai/generate', {
+            const res = await fetch('/resumy/api/ai/generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

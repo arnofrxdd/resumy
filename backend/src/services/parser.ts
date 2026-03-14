@@ -296,7 +296,7 @@ function normalizeToSchema(aiParsed: any, rawText: string) {
     };
 }
 
-export async function extractStructuredResume(text: string, meta?: any): Promise<{ parsed: any; confidence: number; rawText?: string }> {
+export async function extractStructuredResume(text: string, meta?: any): Promise<{ parsed: any; confidence: number; rawText?: string; isFallback?: boolean }> {
     console.log('🔍 [DEBUG] RAW EXTRACTED TEXT START', '—'.repeat(20));
     console.log(text);
     console.log('🔍 [DEBUG] RAW EXTRACTED TEXT END', '—'.repeat(20));
@@ -373,7 +373,7 @@ export async function extractStructuredResume(text: string, meta?: any): Promise
         const valid = validate(normalized)
         if (!valid) console.warn('Normalized resume failed schema validation', validate.errors)
 
-        return { parsed: normalized, confidence: confidence ?? 0.8 }
+        return { parsed: normalized, confidence: confidence ?? 0.8, isFallback: false }
     } catch (err: any) {
         console.warn('AI parse failed in parser.extractStructuredResume', err?.message || err)
         const fallback = {
@@ -430,7 +430,7 @@ export async function extractStructuredResume(text: string, meta?: any): Promise
             customSection: { title: '', content: '', isVisible: false },
             customSectionTitle: ''
         }
-        return { parsed: fallback, confidence: 0, rawText: text }
+        return { parsed: fallback, confidence: 0, rawText: text, isFallback: true }
     }
 }
 

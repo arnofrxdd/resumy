@@ -236,8 +236,8 @@ Be thorough and extract ALL content present in the resume, but keep its quality 
                 { role: 'system', content: system },
                 { role: 'user', content: `Resume text:\n${text}` }
             ],
-            response_format: { type: 'json_object' }, // Suggesting JSON mode for better parsing
-            max_tokens: 3000
+            response_format: { type: 'json_object' },
+            max_tokens: 8000
         });
     } catch (err: any) {
         console.error('❌ AI API ERROR:', err?.response?.data || err?.message || err);

@@ -27,17 +27,13 @@ export default function Home({ onStart }) {
     formData.append("file", file);
 
     try {
-      // Mocking for now to avoid auth issues if not logged in
       // In a real scenario, this would be a fetch call to /api/resumes/upload
-      /*
-      const response = await fetch("/api/resumes/upload", {
+      const response = await fetch("/resumy/api/resumes/upload", {
         method: "POST",
         body: formData,
         // headers: { "Authorization": `Bearer ${token}` }
       });
       const result = await response.json();
-      */
-
       // Simulated wait for AI analysis
       setTimeout(() => setLoadingText("AI Analyzing professional profile..."), 1000);
       setTimeout(() => setLoadingText("Extracting structure and skills..."), 2000);

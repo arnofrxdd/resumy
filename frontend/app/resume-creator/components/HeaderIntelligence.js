@@ -165,15 +165,23 @@ export const formatSocialLink = (platform, value) => {
 export const getAIHeaderAdvice = async (type, value, context = {}) => {
     try {
         console.log(`[AI DEBUG] Requesting: ${type} for "${value}"`, context);
-        const response = await fetch('/api/ai/header-intelligence', {
+        const response = await fetch('/resumy/api/ai/header-intelligence', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ type, value, context })
         });
+        
         if (!response.ok) {
             console.error(`[AI DEBUG] HTTP Error: ${response.status}`);
-            return null;
+            return value || null;
         }
+
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            console.error(`[AI DEBUG] Expected JSON but got ${contentType}`);
+            return value || null;
+        }
+
         const data = await response.json();
         console.log(`[AI DEBUG] Received:`, data.result);
         return data.result;

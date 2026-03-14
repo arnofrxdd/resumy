@@ -15,6 +15,28 @@ import { careerDnaService } from '../services/careerDnaService'
 import OpenAI from 'openai'
 
 const router = express.Router()
+// ── GET /api/resumes - List all resumes for the authenticated user ────────────
+router.get('/', authGuard, async (req, res) => {
+    try {
+        const userId = req.user!.id
+        const { data: resumes, error } = await supabase
+            .from('resumes')
+            .select('id, user_id, filename, title, template, style, visibility, download_count, status, started_at, completed_at, updated_at, created_at')
+            .eq('user_id', userId)
+            .order('updated_at', { ascending: false })
+
+        if (error) {
+            console.error('List resumes error:', error)
+            return res.status(500).json({ error: 'Failed to fetch resumes' })
+        }
+
+        return res.json({ success: true, resumes })
+    } catch (err) {
+        console.error('List resumes error:', err)
+        res.status(500).json({ error: 'Internal server error' })
+    }
+})
+
 
 // ── GET /api/resumes/ai-status ────────────────────────────────────────────────
 // Lightweight pre-flight check: probe OpenAI quota before user tries Import with AI.
@@ -263,8 +285,12 @@ router.post('/upload', authGuard, rateLimit(50, 60 * 60 * 1000), imageCompressMi
                     if (text && text.trim().length > 0) {
                         try {
                             console.log(`🧠 Starting immediate AI parse for resume ${resumeId}...`);
-                            const { parsed, confidence } = await extractStructuredResume(text, out.meta)
-                            console.log(`✅ Immediate AI parse successful for ${resumeId}. Updating DB...`);
+                            const { parsed, confidence, isFallback } = await extractStructuredResume(text, out.meta)
+                            if (isFallback) {
+                                console.warn(`⚠️ [AI PARSE] Fallback mode used for ${resumeId} due to parsing failure.`);
+                            } else {
+                                console.log(`✅ [AI PARSE] Success for ${resumeId} (Confidence: ${confidence})`);
+                            }
 
                             // Update resume with parsed data AND set status to completed
                             const { error: updateError } = await supabase.from('resumes')
@@ -972,7 +998,53 @@ router.post('/:id/save-version', authGuard, async (req, res) => {
     }
 })
 
+// DELETE /api/resumes/:id - Delete a resume
+router.delete('/:id', authGuard, async (req, res) => {
+    try {
+        const { id } = req.params
+        const userId = req.user!.id
+
+        // Verify ownership and get storage path
+        const { data: resume, error: fetchError } = await supabase
+            .from('resumes')
+            .select('id, user_id, storage_path')
+            .eq('id', id)
+            .single()
+
+        if (fetchError || !resume) return res.status(404).json({ error: 'Resume not found' })
+        if (resume.user_id !== userId) return res.status(403).json({ error: 'Unauthorized' })
+
+        // Delete from storage if it exists
+        if (resume.storage_path) {
+            try {
+                await supabase.storage.from('resumes').remove([resume.storage_path])
+            } catch (storageErr) {
+                console.warn('Failed to delete file from storage:', storageErr)
+                // non-fatal, continue with DB deletion
+            }
+        }
+
+        // Delete from database (versions and shares will likely be deleted via cascade if set up, 
+        // but let's be safe if not)
+        await supabase.from('resume_versions').delete().eq('resume_id', id)
+        await supabase.from('resume_shares').delete().eq('resume_id', id)
+        
+        const { error: deleteError } = await supabase
+            .from('resumes')
+            .delete()
+            .eq('id', id)
+
+        if (deleteError) throw deleteError
+
+        res.json({ success: true, message: 'Resume deleted successfully' })
+    } catch (error) {
+        console.error('Delete resume error:', error)
+        res.status(500).json({ error: 'Failed to delete resume' })
+    }
+})
+
 export default router
+
 
 // Debug route: GET /api/resumes/debug/count (authenticated) — returns count and sample rows
 router.get('/debug/count', authGuard, async (req, res) => {

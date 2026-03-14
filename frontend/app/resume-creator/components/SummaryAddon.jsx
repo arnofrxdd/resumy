@@ -32,7 +32,7 @@ export default function SummaryAddon({ data, setData, onBack, onNext }) {
         setSummaryMode(mode);
 
         try {
-            const response = await fetch('http://localhost:3002/api/generate-summary', {
+            const response = await fetch('/resumy/api/generate-summary', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ jobTitle, existingSummary: currentSummary, type: mode })

@@ -1,4 +1,4 @@
-﻿import dotenv from 'dotenv';
+import dotenv from 'dotenv';
 dotenv.config();
 import express, { Request, Response } from 'express';
 import cors from 'cors';
@@ -25,15 +25,20 @@ const allowedOrigins = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
     'https://gaplytiq.com',
-    'https://www.gaplytiq.com'
+    'https://www.gaplytiq.com',
+    'https://arnavcloud.co.in',
+    'https://www.arnavcloud.co.in'
 ];
 
 app.use(cors({
     origin: function (origin, callback) {
+        // allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
-        if (allowedOrigins.indexOf(origin) !== -1) {
+        
+        if (allowedOrigins.indexOf(origin) !== -1 || origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
             callback(null, true);
         } else {
+            console.error(`[CORS Error] Origin ${origin} not allowed`);
             callback(new Error('Not allowed by CORS'));
         }
     },

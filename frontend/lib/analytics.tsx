@@ -66,8 +66,8 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
     useEffect(() => {
         const fetchProfile = async () => {
             if (userId) {
-                const { data } = await supabaseClient.from('profiles').select('full_name').eq('id', userId).single()
-                if (data) setUserName(data.full_name)
+                const { data } = await supabaseClient.from('profiles').select('name').eq('id', userId).single()
+                if (data) setUserName(data.name)
             }
         }
         fetchProfile()
