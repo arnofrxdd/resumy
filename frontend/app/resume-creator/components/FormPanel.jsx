@@ -2341,7 +2341,10 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
                                             <X size={24} />
                                         </button>
                                     )}
-                                    <div className="brand-logo">
+                                    <div 
+                                        className="brand-logo cursor-pointer hover:opacity-80 transition-opacity"
+                                        onClick={() => setNavTarget('/')}
+                                    >
                                         <ResumyLogo size={32} />
                                     </div>
 
