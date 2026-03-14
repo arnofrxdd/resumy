@@ -25,6 +25,16 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/resumy',
+        basePath: false,
+        permanent: false,
+      },
+    ];
+  },
 }
 
 module.exports = nextConfig
