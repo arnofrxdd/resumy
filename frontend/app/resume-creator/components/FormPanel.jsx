@@ -808,7 +808,7 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
     }, [isPreviewOpen]);
 
     const currentTemplate = templatesConfig.find(t => t.id === safeTemplateId);
-    const hasPhotoSupport = !['sapphire-grid', 'aura-pastel'].includes(safeTemplateId);
+    const hasPhotoSupport = !['sapphire-grid', 'aura-pastel', 'artistic-graphic'].includes(safeTemplateId);
 
     const extraSectionConfig = [
         { id: 'personalDetails', label: 'Personal Details', icon: User, component: PersonalDetails },

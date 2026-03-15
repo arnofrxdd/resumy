@@ -154,23 +154,7 @@ const ArtisticGraphic = ({
             letterSpacing: "2px",
             textTransform: "uppercase",
         },
-        // Circular photo — positioned top-right of sidebar
-        photoCircle: {
-            position: "absolute",
-            top: "28px",
-            right: "20px",
-            width: "90px",
-            height: "90px",
-            borderRadius: "50%",
-            overflow: "hidden",
-            border: "3px solid rgba(255,255,255,0.4)",
-            background: "rgba(255,255,255,0.15)",
-        },
-        photoImg: {
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-        },
+
         sidebarBody: {
             flex: 1,
             padding: "0 24px var(--theme-page-margin, 36px) 28px",
@@ -1192,17 +1176,7 @@ const ArtisticGraphic = ({
         return (
             <SectionWrapper sectionId="personal" onSectionClick={onSectionClick} isInteractive={isInteractive} label="Header">
                 <div style={styles.sidebarHeader}>
-                    {/* Circular photo top-right */}
-                    {personal?.photo && (
-                        <div style={styles.photoCircle}>
-                            <img src={personal.photo} style={styles.photoImg} alt="profile" />
-                        </div>
-                    )}
-                    {!personal?.photo && (
-                        <div style={{ ...styles.photoCircle, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                            <User strokeWidth={1} style={{ width: "36px", height: "36px", color: "rgba(255,255,255,0.5)" }} />
-                        </div>
-                    )}
+
                     <h1 style={{ margin: 0 }}>
                         <div style={styles.firstName}>
                             <SpellCheckText text={firstName} isActive={isSpellCheckActive} onIgnore={onSpellCheckIgnore}
