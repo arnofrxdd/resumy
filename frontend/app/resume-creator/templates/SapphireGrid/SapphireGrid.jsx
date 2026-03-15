@@ -106,14 +106,7 @@ const SapphireGrid = ({
             color: "#94a3b8",
             marginTop: "8px",
         },
-        photo: {
-            width: "100px",
-            height: "100px",
-            borderRadius: "50%",
-            objectFit: "cover",
-            border: `3px solid ${accentLight}`,
-            marginBottom: "15px",
-        },
+
         contactBar: {
             display: "flex",
             height: "auto",
@@ -238,11 +231,7 @@ const SapphireGrid = ({
         return (
             <SectionWrapper sectionId="personal" onSectionClick={onSectionClick} isInteractive={isInteractive} label="Header">
                 <div style={styles.headerArea}>
-                    {personal?.photo && (
-                        <div style={{ display: "flex", justifyContent: "center" }}>
-                            <img src={personal.photo} style={styles.photo} alt="profile" />
-                        </div>
-                    )}
+
                     <div style={styles.nameContainer}>
                         <span style={styles.nameFirst}>
                             <SpellCheckText text={first} isActive={isSpellCheckActive} onIgnore={onSpellCheckIgnore} onReplace={(val) => onSpellCheckReplace('personal', 'name', val)} />

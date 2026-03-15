@@ -1,4 +1,4 @@
-﻿import React, { useRef } from "react";
+import React, { useRef } from "react";
 import { DndContext } from "@dnd-kit/core";
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import SectionWrapper from "../../components/SectionWrapper";
@@ -211,13 +211,7 @@ const AuraPastel = ({
             height: "8px",
             borderRadius: "50%",
         },
-        photo: {
-            width: "100%",
-            aspectRatio: "1/1",
-            objectFit: "cover",
-            marginBottom: "16px",
-            borderRadius: "4px",
-        }
+
     };
 
     const Header = () => (
@@ -941,7 +935,7 @@ const AuraPastel = ({
                 <Header />
                 <div style={styles.layoutBody}>
                     <div data-column-id="sidebar" style={styles.sidebarColumn}>
-                        {personal?.photo && <img src={personal.photo} style={styles.photo} alt="profile" />}
+
                         {activeSidebarSections.map(sid => (
                             <SectionRenderer key={sid} sectionId={sid} data={data} customRenderers={customRenderers} zoneId="sidebar" />
                         ))}
@@ -967,7 +961,7 @@ const AuraPastel = ({
                                 {i === 0 && <Header />}
                                 <div style={{ ...styles.layoutBody, flex: 1 }}>
                                     <div style={{ ...styles.sidebarColumn, display: "flex", flexDirection: "column" }}>
-                                        {i === 0 && personal?.photo && <img src={personal.photo} style={styles.photo} alt="profile" />}
+
                                         {renderZone(`sidebar-p${i}`, page.sidebar, { display: "flex", flexDirection: "column", gap: "calc(22px * var(--theme-section-margin, 1))", flex: 1 })}
                                     </div>
                                     <div style={{ ...styles.mainColumn, display: "flex", flexDirection: "column" }}>
@@ -982,7 +976,7 @@ const AuraPastel = ({
                             <Header />
                             <div style={styles.layoutBody}>
                                 <div style={{ ...styles.sidebarColumn, display: "flex", flexDirection: "column" }}>
-                                    {personal?.photo && <img src={personal.photo} style={styles.photo} alt="profile" />}
+
                                     {renderZone('sidebar', activeSidebarSections, { display: "flex", flexDirection: "column", gap: "calc(22px * var(--theme-section-margin, 1))", flex: 1 })}
                                 </div>
                                 <div style={{ ...styles.mainColumn, display: "flex", flexDirection: "column" }}>

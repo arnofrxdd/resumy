@@ -989,7 +989,11 @@ const AzureModern = ({
                         ))}
                     </div>
                     <div data-column-id="sidebar" style={styles.sidebarColumn}>
-                        {personal?.photo && <img src={personal.photo} style={styles.photo} alt="profile" />}
+                        {personal?.photo && (
+                            <SectionWrapper sectionId="personal" onSectionClick={onSectionClick} isInteractive={isInteractive} label="Photo">
+                                <img src={personal.photo} style={styles.photo} alt="profile" />
+                            </SectionWrapper>
+                        )}
                         {activeSidebarSections.map(sid => (
                             <SectionRenderer key={sid} sectionId={sid} data={data} customRenderers={customRenderers} />
                         ))}
@@ -1013,7 +1017,11 @@ const AzureModern = ({
                                         {renderZone(`main-p${i}`, page.main, { display: "flex", flexDirection: "column", gap: "calc(25px * var(--theme-section-margin, 1))" })}
                                     </div>
                                     <div style={styles.sidebarColumn}>
-                                        {i === 0 && personal?.photo && <img src={personal.photo} style={styles.photo} alt="profile" />}
+                                        {i === 0 && personal?.photo && (
+                                            <SectionWrapper sectionId="personal" onSectionClick={onSectionClick} isInteractive={isInteractive} label="Photo">
+                                                <img src={personal.photo} style={styles.photo} alt="profile" />
+                                            </SectionWrapper>
+                                        )}
                                         {renderZone(`sidebar-p${i}`, page.sidebar, { display: "flex", flexDirection: "column", gap: "calc(25px * var(--theme-section-margin, 1))" })}
                                     </div>
                                 </div>
@@ -1028,7 +1036,11 @@ const AzureModern = ({
                                     {renderZone('main', activeMainSections, { display: "flex", flexDirection: "column", gap: "calc(25px * var(--theme-section-margin, 1))" })}
                                 </div>
                                 <div style={styles.sidebarColumn}>
-                                    {personal?.photo && <img src={personal.photo} style={styles.photo} alt="profile" />}
+                                    {personal?.photo && (
+                                        <SectionWrapper sectionId="personal" onSectionClick={onSectionClick} isInteractive={isInteractive} label="Photo">
+                                            <img src={personal.photo} style={styles.photo} alt="profile" />
+                                        </SectionWrapper>
+                                    )}
                                     {renderZone('sidebar', activeSidebarSections, { display: "flex", flexDirection: "column", gap: "calc(25px * var(--theme-section-margin, 1))" })}
                                 </div>
                             </div>

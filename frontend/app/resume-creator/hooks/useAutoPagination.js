@@ -184,16 +184,22 @@ export const useAutoPagination = ({
             const pageRect = unscaledRect(pageContainer);
             const page1_columnStartY = columnRect.top - pageRect.top;
 
-            // ── 3d: Compute per-page budgets ──
+            // ── 3d: Account for non-section content (like a photo) and padding ──
+            // columnInitialOffset: Space taken by content BEFORE the first section (e.g. photo + padding)
+            const columnInitialOffset = sectionMetrics.length > 0 ? sectionMetrics[0].top : 0;
+            // columnPaddingTop: Padding we should respect on EVERY page
+            const columnPaddingTop = cssPx(columnEl, 'padding-top');
+
+            // ── 3e: Compute per-page budgets ──
             // Page 1 budget: A4 minus column's start offset minus bottom margin
             const page1Budget = A4_HEIGHT - page1_columnStartY - bottomMargin;
             // Pages 2+: A4 minus top and bottom margins
             const subsequentBudget = A4_HEIGHT - topMargin - bottomMargin;
 
-            // ── 3e: Walk sections and split into pages ──
+            // ── 3f: Walk sections and split into pages ──
             const resultPages = [];
             let currentPage = { sections: [] };
-            let cursor = 0; // Y position consumed on current page (relative to page's content zone start)
+            let cursor = columnInitialOffset; // Initial cursor on Page 1 accounts for photo/padding
             let currentBudget = page1Budget;
 
             sectionMetrics.forEach((section) => {
@@ -298,7 +304,7 @@ export const useAutoPagination = ({
                                 // "(Cont.)" label) on the same new page.
                                 resultPages.push(currentPage);
                                 currentPage = { sections: [] };
-                                cursor = 0;
+                                cursor = columnPaddingTop;
                                 currentBudget = subsequentBudget;
                                 // committedToAPreviousPage stays unchanged — this section had
                                 // ZERO items on the page we just pushed, so it is NOT a
@@ -310,7 +316,7 @@ export const useAutoPagination = ({
                                 committedToAPreviousPage = true;
                                 resultPages.push(currentPage);
                                 currentPage = { sections: [] };
-                                cursor = 0;
+                                cursor = columnPaddingTop;
                                 currentBudget = subsequentBudget;
                             }
                         }
@@ -323,7 +329,7 @@ export const useAutoPagination = ({
                 if (cursor > 0) {
                     resultPages.push(currentPage);
                     currentPage = { sections: [] };
-                    cursor = 0;
+                    cursor = columnPaddingTop;
                     currentBudget = subsequentBudget;
                 }
 
@@ -338,7 +344,7 @@ export const useAutoPagination = ({
                 if (cursor > currentBudget) {
                     resultPages.push(currentPage);
                     currentPage = { sections: [] };
-                    cursor = 0;
+                    cursor = columnPaddingTop;
                     currentBudget = subsequentBudget;
                 }
             });

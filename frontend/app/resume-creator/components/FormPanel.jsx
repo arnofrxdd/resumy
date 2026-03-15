@@ -808,7 +808,7 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
     }, [isPreviewOpen]);
 
     const currentTemplate = templatesConfig.find(t => t.id === safeTemplateId);
-    const hasPhotoSupport = true; // Always allow photo upload, let CompatibilityWarning handle warnings
+    const hasPhotoSupport = !['sapphire-grid', 'aura-pastel'].includes(safeTemplateId);
 
     const extraSectionConfig = [
         { id: 'personalDetails', label: 'Personal Details', icon: User, component: PersonalDetails },
