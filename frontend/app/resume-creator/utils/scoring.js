@@ -82,10 +82,7 @@ export const calculateDeterministicScore = (data, templatesConfig, activeTemplat
         totalDeductions += 15;
         warnings.push("Missing core sections. Professional resumes require depth.");
     }
-    if (!data.experience || data.experience.length === 0) {
-        totalDeductions += 10;
-        warnings.push("No work experience detected. Major impact on hiring potential.");
-    }
+
 
     // C) "Goofy" Design Penalty (Template-Aware Selection)
     const layoutSettings = data.templateLayouts?.[activeTemplateId];

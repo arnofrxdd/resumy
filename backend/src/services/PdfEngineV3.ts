@@ -58,8 +58,8 @@ export class PdfEngineV3 {
             await page.emulateMediaType('screen');
 
             await page.setContent(htmlContent, { 
-                waitUntil: ['networkidle0', 'load', 'domcontentloaded'], 
-                timeout: 60000 
+                waitUntil: ['networkidle2', 'load', 'domcontentloaded'], 
+                timeout: 90000 
             });
 
             // Pipe browser logs to node console
