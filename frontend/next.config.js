@@ -35,26 +35,30 @@ const nextConfig = {
       },
     ];
   },
+  transpilePackages: ['@imgly/background-removal'],
   experimental: {
-    serverComponentsExternalPackages: ['onnxruntime-node', 'onnxruntime-web'],
+    serverComponentsExternalPackages: ['onnxruntime-node', 'onnxruntime-web', '@imgly/background-removal'],
   },
   webpack: (config, { isServer }) => {
-    // 1. Tell webpack NOT to parse the faulty node-specific ONNX file
-    if (config.module.noParse) {
-      if (Array.isArray(config.module.noParse)) {
-        config.module.noParse.push(/ort\.node\.min\.mjs$/);
-      } else {
-        config.module.noParse = [config.module.noParse, /ort\.node\.min\.mjs$/];
-      }
-    } else {
-      config.module.noParse = [/ort\.node\.min\.mjs$/];
-    }
+    // 1. Tell webpack NOT to parse faulty node-specific files
+    config.module.noParse = [
+      ...(config.module.noParse || []),
+      /ort\.node\.min\.mjs$/,
+      /tf\.min\.js$/
+    ];
 
-    // 2. Alias it to false so it's not even attempted to be loaded
+    // 2. Alias node-specific version to false
     config.resolve.alias = {
       ...config.resolve.alias,
       'onnxruntime-node': false,
     };
+
+    // 3. Ensure .mjs files are treated as ES modules
+    config.module.rules.push({
+      test: /\.mjs$/,
+      include: /node_modules/,
+      type: 'javascript/auto',
+    });
 
     if (!isServer) {
       config.resolve.fallback = {
@@ -64,6 +68,8 @@ const nextConfig = {
         crypto: false,
         module: false,
         perf_hooks: false,
+        os: false,
+        child_process: false,
       };
     }
     return config;
