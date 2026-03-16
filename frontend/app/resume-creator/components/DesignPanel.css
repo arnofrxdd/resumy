@@ -1,0 +1,97 @@
+/* DesignPanel.css */
+
+.luxury-slider-container {
+    position: relative;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+    cursor: pointer;
+}
+
+.luxury-range-input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    background: transparent;
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+    margin: 0;
+}
+
+.luxury-range-input:focus {
+    outline: none;
+}
+
+/* TRACKS */
+.luxury-range-input::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 10px;
+    transition: background 0.2s ease;
+}
+
+.luxury-range-input:hover::-webkit-slider-runnable-track {
+    background: #cbd5e1;
+}
+
+/* THUMBS */
+.luxury-range-input::-webkit-slider-thumb {
+    height: 18px;
+    width: 18px;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -6px; /* (Track height / 2) - (Thumb height / 2) = (6/2) - (18/2) = -6 */
+    border: 3px solid var(--slider-theme-color, #7c3aed);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.luxury-range-input:hover::-webkit-slider-thumb {
+    transform: scale(1.15);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    border-width: 4px;
+}
+
+.luxury-range-input:active::-webkit-slider-thumb {
+    transform: scale(1.05);
+}
+
+/* FILL EFFECT (Progress) */
+.slider-progress-fill {
+    position: absolute;
+    left: 0;
+    height: 6px;
+    background: var(--slider-theme-color, #7c3aed);
+    border-radius: 10px;
+    z-index: 1;
+    pointer-events: none;
+    transition: width 0.1s ease-out;
+}
+
+/* Firefox Support */
+.luxury-range-input::-moz-range-track {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.luxury-range-input::-moz-range-thumb {
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 3px solid var(--slider-theme-color, #7c3aed);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.luxury-range-input::-moz-range-progress {
+    background: var(--slider-theme-color, #7c3aed);
+    height: 6px;
+    border-radius: 10px;
+}

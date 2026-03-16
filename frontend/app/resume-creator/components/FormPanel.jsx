@@ -187,9 +187,25 @@ const normalizeData = (d) => {
     return normalized;
 };
 
+const EXTRA_SECTION_CONFIG = [
+    { id: 'personalDetails', label: 'Personal Details', icon: User, component: PersonalDetails },
+    { id: 'websites', label: 'Websites', icon: Globe, component: Websites },
+    { id: 'keyAchievements', label: 'Key Achievements', icon: Award, component: KeyAchievements },
+    { id: 'certifications', label: 'Certifications', icon: FileText, component: Certifications },
+    { id: 'software', label: 'Software', icon: Cpu, component: Software },
+    { id: 'accomplishments', label: 'Accomplishments', icon: Award, component: Accomplishments },
+    { id: 'affiliations', label: 'Affiliations', icon: Users, component: Affiliations },
+    { id: 'interests', label: 'Interests', icon: Heart, component: Interests },
+    { id: 'projects', label: 'Projects', icon: Briefcase, component: Projects },
+    { id: 'languages', label: 'Languages', icon: Globe, component: Languages },
+    { id: 'additionalInfo', label: 'Additional Information', icon: Info, component: AdditionalInfo },
+    { id: 'custom', label: 'Custom Section', icon: Plus, component: CustomSection },
+];
+
 export default function FormPanel({ data, setData, templateId, onChangeTemplate, resume_id: propResumeId, builder_resume_id, jobId, title: propTitle, onSwitchProject, onRenameProject, onIdCreated, onSyncUrl }) {
     const { trackEvent } = useAnalytics();
     const [step, setStep] = useState(1);
+
 
     // 1. Centralized Source of Truth for Extra Sections
     // This ensures that Finalize.jsx and ExtraSections.jsx always agree.
@@ -454,12 +470,19 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
                         const urlView = params.get('view');
 
                         if (urlView === 'finalize') {
-                            setStep(finalizeStepId);
-                        } else if (!isNaN(urlStep) && urlStep > 0 && urlStep <= finalizeStepId) {
-                            setStep(urlStep);
+                            // Calculate correct finalize ID for THIS specific data
+                            const activeExtras = EXTRA_SECTION_CONFIG.filter(s => normalized.selectedExtraSections?.[s.id]);
+                            setStep(7 + activeExtras.length);
+                        } else if (!isNaN(urlStep) && urlStep > 0) {
+                            // If we have a step, let's use it, but bound it
+                            const activeExtras = EXTRA_SECTION_CONFIG.filter(s => normalized.selectedExtraSections?.[s.id]);
+                            const maxStep = 7 + activeExtras.length;
+                            setStep(Math.min(urlStep, maxStep));
                         } else if (existing.last_step_index) {
-                            if (existing.last_step_index === 7) setStep(finalizeStepId);
-                            else setStep(existing.last_step_index);
+                            const activeExtras = EXTRA_SECTION_CONFIG.filter(s => normalized.selectedExtraSections?.[s.id]);
+                            const maxStep = 7 + activeExtras.length;
+                            if (existing.last_step_index === 7) setStep(maxStep);
+                            else setStep(Math.min(existing.last_step_index, maxStep));
                         }
                     }
 
@@ -807,8 +830,8 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
             // Target width with some padding (92% of screen width)
             let newScale = (viewportWidth * 0.92) / resumeWidth;
 
-            // Don't upscale beyond 1.1
-            if (newScale > 1.1) newScale = 1.1;
+            // Don't upscale beyond 1.0 to keep it "true to size" relative to the design
+            if (newScale > 1.0) newScale = 1.0;
 
             console.log(`[FormPanel] Calculated Preview Scale: ${newScale} for viewport: ${viewportWidth}x${viewportHeight}`);
             setModalScale(newScale);
@@ -827,24 +850,9 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
     const currentTemplate = templatesConfig.find(t => t.id === safeTemplateId);
     const hasPhotoSupport = !['sapphire-grid', 'aura-pastel', 'artistic-graphic'].includes(safeTemplateId);
 
-    const extraSectionConfig = [
-        { id: 'personalDetails', label: 'Personal Details', icon: User, component: PersonalDetails },
-        { id: 'websites', label: 'Websites', icon: Globe, component: Websites },
-        { id: 'keyAchievements', label: 'Key Achievements', icon: Award, component: KeyAchievements },
-        { id: 'certifications', label: 'Certifications', icon: FileText, component: Certifications },
-        { id: 'software', label: 'Software', icon: Cpu, component: Software },
-        { id: 'accomplishments', label: 'Accomplishments', icon: Award, component: Accomplishments },
-        { id: 'affiliations', label: 'Affiliations', icon: Users, component: Affiliations },
-        { id: 'interests', label: 'Interests', icon: Heart, component: Interests },
-        { id: 'projects', label: 'Projects', icon: Briefcase, component: Projects },
-        { id: 'languages', label: 'Languages', icon: Globe, component: Languages },
-        { id: 'additionalInfo', label: 'Additional Information', icon: Info, component: AdditionalInfo },
-        { id: 'custom', label: 'Custom Section', icon: Plus, component: CustomSection },
-    ];
-
     const activeExtraSteps = [];
     if (data.selectedExtraSections) {
-        extraSectionConfig.forEach(section => {
+        EXTRA_SECTION_CONFIG.forEach(section => {
             if (data.selectedExtraSections[section.id]) {
                 activeExtraSteps.push({ ...section });
             }
@@ -1221,7 +1229,7 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
         }
 
         // 2. Check Extra Sections
-        const sectionConfig = extraSectionConfig.find(s => s.id === sectionId);
+        const sectionConfig = EXTRA_SECTION_CONFIG.find(s => s.id === sectionId);
         if (sectionConfig) {
             console.log(`[FormPanel] Handling navigateToSection for EXTRA: ${sectionId}`);
             // Determine the FUTURE selected state
@@ -1244,7 +1252,7 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
             // Calculate the step ID based on FUTURE state
             // Re-run the same logic used in render to build 'activeExtraSteps'
             const futureActiveSteps = [];
-            extraSectionConfig.forEach(section => {
+            EXTRA_SECTION_CONFIG.forEach(section => {
                 if (futureSelected[section.id]) {
                     futureActiveSteps.push(section);
                 }
@@ -1259,7 +1267,7 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
                 setIsQuickEdit(true);
             }
         } else {
-            console.error(`[FormPanel] FAILED to find sectionId ${sectionId} in extraSectionConfig`);
+            console.error(`[FormPanel] FAILED to find sectionId ${sectionId} in EXTRA_SECTION_CONFIG`);
         }
     };
 
@@ -1268,7 +1276,7 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
     const activeStepObj = allSteps.find(s => s.id === step) ||
         (step >= finalizeStepId ? allSteps.find(s => s.label === "Finalize") : allSteps[0]);
 
-    // SuccessStep is disabled — only Finalize triggers full-screen layout
+    // SuccessStep is disabled — "Success" label will never be reached
     const isFullScreenStep = activeStepObj?.label === "Finalize";
     const showSidebar = !isFullScreenStep;
 
@@ -1618,6 +1626,7 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
                     isDraftExplorerOpen={isDraftExplorerOpen}
                     navTarget={navTarget}
                     setNavTarget={setNavTarget}
+                    designSettings={data.designSettings}
                 />
             );
         }
@@ -2243,6 +2252,7 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
                             }
                         }}
                         isDraftExplorerOpen={isDraftExplorerOpen}
+                        designSettings={data.designSettings}
                     />
                 );
                 return null;
@@ -2344,6 +2354,7 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
                                         hidePageGuides={true}
                                         scale={modalScale}
                                         currentStep={step}
+                                        designSettings={data.designSettings}
                                         forceDesktop={true}
                                         onSectionClick={(sectionId) => {
                                             const targetStep = getStepBySectionId(sectionId);

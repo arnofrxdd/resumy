@@ -28,7 +28,7 @@ import OnboardingGuide from './OnboardingGuide';
 import { useResumeHistory } from '../hooks/useResumeHistory';
 import { RESUME_FONTS } from '@/lib/fonts.config';
 
-const VirtualTemplateCard = React.memo(({ t, data, isActive, isLoading, onClick }) => {
+const VirtualTemplateCard = React.memo(({ t, data, isActive, isLoading, onClick, onMouseEnter, onMouseLeave }) => {
     const [isInView, setIsInView] = useState(false);
     const cardRef = useRef(null);
 
@@ -49,6 +49,8 @@ const VirtualTemplateCard = React.memo(({ t, data, isActive, isLoading, onClick 
             ref={cardRef}
             className={`template-card ${isActive ? 'active' : ''} ${isLoading ? 'loading-state' : ''}`}
             onClick={() => !isLoading && onClick(t.id)}
+            onMouseEnter={() => !isLoading && onMouseEnter?.(t.id)}
+            onMouseLeave={() => !isLoading && onMouseLeave?.()}
             style={{ minHeight: '240px' }}
         >
             <div className="template-card-preview">
@@ -104,11 +106,12 @@ export default function Finalize({ data, setData, onChangeTemplate, onDownloadPD
     const [activeTab, setActiveTab] = useState(isMobile ? null : 'templates'); // 'templates', 'design', 'add', 'spell'
     const [designPanelSubTab, setDesignPanelSubTab] = useState('main');
 
+    const [scale, setScale] = useState(isMobile ? 0.45 : 0.85);
+    const [isAutoScaled, setIsAutoScaled] = useState(false);
+
     useEffect(() => {
-        if (isMobile) {
-            setScale(0.45);
-        } else {
-            setScale(0.85);
+        if (!isAutoScaled) {
+            setScale(isMobile ? 0.45 : 0.85);
         }
     }, [isMobile]);
 
@@ -184,7 +187,7 @@ export default function Finalize({ data, setData, onChangeTemplate, onDownloadPD
     const [isSharing, setIsSharing] = useState(false);
     const [showAha, setShowAha] = useState(false);
     const [isGalleryOpen, setIsGalleryOpen] = useState(false);
-    const [scale, setScale] = useState(0.85);
+    const [hoveredTemplateId, setHoveredTemplateId] = useState(null);
     const [themeColor, setThemeColor] = useState(data.themeColor || '#3b82f6');
     const [designSettings, setDesignSettings] = useState(data.designSettings || {});
     const [spellCheckErrors, setSpellCheckErrors] = useState(0);
@@ -223,6 +226,31 @@ export default function Finalize({ data, setData, onChangeTemplate, onDownloadPD
             })();
         }
     }, [jobId]);
+
+    // --- AUTO SCALE ON LOAD ---
+    // Fits the resume preview nicely into the dashboard area on first load
+    useEffect(() => {
+        if (!isMobile && !isAutoScaled && previewAreaRef.current) {
+            const calculateInitialScale = () => {
+                const area = previewAreaRef.current;
+                if (!area) return;
+                
+                const availableWidth = area.clientWidth - 128; // Padding 64px * 2
+                const resumeWidth = 794;
+                let newScale = availableWidth / resumeWidth;
+                
+                // Keep it between 0.6 and 0.95 (not 1.0 to leave some breathing room in dashboard)
+                newScale = Math.min(0.95, Math.max(0.6, newScale));
+                setScale(newScale);
+                setIsAutoScaled(true);
+            };
+            
+            calculateInitialScale();
+            // Small delay for flex layout to settle
+            const timer = setTimeout(calculateInitialScale, 300);
+            return () => clearTimeout(timer);
+        }
+    }, [isMobile, isAutoScaled]);
 
     // Track initial load of Finalize step
     const previewAreaRef = useRef(null);
@@ -496,12 +524,33 @@ export default function Finalize({ data, setData, onChangeTemplate, onDownloadPD
 
     // Construct currentData with template-specific overrides for the renderer
     const currentData = useMemo(() => {
+        const effectiveId = hoveredTemplateId || activeTemplateId;
+
+        // If we are NOT hovering, the state is already synced by useEffect, 
+        // but we compute it anyway for perfect same-frame consistency if activeTemplateId just changed.
+        const config = templatesConfig.find(t => t.id === effectiveId);
+        const layoutSettings = data.templateLayouts?.[effectiveId];
+
+        const resolvedColor = layoutSettings?.themeColor || config?.defaultColor || data.themeColor || '#3b82f6';
+        
+        const baseline = {
+            fontSize: 1, sectionSpacing: 1, paragraphSpacing: 1, lineHeight: 1.5, letterSpacing: 0, pageMargin: 40
+        };
+        const resolvedDesign = {
+            ...baseline,
+            ...(data.designSettings || {}),
+            ...(config?.defaults || {}),
+            ...(layoutSettings?.designSettings || {})
+        };
+        // Remove undefined keys
+        Object.keys(resolvedDesign).forEach(key => (resolvedDesign[key] === undefined) && delete resolvedDesign[key]);
+
         return {
             ...activeData,
-            themeColor: themeColor,
-            designSettings: designSettings
+            themeColor: resolvedColor,
+            designSettings: resolvedDesign
         };
-    }, [activeData, themeColor, designSettings]);
+    }, [activeData, themeColor, designSettings, hoveredTemplateId, activeTemplateId, data]);
 
     // Force re-render when a word is ignored
     const handleSpellCheckIgnore = () => {
@@ -1631,6 +1680,8 @@ export default function Finalize({ data, setData, onChangeTemplate, onDownloadPD
                                                         isActive={activeTemplateId === t.id}
                                                         isLoading={isTemplatesLoading}
                                                         onClick={handleTemplateClick}
+                                                        onMouseEnter={setHoveredTemplateId}
+                                                        onMouseLeave={() => setHoveredTemplateId(null)}
                                                     />
                                                 )) : !isTemplatesLoading && (
                                                     <div className="no-results">
@@ -1902,13 +1953,42 @@ export default function Finalize({ data, setData, onChangeTemplate, onDownloadPD
                             top-left origin here results in perfect centering.
                         */}
                         <div
+                            key={hoveredTemplateId || activeTemplateId}
                             className="preview-container"
                             style={{
                                 transform: `scale(${scale})`,
                                 transformOrigin: 'top left',
-                                width: '210mm'
+                                width: '210mm',
+                                WebkitTextSizeAdjust: 'none',
+                                textSizeAdjust: 'none'
                             }}
                         >
+                            {/* PREVIEW BADGE */}
+                            {hoveredTemplateId && (
+                                <div style={{
+                                    position: 'absolute',
+                                    top: '-40px',
+                                    left: '50%',
+                                    transform: 'translateX(-50%)',
+                                    background: 'rgba(124, 58, 237, 0.1)',
+                                    color: '#7c3aed',
+                                    padding: '6px 16px',
+                                    borderRadius: '20px',
+                                    fontSize: '10px',
+                                    fontWeight: 900,
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.1em',
+                                    border: '1px solid rgba(124, 58, 237, 0.2)',
+                                    backdropFilter: 'blur(8px)',
+                                    zIndex: 100,
+                                    pointerEvents: 'none',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '6px'
+                                }}>
+                                    <Sparkles size={12} fill="currentColor" /> Temporary Preview
+                                </div>
+                            )}
                             <div style={
                                 (isMobile && (activeTab === 'templates' || activeTab === 'add' || isActionsVisible))
                                     ? { position: 'absolute', top: 0, left: '-9999px', visibility: 'hidden', pointerEvents: 'none' }
@@ -1916,11 +1996,11 @@ export default function Finalize({ data, setData, onChangeTemplate, onDownloadPD
                             }>
                                 <ResumeRenderer
                                     data={currentData}
-                                    templateId={templateId || data.templateId || 'template4'}
+                                    templateId={hoveredTemplateId || activeTemplateId}
                                     onSectionClick={handleSectionClick}
                                     onReorder={handleReorder}
                                     scale={scale}
-                                    designSettings={designSettings}
+                                    designSettings={currentData.designSettings}
                                     isSpellCheckActive={false} // activeTab === 'spell' && isDictionaryLoaded
                                     onSpellCheckIgnore={handleSpellCheckIgnore}
                                     onSpellCheckReplace={handleSpellCheckReplace}

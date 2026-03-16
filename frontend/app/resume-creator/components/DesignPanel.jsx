@@ -2,6 +2,7 @@ import React, { useRef, useState, useMemo } from 'react';
 import { RotateCcw, ChevronDown, Check, X, Palette, Type, Maximize, ArrowLeft, MoveVertical, AlignLeft, Layout as LayoutIcon, Sliders as SlidersIcon, Type as TypeIcon, Maximize2, MoveHorizontal, ALargeSmall, Pipette } from 'lucide-react';
 import { templatesConfig } from '../templates/TemplateManager';
 import { RESUME_FONTS } from '@/lib/fonts.config';
+import './DesignPanel.css';
 
 export default function DesignPanel({ data, setData, settings, setSettings, templateId, onColorChange, onClose, isMobile, onSubTabChange }) {
     const colorInputRef = useRef(null);
@@ -914,8 +915,8 @@ const fonts = RESUME_FONTS.map(f => f.name);
                             { label: 'Normal', val: 1, iconSize: '16px' },
                             { label: 'Large', val: 1.15, iconSize: '20px' }
                         ].map(opt => (
-                            <button key={opt.label} onClick={() => updateSetting('fontSize', opt.val)} style={{ flex: 1, padding: '12px', background: settings.fontSize === opt.val ? '#eff6ff' : 'white', border: `1px solid ${settings.fontSize === opt.val ? '#3b82f6' : '#e2e8f0'}`, borderRadius: '0', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', transition: 'all 0.2s' }}>
-                                <span style={{ fontSize: opt.iconSize, fontWeight: 700, color: settings.fontSize === opt.val ? '#7c3aed' : '#0f172a' }}>A</span>
+                            <button key={opt.label} onClick={() => updateSetting('fontSize', opt.val)} style={{ flex: 1, padding: '12px', background: settings.fontSize === opt.val ? `${activeColor}10` : 'white', border: `1px solid ${settings.fontSize === opt.val ? activeColor : '#e2e8f0'}`, borderRadius: '0', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', transition: 'all 0.2s' }}>
+                                <span style={{ fontSize: opt.iconSize, fontWeight: 700, color: settings.fontSize === opt.val ? activeColor : '#0f172a' }}>A</span>
                                 <span style={{ fontSize: '10px', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase' }}>{opt.label}</span>
                             </button>
                         ))}
@@ -939,13 +940,27 @@ const fonts = RESUME_FONTS.map(f => f.name);
                             <div key={item.key} style={{ marginBottom: '20px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                                     <label style={{ fontSize: '12px', fontWeight: 700, color: '#475569' }}>{item.label}</label>
-                                    <span style={{ fontSize: '11px', color: '#7c3aed', fontWeight: 800 }}>{Math.round(sliderVal * 2)}%</span>
+                                    <span style={{ fontSize: '11px', color: activeColor, fontWeight: 800 }}>{Math.round(sliderVal * 2)}%</span>
                                 </div>
-                                <input type="range" min="0.5" max="100" step="0.5" value={sliderVal} onChange={(e) => {
-                                    const val = parseFloat(e.target.value);
-                                    const newVal = item.key === 'pageMargin' ? (val / 50) * 40 : (val / 50) * defVal;
-                                    updateSetting(item.key, newVal);
-                                }} style={{ width: '100%', accentColor: '#7c3aed', height: '4px', background: '#e2e8f0', borderRadius: '0', outline: 'none', cursor: 'pointer' }} />
+                                <div className="luxury-slider-container" style={{ '--slider-theme-color': activeColor }}>
+                                    <input 
+                                        type="range" 
+                                        min="0.5" 
+                                        max="100" 
+                                        step="0.5" 
+                                        value={sliderVal} 
+                                        onChange={(e) => {
+                                            const val = parseFloat(e.target.value);
+                                            const newVal = item.key === 'pageMargin' ? (val / 50) * 40 : (val / 50) * defVal;
+                                            updateSetting(item.key, newVal);
+                                        }} 
+                                        className="luxury-range-input"
+                                    />
+                                    <div 
+                                        className="slider-progress-fill" 
+                                        style={{ width: `${sliderVal}%` }} 
+                                    />
+                                </div>
                             </div>
                         );
                     })}
