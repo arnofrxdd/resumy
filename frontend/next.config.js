@@ -35,14 +35,13 @@ const nextConfig = {
       },
     ];
   },
-  webpack: (config, { isServer }) => {
-    // onnxruntime-node is for Node.js only. We exclude it from the client-side bundle
-    // to prevent syntax errors during the build process.
-    if (!isServer) {
-      config.externals.push({
-        'onnxruntime-node': 'commonjs onnxruntime-node',
-      });
-    }
+  webpack: (config) => {
+    // Completely ignore onnxruntime-node in both browser and server bundles.
+    // This stops Next.js from trying to parse the faulty .mjs file during build.
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'onnxruntime-node': false,
+    };
     return config;
   },
 }
