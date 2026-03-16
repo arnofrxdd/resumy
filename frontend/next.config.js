@@ -35,13 +35,20 @@ const nextConfig = {
       },
     ];
   },
-  transpilePackages: ['@imgly/background-removal'],
+  experimental: {
+    serverComponentsExternalPackages: ['onnxruntime-node', 'onnxruntime-web'],
+  },
   webpack: (config, { isServer }) => {
     // 1. Tell webpack NOT to parse the faulty node-specific ONNX file
-    config.module.noParse = [
-      ...(config.module.noParse || []),
-      /ort\.node\.min\.mjs$/,
-    ];
+    if (config.module.noParse) {
+      if (Array.isArray(config.module.noParse)) {
+        config.module.noParse.push(/ort\.node\.min\.mjs$/);
+      } else {
+        config.module.noParse = [config.module.noParse, /ort\.node\.min\.mjs$/];
+      }
+    } else {
+      config.module.noParse = [/ort\.node\.min\.mjs$/];
+    }
 
     // 2. Alias it to false so it's not even attempted to be loaded
     config.resolve.alias = {
