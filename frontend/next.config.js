@@ -35,8 +35,9 @@ const nextConfig = {
       },
     ];
   },
+  transpilePackages: ['@imgly/background-removal'],
   experimental: {
-    serverComponentsExternalPackages: ['onnxruntime-node', 'onnxruntime-web', '@imgly/background-removal'],
+    serverComponentsExternalPackages: ['onnxruntime-node', 'onnxruntime-web'],
   },
   webpack: (config, { isServer }) => {
     // 1. Tell webpack NOT to parse faulty node-specific files

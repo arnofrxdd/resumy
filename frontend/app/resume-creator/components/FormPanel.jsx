@@ -1477,14 +1477,29 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
         if (removedBgUrl) return;
         setIsRemovingBg(true);
         try {
-            const { removeBackground } = await import('@imgly/background-removal');
+            const { removeBackground, Config } = await import('@imgly/background-removal');
+            
+            // Explicitly fetch and convert to blob to ensure compatibility
             const res = await fetch(photoSrc);
             const inputBlob = await res.blob();
-            const resultBlob = await removeBackground(inputBlob, { output: { format: 'image/png', quality: 0.9 } });
+            
+            // Configuration with explicit public path for models
+            const config = {
+                output: { format: 'image/png', quality: 0.9 },
+                publicPath: `${window.location.origin}/resumy/node_modules/@imgly/background-removal/dist/`
+            };
+
+            const resultBlob = await removeBackground(inputBlob, config);
             setRemovedBgUrl(URL.createObjectURL(resultBlob));
         } catch (err) {
             console.error('[BG REMOVE] Failed:', err);
-            showToast('Background removal failed. Please try again.', 'error');
+            // Fallback: search for the error message or common issues
+            const errorMessage = err?.message || String(err);
+            if (errorMessage.includes('replace') || errorMessage.includes('URL')) {
+                showToast('Background removal setup error. Please try again.', 'error');
+            } else {
+                showToast('Background removal failed. Please try again.', 'error');
+            }
         } finally {
             setIsRemovingBg(false);
         }
