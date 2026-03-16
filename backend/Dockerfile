@@ -46,6 +46,7 @@ COPY shared ./shared
 
 # Build the application
 WORKDIR /app/backend
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 RUN npm run build
 
 # Expose the backend port
