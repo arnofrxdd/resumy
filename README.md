@@ -4,7 +4,8 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
-[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o-412991?style=for-the-badge&logo=openai)](https://openai.com/)
+[![Groq](https://img.shields.io/badge/Groq-Llama_3.1-orange?style=for-the-badge)](https://groq.com/)
+[![Mistral](https://img.shields.io/badge/Mistral-Large_2-blue?style=for-the-badge)](https://mistral.ai/)
 
 **Resumy** is a state-of-the-art, standalone resume builder designed to help users create professional, high-impact resumes in minutes. Leveraging advanced AI, elegant design systems, and a seamless user experience, Resumy transforms the tedious process of resume creation into a creative journey.
 
@@ -30,7 +31,7 @@
 | **Frontend** | [Next.js 14](https://nextjs.org/), [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), [Framer Motion](https://www.framer.com/motion/) |
 | **Backend** | [Node.js](https://nodejs.org/), [Express](https://expressjs.com/), [TypeScript](https://www.typescriptlang.org/) |
 | **Database/Auth**| [Supabase](https://supabase.com/) (PostgreSQL + Auth + Storage) |
-| **AI Processing** | [OpenAI API](https://openai.com/), [Gemini AI](https://deepmind.google/technologies/gemini/), [Tesseract.js](https://tesseract.projectnaptha.com/) |
+| **AI Processing** | [Groq](https://groq.com/), [Mistral AI](https://mistral.ai/), [Gemini AI](https://deepmind.google/technologies/gemini/), [Tesseract.js](https://tesseract.projectnaptha.com/) |
 | **PDF Engine** | [Puppeteer](https://pptr.dev/) (Headless Chromium) |
 | **Infrastructure**| [Docker](https://www.docker.com/), [Docker Compose](https://docs.docker.com/compose/) |
 
@@ -43,7 +44,8 @@
 - [Node.js 20+](https://nodejs.org/)
 - [Docker](https://www.docker.com/) (Optional, for easy deployment)
 - [Supabase Account](https://supabase.com/)
-- [OpenAI API Key](https://platform.openai.com/)
+- [Groq API Key](https://console.groq.com/)
+- [Mistral API Key](https://console.mistral.ai/)
 
 ### 1. Database Setup (Supabase)
 
@@ -67,7 +69,8 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 PORT=3001
 SUPABASE_URL=your_supabase_url
 SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_key
-OPENAI_API_KEY=your_openai_key
+GROQ_API_KEY=your_groq_key
+MISTRAL_API_KEY=your_mistral_key
 NEXT_PUBLIC_API_URL=http://localhost:3001
 ```
 
