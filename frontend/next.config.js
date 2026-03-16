@@ -35,6 +35,16 @@ const nextConfig = {
       },
     ];
   },
+  webpack: (config, { isServer }) => {
+    // onnxruntime-node is for Node.js only. We exclude it from the client-side bundle
+    // to prevent syntax errors during the build process.
+    if (!isServer) {
+      config.externals.push({
+        'onnxruntime-node': 'commonjs onnxruntime-node',
+      });
+    }
+    return config;
+  },
 }
 
 module.exports = nextConfig
