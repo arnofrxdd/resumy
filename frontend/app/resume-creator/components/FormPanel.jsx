@@ -299,6 +299,9 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
     const [citiesList, setCitiesList] = useState([]);
     const [locationSuggestions, setLocationSuggestions] = useState({ country: null, state: null, city: null, phoneCode: null, zipCode: null });
     const [isAiThinking, setIsAiThinking] = useState({ title: false, phone: false, city: false, state: false, country: false, zipCode: false });
+    const [isGeoLoading, setIsGeoLoading] = useState(false);
+    const [removedBgUrl, setRemovedBgUrl] = useState(null);  // transparent PNG after bg removal
+    const [isRemovingBg, setIsRemovingBg] = useState(false);
 
     // Mobile Responsive State
     const [isMobile, setIsMobile] = useState(false);
@@ -1400,47 +1403,91 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
 
     const handleGeolocation = async () => {
         if (!navigator.geolocation) {
-            console.error("Geolocation is not supported by your browser");
+            showToast('Geolocation is not supported by your browser.', 'error');
             return;
         }
 
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            const { latitude, longitude } = position.coords;
-            console.log(`[GEO DEBUG] User Coords: ${latitude}, ${longitude}`);
+        setIsGeoLoading(true);
 
-            // Ask AI to reverse geocode these coordinates
-            const aiRes = await getAIHeaderAdvice("location", `latitude: ${latitude}, longitude: ${longitude}`);
-            if (aiRes) {
+        navigator.geolocation.getCurrentPosition(
+            async (position) => {
+                const { latitude, longitude } = position.coords;
+                console.log(`[GEO] Coords: ${latitude}, ${longitude}`);
+
                 try {
-                    const parsed = (typeof aiRes === 'string') ? JSON.parse(aiRes) : aiRes;
-                    if (parsed) {
-                        const countryName = toTitleCase(parsed.country || "");
-                        const countryEntry = countryName ? (LOCATION_DATA[countryName] || LOCATION_DATA[parsed.country]) : null;
-                        const phoneCode = countryEntry?.phoneCode || parsed.phoneCode || null;
+                    // Use BigDataCloud free reverse geocoding — no API key needed
+                    const res = await fetch(
+                        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`
+                    );
 
-                        // FILL IN THE FORM DIRECTLY
-                        setData(prev => ({
-                            ...prev,
-                            personal: {
-                                ...(prev.personal || {}),
-                                city: parsed.city ? toTitleCase(parsed.city) : (prev.personal?.city || ""),
-                                state: parsed.state ? toTitleCase(parsed.state) : (prev.personal?.state || ""),
-                                country: countryName || (prev.personal?.country || ""),
-                                zipCode: parsed.zipCode || (prev.personal?.zipCode || ""),
-                                phone: phoneCode || (prev.personal?.phone || "")
-                            }
-                        }));
+                    if (!res.ok) throw new Error('Geocoding API failed');
+                    const geo = await res.json();
 
-                        // Clear suggestions as they are now the actual values
-                        setLocationSuggestions({ city: null, state: null, country: null, zipCode: null, phoneCode: null });
+                    console.log('[GEO] BigDataCloud response:', geo);
 
-                        console.log(`[GEO DEBUG] Populated Fields:`, parsed);
+                    const city = geo.city || geo.locality || geo.localityInfo?.informative?.find(i => i.description === 'city')?.name || '';
+                    const state = geo.principalSubdivision || '';
+                    const countryName = toTitleCase(geo.countryName || '');
+                    const countryCode = geo.countryCode || '';
+
+                    // Look up phone code from our LOCATION_DATA
+                    const countryEntry = LOCATION_DATA[countryName];
+                    const phoneCode = countryEntry?.phoneCode || null;
+
+                    setData(prev => ({
+                        ...prev,
+                        personal: {
+                            ...(prev.personal || {}),
+                            city: city ? toTitleCase(city) : (prev.personal?.city || ''),
+                            state: state ? toTitleCase(state) : (prev.personal?.state || ''),
+                            country: countryName || (prev.personal?.country || ''),
+                            ...(phoneCode ? { phoneCode } : {})
+                        }
+                    }));
+
+                    // Trigger state/city list loading for the detected country
+                    if (countryName) {
+                        const states = await fetchStatesForCountry(countryName);
+                        setStatesList(states);
                     }
-                } catch (e) { }
-            }
-        }, (err) => {
-            console.error("[GEO DEBUG] Error getting location:", err);
-        });
+
+                    setLocationSuggestions({ city: null, state: null, country: null, zipCode: null, phoneCode: null });
+                    showToast(`📍 Location detected: ${city ? `${toTitleCase(city)}, ` : ''}${countryName}`, 'success');
+                } catch (err) {
+                    console.error('[GEO] Reverse geocoding failed:', err);
+                    showToast('Could not detect your location. Please try again or enter manually.', 'error');
+                } finally {
+                    setIsGeoLoading(false);
+                }
+            },
+            (err) => {
+                console.error('[GEO] Permission/Error:', err);
+                const msg = err.code === 1
+                    ? 'Location access denied. Please allow location access in your browser settings.'
+                    : 'Could not retrieve your location. Please enter it manually.';
+                showToast(msg, 'error');
+                setIsGeoLoading(false);
+            },
+            { timeout: 10000, maximumAge: 60000 }
+        );
+    };
+
+    const handleRemoveBg = async (photoSrc) => {
+        if (isRemovingBg) return;
+        if (removedBgUrl) return;
+        setIsRemovingBg(true);
+        try {
+            const { removeBackground } = await import('@imgly/background-removal');
+            const res = await fetch(photoSrc);
+            const inputBlob = await res.blob();
+            const resultBlob = await removeBackground(inputBlob, { output: { format: 'image/png', quality: 0.9 } });
+            setRemovedBgUrl(URL.createObjectURL(resultBlob));
+        } catch (err) {
+            console.error('[BG REMOVE] Failed:', err);
+            showToast('Background removal failed. Please try again.', 'error');
+        } finally {
+            setIsRemovingBg(false);
+        }
     };
 
     const handleCityIntelligence = async (city) => {
@@ -1461,7 +1508,7 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
                         // FORWARD-ONLY: city → state, country, phoneCode (never zipCode - that's upstream)
                         setLocationSuggestions(prev => ({
                             ...prev,
-                            city: null,             // don't suggest city when user is typing city
+                            city: null,
                             state: parsed.state || null,
                             country: countryName || null,
                             phoneCode: countryEntry?.phoneCode || parsed.phoneCode || null
@@ -1470,7 +1517,6 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
                 } catch (e) { }
             }
         } else if (formatted.length === 0) {
-            // Only clear downstream fields
             setLocationSuggestions(prev => ({ ...prev, state: null, country: null, phoneCode: null }));
         }
     };
@@ -1862,12 +1908,12 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
                             <div style={{
                                 display: 'grid',
                                 gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
-                                gap: isMobile ? '32px' : '40px'
+                                gap: isMobile ? '24px' : '32px'
                             }}>
                                 {/* Left: Core Contact */}
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                        <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#f0fdf4', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#f0fdf4', color: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                             <Mail size={16} />
                                         </div>
                                         <h4 style={{ fontSize: '14px', fontWeight: 800, color: 'var(--gap-text-main)', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Communication</h4>
@@ -1949,7 +1995,7 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
 
                                 {/* Right: Location Details */}
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                                         <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#fef3f2', color: '#f87171', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                             <MapPin size={16} />
                                         </div>
@@ -1957,11 +2003,17 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
 
                                         <button
                                             onClick={handleGeolocation}
-                                            className="ml-auto flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-violet-50 text-violet-600 hover:bg-violet-100 transition-all border border-violet-100"
+                                            disabled={isGeoLoading}
+                                            className="ml-auto flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-violet-50 text-violet-600 hover:bg-violet-100 transition-all border border-violet-100 disabled:opacity-60 disabled:cursor-not-allowed"
                                             title="Use my device location"
                                         >
-                                            <Navigation size={12} className="rotate-[45deg]" />
-                                            <span className="text-[10px] font-bold uppercase tracking-wider">Use Current</span>
+                                            {isGeoLoading
+                                                ? <Loader2 size={12} className="animate-spin" />
+                                                : <Navigation size={12} className="rotate-[45deg]" />
+                                            }
+                                            <span className="text-[10px] font-bold uppercase tracking-wider">
+                                                {isGeoLoading ? 'Detecting...' : 'Use Current'}
+                                            </span>
                                         </button>
                                     </div>
 
@@ -2741,167 +2793,211 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
                         }}
                     />
                 )}
-                                {isCropping && tempPhoto && (
+                 {isCropping && tempPhoto && (() => {
+                    const templateAccent = templatesConfig.find(t => t.id === safeTemplateId)?.defaultColor || '#1e293b';
+                    const bgSwatches = [
+                        { label: 'Template', color: templateAccent, isAccent: true },
+                        { label: 'White', color: '#ffffff' },
+                        { label: 'Light Gray', color: '#f1f5f9' },
+                        { label: 'Warm Gray', color: '#e7e5e4' },
+                        { label: 'Navy', color: '#1e3a5f' },
+                        { label: 'Charcoal', color: '#1e293b' },
+                        { label: 'None', color: null },
+                    ];
+                    const activeBg = data.personal?.photoBg !== undefined ? data.personal.photoBg : null;
+                    const cropShape = data.personal?.cropShape || 'square';
+
+                    return (
                     <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 100000 }}>
-                        {/* Backdrop */}
-                        <div 
-                            className="absolute inset-0 bg-stone-900/90 backdrop-blur-xl"
-                            onClick={() => {
-                                setIsCropping(false);
-                                setTempPhoto(null);
-                            }}
+                        <div className="absolute inset-0 bg-stone-900/90 backdrop-blur-xl"
+                            onClick={() => { setIsCropping(false); setTempPhoto(null); setRemovedBgUrl(null); }}
                         />
-                        
-                        {/* Nuclear Image Reset - Injected into Head */}
                         <style dangerouslySetInnerHTML={{ __html: `
                             .react-easy-crop_image {
-                                max-width: none !important;
-                                max-height: none !important;
-                                margin: 0 !important;
-                                padding: 0 !important;
-                                border: none !important;
-                                box-shadow: none !important;
+                                max-width: none !important; max-height: none !important;
+                                margin: 0 !important; padding: 0 !important;
+                                border: none !important; box-shadow: none !important;
                                 object-fit: none !important;
                             }
                         `}} />
 
-                        <div className="bg-white w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl relative z-10 flex flex-col h-[700px] max-h-[90vh]">
-                            {/* Header */}
-                            <div className="p-6 border-bottom border-stone-100 flex items-center justify-between bg-white">
+                        <div className="bg-white w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl relative z-10 flex flex-col" style={{ maxHeight: '92vh' }}>
+
+                            {/* ── Header ── */}
+                            <div className="px-5 pt-5 pb-3 flex items-center justify-between bg-white border-b border-stone-100 flex-shrink-0">
                                 <div>
-                                    <h3 className="text-xl font-black text-stone-900 tracking-tighter">Premium Photo Editor</h3>
-                                    <p className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mt-0.5">Refine your professional appearance</p>
+                                    <h3 className="text-lg font-black text-stone-900 tracking-tight">Edit Photo</h3>
+                                    <p className="text-[11px] text-stone-400 mt-0.5">Crop · Shape · Background</p>
                                 </div>
-                                <button 
-                                    onClick={() => {
-                                        setIsCropping(false);
-                                        setTempPhoto(null);
-                                    }}
-                                    className="p-2 hover:bg-stone-100 rounded-full transition-colors"
-                                >
-                                    <X size={24} className="text-stone-400" />
+                                <button onClick={() => { setIsCropping(false); setTempPhoto(null); setRemovedBgUrl(null); }}
+                                    className="p-2 hover:bg-stone-100 rounded-full transition-colors">
+                                    <X size={18} className="text-stone-400" />
                                 </button>
                             </div>
 
-                            {/* Viewport - Explicit Fixed Height */}
-                            <div className="flex-1 relative bg-black overflow-hidden">
+                            {/* ── Cropper (always visible) ── */}
+                            <div className="relative flex-shrink-0 overflow-hidden" style={{ 
+                                height: 300, 
+                                background: removedBgUrl ? (activeBg || 'repeating-conic-gradient(#e5e7eb 0% 25%, white 0% 50%) 0 0 / 20px 20px') : '#000' 
+                            }}>
                                 <Cropper
-                                    image={tempPhoto}
+                                    image={removedBgUrl || tempPhoto}
                                     crop={data.personal?.crop || { x: 0, y: 0 }}
                                     zoom={data.personal?.zoom || 1}
                                     aspect={1}
-                                    onCropChange={(c) => setData(prev => ({ 
-                                        ...prev, 
-                                        personal: { ...(prev.personal || {}), crop: c } 
-                                    }))}
-                                    onZoomChange={(z) => setData(prev => ({ 
-                                        ...prev, 
-                                        personal: { ...(prev.personal || {}), zoom: z } 
-                                    }))}
+                                    onCropChange={(c) => setData(prev => ({ ...prev, personal: { ...(prev.personal || {}), crop: c } }))}
+                                    onZoomChange={(z) => setData(prev => ({ ...prev, personal: { ...(prev.personal || {}), zoom: z } }))}
                                     onCropComplete={(_, pc) => setPixelCrop(pc)}
-                                    cropShape={data.personal?.cropShape === 'circle' ? 'round' : 'rect'}
+                                    cropShape={cropShape === 'circle' ? 'round' : 'rect'}
                                     showGrid={false}
                                 />
                             </div>
 
-                            {/* Controls */}
-                            <div className="p-8 bg-white border-top border-stone-100">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-end mb-8">
-                                    {/* Frame Shape Toggle */}
+                            {/* ── Scrollable controls ── */}
+                            <div className="flex-1 overflow-y-auto p-5 space-y-5">
+
+                                {/* Shape + Size in a row */}
+                                <div className="grid grid-cols-2 gap-4">
+                                    {/* Shape */}
                                     <div>
-                                        <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest mb-3 block">Frame Style</label>
-                                        <div className="flex bg-stone-50 p-1 rounded-xl border border-stone-100">
-                                            <button
-                                                onClick={() => setData(prev => ({ 
-                                                    ...prev, 
-                                                    personal: { ...(prev.personal || {}), cropShape: 'square' } 
-                                                }))}
-                                                className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${(!data.personal?.cropShape || data.personal?.cropShape === 'square') ? 'bg-white text-blue-600 shadow-sm' : 'text-stone-400'}`}
-                                            >
-                                                <Square size={14} /> Square
-                                            </button>
-                                            <button
-                                                onClick={() => setData(prev => ({ 
-                                                    ...prev, 
-                                                    personal: { ...(prev.personal || {}), cropShape: 'circle' } 
-                                                }))}
-                                                className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg text-xs font-bold transition-all ${(data.personal?.cropShape === 'circle') ? 'bg-white text-blue-600 shadow-sm' : 'text-stone-400'}`}
-                                            >
-                                                <Circle size={14} /> Circle
-                                            </button>
+                                        <p className="text-[11px] font-bold text-stone-400 uppercase tracking-wider mb-2">Shape</p>
+                                        <div className="flex bg-stone-50 p-0.5 rounded-xl border border-stone-100">
+                                            {[{ v: 'square', icon: Square, label: 'Square' }, { v: 'circle', icon: Circle, label: 'Circle' }].map(({ v, icon: Icon, label }) => (
+                                                <button key={v}
+                                                    onClick={() => setData(prev => ({ ...prev, personal: { ...(prev.personal || {}), cropShape: v } }))}
+                                                    className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-[11px] font-bold transition-all ${cropShape === v ? 'bg-white text-blue-600 shadow-sm' : 'text-stone-400'}`}
+                                                >
+                                                    <Icon size={12} /> {label}
+                                                </button>
+                                            ))}
                                         </div>
                                     </div>
 
-                                    {/* Zoom Control */}
+                                    {/* Zoom */}
                                     <div>
                                         <div className="flex items-center justify-between mb-2">
-                                            <label className="text-[10px] font-black text-stone-400 uppercase tracking-widest">Zoom Level</label>
-                                            <span className="text-xs font-black text-blue-600">
-                                                {Math.round((data.personal?.zoom || 1) * 100)}%
-                                            </span>
+                                            <p className="text-[11px] font-bold text-stone-400 uppercase tracking-wider">Zoom</p>
+                                            <span className="text-[11px] font-black text-blue-600">{Math.round((data.personal?.zoom || 1) * 100)}%</span>
                                         </div>
-                                        <input 
-                                            type="range"
-                                            min={1}
-                                            max={3}
-                                            step={0.01}
+                                        <input type="range" min={1} max={3} step={0.01}
                                             value={data.personal?.zoom || 1}
-                                            onChange={(e) => setData(prev => ({ 
-                                                ...prev, 
-                                                personal: { ...(prev.personal || {}), zoom: parseFloat(e.target.value) } 
-                                            }))}
-                                            className="w-full h-1.5 bg-stone-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                                            onChange={(e) => setData(prev => ({ ...prev, personal: { ...(prev.personal || {}), zoom: parseFloat(e.target.value) } }))}
+                                            className="w-full h-1.5 bg-stone-100 rounded-lg appearance-none cursor-pointer accent-blue-600 mt-2"
                                         />
                                     </div>
                                 </div>
 
-                                <div className="flex gap-4">
-                                    <button 
-                                        onClick={() => {
-                                            setIsCropping(false);
-                                            setTempPhoto(null);
-                                        }}
-                                        className="flex-1 py-4 text-stone-500 font-bold text-sm bg-stone-50 hover:bg-stone-100 rounded-2xl transition-colors"
-                                    >
+                                {/* ── Background divider ── */}
+                                <div className="border-t border-stone-100 pt-4">
+                                    <p className="text-[11px] font-bold text-stone-400 uppercase tracking-wider mb-3">Background</p>
+
+                                    {/* Remove / Restore row */}
+                                    <div className="flex gap-2 mb-3">
+                                        <button
+                                            onClick={() => handleRemoveBg(tempPhoto)}
+                                            disabled={isRemovingBg || !!removedBgUrl}
+                                            className={`flex-1 py-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-all
+                                                ${removedBgUrl
+                                                    ? 'border-emerald-200 bg-emerald-50 text-emerald-600 cursor-default'
+                                                    : 'border-dashed border-stone-200 text-stone-600 hover:border-violet-300 hover:bg-violet-50 hover:text-violet-700 disabled:opacity-50 disabled:cursor-not-allowed'
+                                                }`}
+                                        >
+                                            {isRemovingBg
+                                                ? <><Loader2 size={13} className="animate-spin" /> Removing…</>
+                                                : removedBgUrl
+                                                    ? <><CheckCircle2 size={13} /> Background Removed</>
+                                                    : <><Sparkles size={13} /> Remove Background</>
+                                            }
+                                        </button>
+
+                                        {/* Restore original bg */}
+                                        {removedBgUrl && (
+                                            <button
+                                                onClick={() => { setRemovedBgUrl(null); }}
+                                                className="px-3 py-2.5 rounded-xl border border-stone-200 text-xs font-bold text-stone-500 hover:bg-stone-50 transition-all flex items-center gap-1.5"
+                                                title="Restore original background"
+                                            >
+                                                <RefreshCcw size={13} /> Restore
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {/* Color swatches — always visible */}
+                                    <p className="text-[10px] font-semibold text-stone-400 mb-2">
+                                        {removedBgUrl ? 'Choose fill color:' : 'Background color on save:'}
+                                    </p>
+                                    <div className="flex flex-wrap gap-2">
+                                        {bgSwatches.map(({ label, color, isAccent }) => {
+                                            const isActive = activeBg === color;
+                                            return (
+                                                <button key={label}
+                                                    onClick={() => setData(prev => ({ ...prev, personal: { ...(prev.personal || {}), photoBg: color } }))}
+                                                    title={label}
+                                                    className="flex flex-col items-center gap-1 group"
+                                                >
+                                                    <div className={`w-9 h-9 rounded-xl border-2 transition-all flex items-center justify-center ${isActive ? 'border-blue-500 scale-110 shadow-md' : 'border-stone-200 hover:border-stone-400'}`}
+                                                        style={{ background: color || 'transparent', backgroundImage: !color ? 'repeating-conic-gradient(#e5e7eb 0% 25%, white 0% 50%) 0 0 / 10px 10px' : undefined }}
+                                                    >
+                                                        {isAccent && <span className="text-[7px] font-black text-white/90" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>✦</span>}
+                                                    </div>
+                                                    <span className={`text-[9px] font-semibold ${isActive ? 'text-blue-600' : 'text-stone-400'}`}>{label}</span>
+                                                </button>
+                                            );
+                                        })}
+                                        {/* Custom picker */}
+                                        <div className="flex flex-col items-center gap-1">
+                                            <label className={`w-9 h-9 rounded-xl border-2 cursor-pointer transition-all flex items-center justify-center overflow-hidden relative ${!bgSwatches.some(s => s.color === activeBg) && activeBg !== null ? 'border-blue-500 scale-110' : 'border-stone-200 hover:border-stone-400'}`}>
+                                                <input type="color" value={activeBg || '#ffffff'}
+                                                    onChange={(e) => setData(prev => ({ ...prev, personal: { ...(prev.personal || {}), photoBg: e.target.value } }))}
+                                                    className="absolute inset-0 w-full h-full cursor-pointer opacity-0"
+                                                />
+                                                <div className="w-full h-full" style={{ background: (activeBg && !bgSwatches.some(s => s.color === activeBg)) ? activeBg : 'conic-gradient(red, yellow, lime, aqua, blue, magenta, red)' }} />
+                                            </label>
+                                            <span className="text-[9px] font-semibold text-stone-400">Custom</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* ── Actions ── */}
+                                <div className="flex gap-3 pt-1">
+                                    <button onClick={() => { setIsCropping(false); setTempPhoto(null); setRemovedBgUrl(null); }}
+                                        className="flex-1 py-3 text-stone-500 font-bold text-sm bg-stone-50 hover:bg-stone-100 rounded-2xl transition-colors">
                                         Cancel
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={async () => {
                                             if (!pixelCrop) return;
                                             try {
-                                                const cropped = await getCroppedImg(
-                                                    tempPhoto,
-                                                    pixelCrop,
-                                                    0,
+                                                const finalPhoto = await getCroppedImg(
+                                                    removedBgUrl || tempPhoto, 
+                                                    pixelCrop, 0,
                                                     { horizontal: false, vertical: false },
-                                                    data.personal?.cropShape || 'square'
+                                                    cropShape,
+                                                    activeBg
                                                 );
-                                                setData(prev => ({ 
-                                                    ...prev, 
-                                                    personal: { 
-                                                        ...(prev.personal || {}), 
-                                                        photo: cropped,
-                                                        originalPhoto: tempPhoto
-                                                    } 
+
+                                                setData(prev => ({
+                                                    ...prev,
+                                                    personal: { ...(prev.personal || {}), photo: finalPhoto, originalPhoto: tempPhoto }
                                                 }));
+                                                setRemovedBgUrl(null);
                                                 setIsCropping(false);
                                                 setTempPhoto(null);
                                             } catch (e) { console.error(e); }
                                         }}
-                                        className="flex-[1.5] py-4 bg-stone-900 text-white font-black text-sm rounded-2xl shadow-xl hover:bg-black transition-all flex items-center justify-center gap-2"
+                                        className="flex-[1.5] py-3 bg-stone-900 text-white font-black text-sm rounded-2xl shadow-xl hover:bg-black transition-all flex items-center justify-center gap-2"
                                     >
-                                        <Sparkles size={18} fill="currentColor" />
-                                        Save Changes
+                                        <Check size={15} strokeWidth={3} /> Save Photo
                                     </button>
-                                </div>
-                                <div className="flex items-center justify-center gap-1.5 mt-6 text-[9px] font-black text-stone-300 uppercase tracking-widest">
-                                    <ShieldCheck size={12} className="text-emerald-400" /> AI-Optimized Image Processing
                                 </div>
                             </div>
                         </div>
                     </div>
-                )}
+                    );
+                })()}
+
                 {/* Modal for Template Selection */}
+
                 <AnimatePresence>
                     {isTemplateModalOpen && (
                         <PremiumTemplateSelection

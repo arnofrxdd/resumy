@@ -34,13 +34,15 @@ export function rotateSize(width, height, rotation) {
  * @param {number} rotation - optional rotation parameter
  * @param {Object} flip - optional flip parameter
  * @param {string} shape - 'original', 'circle', 'rounded', 'hexagon', 'diamond'
+ * @param {string|null} bgColor - optional solid background color (e.g. '#1e3a5f'). null = white/transparent
  */
 export default async function getCroppedImg(
   imageSrc,
   pixelCrop,
   rotation = 0,
   flip = { horizontal: false, vertical: false },
-  shape = 'original'
+  shape = 'original',
+  bgColor = null
 ) {
   const image = await createImage(imageSrc)
   const canvas = document.createElement('canvas')
@@ -83,9 +85,13 @@ export default async function getCroppedImg(
   croppedCtx.imageSmoothingEnabled = true
   croppedCtx.imageSmoothingQuality = 'high'
 
-  // Fill white for square crops (avoiding black edges if zoom < 1)
   const isShaped = shape !== 'original' && shape !== 'square'
-  if (!isShaped) {
+
+  // Fill background: use chosen color, or white for square, or transparent for shaped
+  if (bgColor) {
+    croppedCtx.fillStyle = bgColor
+    croppedCtx.fillRect(0, 0, pixelCrop.width, pixelCrop.height)
+  } else if (!isShaped) {
     croppedCtx.fillStyle = 'white'
     croppedCtx.fillRect(0, 0, pixelCrop.width, pixelCrop.height)
   }
@@ -112,5 +118,7 @@ export default async function getCroppedImg(
     pixelCrop.height
   )
 
-  return croppedCanvas.toDataURL(isShaped ? 'image/png' : 'image/jpeg')
+  // Output PNG if there's a bg color or shape (to preserve color/transparency); JPEG otherwise
+  return croppedCanvas.toDataURL((isShaped || bgColor) ? 'image/png' : 'image/jpeg')
 }
+

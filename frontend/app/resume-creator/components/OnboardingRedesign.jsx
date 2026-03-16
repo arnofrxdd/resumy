@@ -914,7 +914,7 @@ export default function OnboardingRedesign({ onComplete, onBack, mode = "new", d
                                             />
                                             <div className="absolute inset-0 bg-stone-900/40 opacity-0 group-hover/preview:opacity-100 transition-all flex items-center justify-center backdrop-blur-[2px]">
                                                 <button
-                                                    className="bg-white text-stone-900 px-8 py-4 rounded-full font-black text-xs uppercase tracking-widest shadow-2xl hover:scale-105 transition-transform"
+                                                    className="bg-white text-stone-900 px-8 py-4 rounded-none font-black text-xs uppercase tracking-widest shadow-2xl hover:scale-105 transition-transform"
                                                     onClick={() => handleSelectDraft(drafts[0])}
                                                 >
                                                     Continue Editing
@@ -1192,7 +1192,7 @@ export default function OnboardingRedesign({ onComplete, onBack, mode = "new", d
                                     </div>
                                 </div>
 
-                                <div className="drafts-grid">
+                                <div className="drafts-grid scrollbar-hide">
                                     <div className="new-draft-card" onClick={() => {
                                         if (drafts.length >= 3) {
                                             showToast("Draft limit reached! You can have a maximum of 3 drafts. Please delete an existing draft from your projects to start a new one.");
@@ -1295,6 +1295,7 @@ export default function OnboardingRedesign({ onComplete, onBack, mode = "new", d
                                 onUpdateData={onUpdateData}
                                 projectTitle={projectTitle}
                                 onUpdateTitle={setProjectTitle}
+                                isOnboarding={true}
                                 onComplete={(templateId) => {
                                     setSelectedTemplate(templateId);
                                     setIsExiting(true);

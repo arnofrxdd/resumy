@@ -61,7 +61,8 @@ body {
 .zety-layout-wrapper {
   display: flex;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
+  overflow: hidden;
   background: var(--gap-bg-page);
 }
 
@@ -451,15 +452,14 @@ body {
 /* 2. CENTER FORM (THE WORKSPACE) */
 .zety-center-form {
   flex: 1;
+  min-width: 0; /* prevent flex child from overflowing */
   overflow-y: auto;
   scrollbar-width: none;
   /* Firefox */
   -ms-overflow-style: none;
   /* IE 10+ */
-  padding: 40px 60px 120px;
+  padding: 40px 48px 120px;
   background: #ffffff;
-  max-width: 1000px;
-  margin: 0 auto;
   position: relative;
 }
 
@@ -598,12 +598,12 @@ body {
 
 /* 3. RIGHT PREVIEW */
 .zety-right-preview {
-  width: 400px;
+  width: 360px;
   background: #ffffff;
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 32px 24px;
+  padding: 32px 16px;
   flex-shrink: 0;
   border-left: 1px solid #f1f5f9;
   overflow-y: auto;
@@ -723,7 +723,7 @@ body {
 
 .scale-wrapper {
   /* zoom affects layout (unlike transform: scale), so scroll stops at real resume bottom */
-  zoom: 0.42;
+  zoom: 0.40;
   width: 794px;
   height: auto;
   min-height: 1123px;

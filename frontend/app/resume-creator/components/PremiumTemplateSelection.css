@@ -1,3 +1,51 @@
+/* --- DESKTOP SMART SCALING --- */
+@media (min-width: 769px) {
+    /* Handle short viewports (laptops, small desktops) */
+    @media (max-height: 900px) {
+        .h-20 { height: 64px !important; }
+        .mb-16 { margin-bottom: 48px !important; }
+        .mb-5 { margin-bottom: 20px !important; }
+        .text-5xl { font-size: 3rem !important; }
+        .text-lg { font-size: 1.1rem !important; }
+        
+        /* Scale down the cards */
+        .min-w-\[340px\] {
+            min-width: 260px !important;
+        }
+        
+        .min-h-\[400px\] {
+            min-height: 320px !important;
+        }
+    }
+
+    @media (max-height: 750px) {
+        .h-20 { height: 56px !important; }
+        .mb-16 { margin-bottom: 32px !important; }
+        .text-5xl { font-size: 2.2rem !important; }
+        .text-lg { font-size: 1rem !important; }
+        /* Scale down the cards slightly less aggressively */
+        .min-w-\[340px\] {
+            min-width: 260px !important;
+        }
+        .max-w-lg { max-width: 400px !important; }
+        .mb-5 { margin-bottom: 12px !important; }
+        .mt-5 { margin-top: 16px !important; }
+    }
+}
+
+/* Breakpoint refinement for grid view */
+@media (min-width: 1025px) and (max-width: 1400px) {
+    .grid-cols-4 {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+@media (min-width: 1401px) {
+    .grid-cols-4 {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+}
+
 /* --- MOBILE RESPONSIVE OVERRIDES FOR PREMIUM TEMPLATE SELECTION --- */
 
 @media (max-width: 768px) {
@@ -71,9 +119,12 @@
 
     aside.w-80 .space-y-12 {
         gap: 12px !important;
-        space-y: 0 !important;
         display: flex !important;
         flex-direction: column !important;
+    }
+    
+    aside.w-80 .space-y-12 > * + * {
+        margin-top: 0 !important;
     }
 
     /* Horizontal scroll lists */

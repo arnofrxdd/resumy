@@ -21,6 +21,7 @@ const TemplateFader = ({ templates, data, showMockData }) => {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
+        if (!templates?.length) return;
         const timer = setInterval(() => {
             setIndex((prev) => (prev + 1) % templates.length);
         }, 5000);
@@ -107,10 +108,10 @@ const PromoBanner = () => (
 );
 
 const StoryReel = ({ title, slogan, templates, onSelect, data, showMockData, icon: Icon, onViewAll }) => (
-    <div className="mb-24 last:mb-0">
-        <div className="flex items-end justify-between mb-10 px-2">
+    <div className="mb-16 last:mb-0">
+        <div className="flex items-end justify-between mb-5 px-2">
             <div>
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-2">
                     <div className="w-10 h-10 bg-violet-100 rounded-none flex items-center justify-center text-violet-600">
                         <Icon size={20} strokeWidth={2.5} />
                     </div>
@@ -174,14 +175,15 @@ const TemplateSkeleton = () => (
 const PremiumTemplateCard = ({ t, i, isSelected, onSelect, data, showMockData }) => {
     const isPremium = t.tags?.includes("Premium");
     const cardRef = useRef(null);
-    const isInView = useInView(cardRef, { once: true, margin: "200px" });
+    const isInView = useInView(cardRef, { once: false, margin: "400px" });
     const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         if (isInView) {
-            // Small delay to ensure smooth transition
-            const timer = setTimeout(() => setIsLoaded(true), 100);
+            const timer = setTimeout(() => setIsLoaded(true), 150);
             return () => clearTimeout(timer);
+        } else {
+            setIsLoaded(false);
         }
     }, [isInView]);
 
@@ -286,7 +288,8 @@ export default function PremiumTemplateSelection({
     projectTitle,
     onUpdateTitle,
     backLabel = "Onboarding",
-    inline = false
+    inline = false,
+    isOnboarding = false
 }) {
     const [searchTerm, setSearchTerm] = useState("");
     const [activeCategory, setActiveCategory] = useState("All");
@@ -321,6 +324,17 @@ export default function PremiumTemplateSelection({
     const [selectedTemplateObj, setSelectedTemplateObj] = useState(null);
     const [isPreviewModalOpen, setIsPreviewModalOpen] = useState(false);
     const [previewColor, setPreviewColor] = useState(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Initial check and resize listener for memory management
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     // Filters setup
     const categories = ["All", "Modern", "Creative", "Executive", "Classic", "Minimalist"];
@@ -415,35 +429,38 @@ export default function PremiumTemplateSelection({
 
     return (
         <>
-            {/* MOBILE ONLY VIEW */}
-            <div className="fixed inset-0 z-[99999] bg-white md:hidden">
-                <PremiumTemplateMobile
-                    userId={userId}
-                    data={data}
-                    onUpdateData={onUpdateData}
-                    onComplete={handleMobileComplete}
-                    projectTitle={projectTitle}
-                    onUpdateTitle={onUpdateTitle}
-                    templates={templatesConfig}
-                    showMockData={showMockData}
-                    onBack={onBack}
-                />
-            </div>
+            {/* MOBILE ONLY VIEW - Only rendered if mobile to save memory */}
+            {isMobile && (
+                <div className="fixed inset-0 z-[99999] bg-white md:hidden">
+                    <PremiumTemplateMobile
+                        userId={userId}
+                        data={data}
+                        onUpdateData={onUpdateData}
+                        onComplete={handleMobileComplete}
+                        projectTitle={projectTitle}
+                        onUpdateTitle={onUpdateTitle}
+                        templates={templatesConfig}
+                        showMockData={showMockData}
+                        onBack={onBack}
+                    />
+                </div>
+            )}
 
-            {/* DESKTOP ONLY VIEW */}
-            <motion.div
-                className={inline ? "relative bg-white w-full hidden md:block" : "fixed inset-0 bg-white z-[99999] hidden md:flex flex-col h-screen overflow-hidden"}
-                initial={inline ? {} : { opacity: 0 }}
-                animate={inline ? {} : { opacity: 1 }}
-                exit={inline ? {} : { opacity: 0 }}
-            >
+            {/* DESKTOP ONLY VIEW - Only rendered if not mobile */}
+            {!isMobile && (
+                <motion.div
+                    className={inline ? "relative bg-white w-full hidden md:block" : "fixed inset-0 bg-white z-[99999] hidden md:flex flex-col h-screen overflow-hidden"}
+                    initial={inline ? {} : { opacity: 0 }}
+                    animate={inline ? {} : { opacity: 1 }}
+                    exit={inline ? {} : { opacity: 0 }}
+                >
                 {/* AMBIENT BACKGROUND */}
                 <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
                 </div>
 
                 {/* TOP BAR */}
                 {!inline && (
-                    <header className="h-24 flex items-center justify-between px-10 shrink-0 z-50 border-b border-stone-100 bg-white/80 backdrop-blur-xl">
+                    <header className="h-20 flex items-center justify-between px-10 shrink-0 z-50 border-b border-stone-100 bg-white/80 backdrop-blur-xl">
                         <div className="flex items-center gap-6">
                             <button
                                 onClick={onBack}
@@ -549,7 +566,7 @@ export default function PremiumTemplateSelection({
                                 animate={{ x: 0, opacity: 1 }}
                                 exit={{ x: -320, opacity: 0 }}
                                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                                className="w-80 border-r border-stone-100 flex flex-col p-10 overflow-y-auto shrink-0 z-40 bg-white"
+                                className="w-80 border-r border-stone-100 flex flex-col p-10 pt-16 overflow-y-auto shrink-0 z-40 bg-white scrollbar-hide"
                             >
                                 <div className="space-y-12">
                                     {/* STYLE FILTER */}
@@ -626,11 +643,11 @@ export default function PremiumTemplateSelection({
                     </AnimatePresence>
 
                     {/* CONTENT AREA */}
-                    <div className="flex-1 overflow-y-auto bg-[#f6f6f7] p-6 md:p-10 relative scroll-smooth h-full">
+                    <div className={`flex-1 overflow-y-auto bg-[#f6f6f7] p-6 md:px-10 md:pb-10 relative scroll-smooth h-full scrollbar-hide ${isOnboarding ? 'md:pt-12' : 'md:pt-20'}`}>
                         <div className="max-w-[1440px] mx-auto">
 
                             {viewMode === "discovery" ? (
-                                <div className="py-6">
+                                <div className="pt-0 pb-6">
                                     {/* STORY: CREATIVE */}
                                     <StoryReel
                                         title="Creative Vanguard"
@@ -756,7 +773,7 @@ export default function PremiumTemplateSelection({
 
                                 <div className="flex flex-col md:flex-row h-full">
                                     {/* LEFT: THE PREVIEW */}
-                                    <div className="w-full md:w-[65%] bg-stone-50 relative flex items-center justify-center p-16 overflow-y-auto">
+                                    <div className="w-full md:w-[65%] bg-stone-50 relative flex items-center justify-center p-16 overflow-y-auto scrollbar-hide">
                                         <div className="w-full max-w-[85%] aspect-[210/297] bg-white shadow-2xl relative">
                                             <TemplatePreview
                                                 templateId={selectedTemplateObj.id}
@@ -844,6 +861,7 @@ export default function PremiumTemplateSelection({
                     )}
                 </AnimatePresence>
             </motion.div>
+            )}
         </>
     );
 };
