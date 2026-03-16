@@ -2518,7 +2518,7 @@ export default function Finalize({ data, setData, onChangeTemplate, onDownloadPD
                                 </div>
 
                                 <h3 className="text-xl sm:text-3xl font-bold text-slate-900 mb-1 sm:mb-3 leading-tight">
-                                    How's your <span className="text-indigo-600 sm:block">Resume Creator?</span>
+                                    How's your <span className="text-indigo-600 sm:block">Resumy?</span>
                                 </h3>
                                 <p className="text-[11px] sm:text-base text-slate-500 font-medium mb-5 sm:mb-8 px-4 sm:px-0">Your feedback helps us build a better tool.</p>
 

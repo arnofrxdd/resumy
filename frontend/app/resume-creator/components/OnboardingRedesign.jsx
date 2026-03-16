@@ -654,7 +654,7 @@ export default function OnboardingRedesign({ onComplete, onBack, mode = "new", d
     if (isInitializing) {
         return (
             <div className="flex h-screen w-full items-center justify-center bg-stone-50">
-                <FunLoader text="Initializing Workspace..." />
+                <FunLoader text="Setting Everything Up" />
             </div>
         );
     }
@@ -665,18 +665,20 @@ export default function OnboardingRedesign({ onComplete, onBack, mode = "new", d
             <AnimatePresence>
                 {toast && (
                     <motion.div 
-                        initial={{ y: 50, opacity: 0, scale: 0.9 }}
+                        initial={{ y: 70, opacity: 0, scale: 0.95 }}
                         animate={{ y: 0, opacity: 1, scale: 1 }}
-                        exit={{ y: 20, opacity: 0, scale: 0.9 }}
-                        className="fixed bottom-10 left-1/2 -translate-x-1/2 z-[11000] flex items-center gap-3 bg-stone-900 text-white px-6 py-4 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-white/10 min-w-[320px]"
+                        exit={{ y: 20, opacity: 0, scale: 0.95 }}
+                        className="fixed bottom-8 left-4 right-4 md:left-1/2 md:right-auto md:-translate-x-1/2 z-[11000] flex items-center gap-3 bg-stone-900/95 backdrop-blur-2xl text-white px-5 py-4 rounded-2xl shadow-[0_30px_60px_-12px_rgba(0,0,0,0.5)] border border-white/10 md:min-w-[400px] md:max-w-xl"
                     >
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${toast.type === 'error' ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
                             {toast.type === 'error' ? <Info size={20} /> : <CheckCircle2 size={20} />}
                         </div>
-                        <div className="flex-1">
-                            <p className="text-sm font-bold leading-tight">{toast.message}</p>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-[13px] md:text-sm font-bold leading-tight">
+                                {toast.message}
+                            </p>
                         </div>
-                        <button onClick={() => setToast(null)} className="text-white/40 hover:text-white transition-colors">
+                        <button onClick={() => setToast(null)} className="text-white/40 hover:text-white transition-colors p-1.5 -mr-1">
                             <X size={18} />
                         </button>
                     </motion.div>

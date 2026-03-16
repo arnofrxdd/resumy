@@ -637,7 +637,8 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
                             design_settings: designSettings || data.designSettings || {},
                             template_id: safeTemplateId,
                             title: propTitle || "Untitled Resume",
-                            last_step_index: getDBStepIndex(step) // Save normalized 1-7 step
+                            last_step_index: getDBStepIndex(step),
+                            updated_at: new Date().toISOString()
                         })
                         .eq('id', resumeId);
                 }
@@ -692,7 +693,8 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
                 design_settings: designSettings || data.designSettings || {},
                 template_id: safeTemplateId,
                 title: propTitle || "Untitled Resume",
-                last_step_index: getDBStepIndex(step)
+                last_step_index: getDBStepIndex(step),
+                updated_at: new Date().toISOString()
             })
             .eq('id', resumeId);
 
@@ -740,7 +742,10 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
 
     const handleRenameDraft = async (id, newTitle) => {
         if (!newTitle.trim()) return;
-        const { error } = await supabaseClient.from('builder_resumes').update({ title: newTitle }).eq('id', id);
+        const { error } = await supabaseClient.from('builder_resumes').update({ 
+            title: newTitle,
+            updated_at: new Date().toISOString()
+        }).eq('id', id);
         if (!error) {
             if (id === resumeId) {
                 onRenameProject(id, newTitle);
@@ -2357,7 +2362,7 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
                         {lastInitializedId.current ? (
                             <DraftSwitchLoader text="Switching Draft" />
                         ) : (
-                            <FunLoader text="Assembling Workspace" />
+                            <FunLoader text="Just a second.." />
                         )}
                     </div>
                 )}

@@ -5,24 +5,36 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { FileText, Sparkles, Layout, Palette, PenTool } from 'lucide-react'
 
 const FunLoader = ({ text }) => {
-    const [subText, setSubText] = useState("Getting everything ready...")
+    const [subText, setSubText] = useState("Making everything perfect...")
+    const [templateType, setTemplateType] = useState('modern')
 
     useEffect(() => {
-        const professionalPhrases = [
-            "Setting up your workspace...",
-            "Applying your design...",
-            "Organizing sections...",
-            "Preparing the document...",
-            "Optimizing the layout...",
-            "Polishing details..."
+        const simplePhrases = [
+            "Making it look great...",
+            "Polishing the design...",
+            "Cleaning up the layout...",
+            "Organizing your info...",
+            "Adding the finishing touches...",
+            "Almost ready for you..."
         ]
+        const templates = ['modern', 'classic', 'creative', 'executive']
         let i = 0
         const interval = setInterval(() => {
-            setSubText(professionalPhrases[i % professionalPhrases.length])
+            setSubText(simplePhrases[i % simplePhrases.length])
+            setTemplateType(templates[i % templates.length])
             i++
         }, 2500)
         return () => clearInterval(interval)
     }, [])
+
+    const getThemeColor = () => {
+        switch (templateType) {
+            case 'creative': return '#059669'
+            case 'modern': return '#1e293b'
+            case 'executive': return '#0f172a'
+            default: return '#444'
+        }
+    }
 
     return (
         <motion.div
@@ -38,60 +50,94 @@ const FunLoader = ({ text }) => {
             </div>
 
             <div className="relative z-10 flex flex-col items-center max-w-sm w-full px-8">
-                {/* Minimalist Document Loading Visual */}
-                <div className="relative mb-16">
-                    {/* The "Primary Document" Shape */}
-                    <motion.div
-                        animate={{ 
-                            y: [0, -8, 0],
-                            rotateZ: [-0.5, 0.5, -0.5] 
-                        }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-24 h-32 bg-white border border-stone-200 rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.08)] flex flex-col p-4 relative"
-                    >
-                        {/* Abstract Resume Content Lines */}
-                        <div className="w-8 h-1.5 bg-stone-100 rounded-full mb-4" />
-                        <div className="space-y-2">
-                            <div className="w-full h-1 bg-stone-50 rounded-full" />
-                            <div className="w-full h-1 bg-stone-50 rounded-full" />
-                            <div className="w-2/3 h-1 bg-stone-50 rounded-full" />
-                        </div>
-                        <div className="mt-6 space-y-2">
-                            <div className="w-full h-1 bg-stone-50 rounded-full" />
-                            <div className="w-3/4 h-1 bg-stone-50 rounded-full" />
-                        </div>
+                {/* Hero-Art Style Visualization - Perfectly Swapping Templates */}
+                <div className="relative w-36 aspect-[1/1.414] mb-12" style={{ perspective: '1200px' }}>
+                    
+                    {/* Main Resume Sheet */}
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={templateType}
+                            initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 1.05, y: -10 }}
+                            transition={{ duration: 0.8, ease: "easeInOut" }}
+                            className="absolute inset-0 bg-white shadow-[0_15px_40px_rgba(0,0,0,0.08)] border border-stone-200 flex flex-col p-4 overflow-hidden rounded-md"
+                        >
+                            {/* Executive Header Bar */}
+                            {templateType === 'executive' && (
+                                <div className="absolute top-0 left-0 w-full h-8 bg-slate-900" />
+                            )}
 
-                        {/* Infinite Orbiting Icons (The "Activities") */}
-                        <div className="absolute inset-0">
-                            {[
-                                { Icon: Layout, delay: 0, color: 'text-indigo-500' },
-                                { Icon: Palette, delay: 1, color: 'text-emerald-500' },
-                                { Icon: PenTool, delay: 2, color: 'text-rose-500' }
-                            ].map((item, idx) => (
-                                <motion.div
-                                    key={idx}
-                                    className={`absolute -inset-4 flex items-center justify-center pointer-events-none`}
-                                    animate={{ rotate: 360 }}
-                                    transition={{ duration: 8, repeat: Infinity, ease: "linear", delay: item.delay }}
-                                >
-                                    <motion.div 
-                                        className={`w-10 h-10 bg-white border border-stone-100 shadow-lg rounded-xl flex items-center justify-center ${item.color}`}
-                                        animate={{ rotate: -360 }}
-                                        transition={{ duration: 8, repeat: Infinity, ease: "linear", delay: item.delay }}
-                                        style={{ translate: '60px' }}
-                                    >
-                                        <item.Icon size={18} strokeWidth={2.5} />
-                                    </motion.div>
-                                </motion.div>
-                            ))}
+                            <div className="relative z-10 space-y-3">
+                                {/* Skeleton Header */}
+                                <div className={`space-y-1.5 pt-1 ${templateType === 'classic' ? 'text-center border-b pb-3' : ''}`}>
+                                    <div className={`h-2.5 w-2/3 rounded-full ${templateType === 'executive' ? 'bg-white/20' : 'bg-stone-200'} ${templateType === 'classic' ? 'mx-auto' : ''}`} />
+                                    <div className={`h-1 w-1/3 rounded-full ${templateType === 'executive' ? 'bg-white/10' : 'bg-stone-100'} ${templateType === 'classic' ? 'mx-auto' : ''}`} />
+                                </div>
+
+                                {/* Body Content */}
+                                <div className="space-y-4 pt-2">
+                                    <div className="space-y-1.5">
+                                        <div className="h-[1px] w-full bg-stone-100" />
+                                        <div className="space-y-1">
+                                            <div className="h-1 w-full bg-stone-50 rounded-full" />
+                                            <div className="h-1 w-full bg-stone-50 rounded-full" />
+                                            <div className="h-1 w-3/4 bg-stone-50 rounded-full" />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-1.5">
+                                        <div className="h-[1px] w-full bg-stone-100" />
+                                        <div className="space-y-1">
+                                            <div className="h-1 w-full bg-stone-50 rounded-full" />
+                                            <div className="h-1 w-[80%] bg-stone-50 rounded-full" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Sidebar Indicator */}
+                            {(templateType === 'creative' || templateType === 'modern') && (
+                                <div className={`absolute top-0 right-0 w-12 h-full p-2.5 space-y-4 ${templateType === 'creative' ? 'bg-emerald-600' : 'bg-slate-800'}`}>
+                                    <div className="w-5 h-5 bg-white/10" />
+                                    <div className="space-y-1.5">
+                                        <div className="h-1 w-full bg-white/20 rounded-full" />
+                                        <div className="h-1 w-full bg-white/20 rounded-full" />
+                                        <div className="h-1 w-full bg-white/20 rounded-full" />
+                                    </div>
+                                </div>
+                            )}
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {/* Floating Editor Box */}
+                    <motion.div
+                        className="absolute -bottom-4 -right-10 w-28 z-20"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.5 }}
+                    >
+                        <div className="bg-white shadow-[0_15px_30px_rgba(0,0,0,0.12)] border border-stone-100 flex flex-col overflow-hidden rounded-sm">
+                            <div className="px-2 py-1.5 border-b border-stone-50 flex items-center justify-between" style={{ background: `${getThemeColor()}08` }}>
+                                <span className="font-black text-[6px] uppercase tracking-widest" style={{ color: getThemeColor() }}>EDITOR</span>
+                                <div className="w-1 h-1 rounded-full animate-pulse" style={{ background: getThemeColor() }} />
+                            </div>
+                            <div className="p-2 space-y-1.5 bg-white">
+                                <div className="h-2.5 bg-stone-50 border border-stone-100 flex items-center px-1.5">
+                                    <div className="h-0.5 w-1/2 bg-stone-200" />
+                                </div>
+                                <div className="h-2.5 bg-stone-50 border border-stone-100 flex items-center px-1.5">
+                                    <div className="h-0.5 w-3/4 bg-stone-200" />
+                                </div>
+                            </div>
                         </div>
                     </motion.div>
-
+                    
                     {/* Subtle Pulsing Shadow */}
                     <motion.div 
                         animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }}
                         transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                        className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-16 h-4 bg-stone-900/10 blur-md rounded-full -z-10"
+                        className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-20 h-4 bg-stone-900/10 blur-lg rounded-full -z-10"
                     />
                 </div>
 
@@ -116,36 +162,40 @@ const FunLoader = ({ text }) => {
                     </AnimatePresence>
                 </div>
 
-                {/* Clean Infinite Loader - Circular Progress synced with other loaders */}
+                {/* Clean Infinite Loader - Perfectly Smooth Rotation */}
                 <div className="mt-10 relative">
-                    <svg className="w-8 h-8 rotate-[-90deg]">
+                    <motion.svg 
+                        className="w-10 h-10"
+                        animate={{ rotate: 360 }}
+                        transition={{ 
+                            duration: 1, 
+                            repeat: Infinity, 
+                            ease: "linear" 
+                        }}
+                        style={{ willChange: "transform" }}
+                    >
                         <circle
-                            cx="16"
-                            cy="16"
-                            r="14"
+                            cx="20"
+                            cy="20"
+                            r="16"
                             stroke="currentColor"
-                            strokeWidth="3"
+                            strokeWidth="3.5"
                             fill="transparent"
                             className="text-stone-100"
                         />
-                        <motion.circle
-                            cx="16"
-                            cy="16"
-                            r="14"
+                        <circle
+                            cx="20"
+                            cy="20"
+                            r="16"
                             stroke="currentColor"
-                            strokeWidth="3"
+                            strokeWidth="3.5"
                             fill="transparent"
-                            strokeDasharray="88"
-                            initial={{ strokeDashoffset: 88 }}
-                            animate={{ strokeDashoffset: [88, 0, -88] }}
-                            transition={{ 
-                                duration: 2, 
-                                repeat: Infinity, 
-                                ease: "easeInOut" 
-                            }}
+                            strokeDasharray="100.5"
+                            strokeDashoffset="75"
+                            strokeLinecap="round"
                             className="text-stone-900"
                         />
-                    </svg>
+                    </motion.svg>
                 </div>
             </div>
 

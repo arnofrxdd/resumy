@@ -113,36 +113,40 @@ const ResumeImportLoader = ({ text }) => {
                     </AnimatePresence>
                 </div>
 
-                {/* Infinite Circular Progress (Modern & Minimal) */}
+                {/* Clean Infinite Loader - Perfectly Smooth Rotation */}
                 <div className="mt-10 relative">
-                    <svg className="w-8 h-8 rotate-[-90deg]">
+                    <motion.svg 
+                        className="w-10 h-10"
+                        animate={{ rotate: 360 }}
+                        transition={{ 
+                            duration: 1, 
+                            repeat: Infinity, 
+                            ease: "linear" 
+                        }}
+                        style={{ willChange: "transform" }}
+                    >
                         <circle
-                            cx="16"
-                            cy="16"
-                            r="14"
+                            cx="20"
+                            cy="20"
+                            r="16"
                             stroke="currentColor"
-                            strokeWidth="3"
+                            strokeWidth="3.5"
                             fill="transparent"
                             className="text-stone-100"
                         />
-                        <motion.circle
-                            cx="16"
-                            cy="16"
-                            r="14"
+                        <circle
+                            cx="20"
+                            cy="20"
+                            r="16"
                             stroke="currentColor"
-                            strokeWidth="3"
+                            strokeWidth="3.5"
                             fill="transparent"
-                            strokeDasharray="88"
-                            initial={{ strokeDashoffset: 88 }}
-                            animate={{ strokeDashoffset: [88, 0, -88] }}
-                            transition={{ 
-                                duration: 2, 
-                                repeat: Infinity, 
-                                ease: "easeInOut" 
-                            }}
+                            strokeDasharray="100.5"
+                            strokeDashoffset="75"
+                            strokeLinecap="round"
                             className="text-stone-900"
                         />
-                    </svg>
+                    </motion.svg>
                 </div>
             </div>
 
