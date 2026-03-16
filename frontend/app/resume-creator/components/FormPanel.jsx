@@ -1477,19 +1477,19 @@ export default function FormPanel({ data, setData, templateId, onChangeTemplate,
         if (removedBgUrl) return;
         setIsRemovingBg(true);
         try {
-            const { removeBackground, Config } = await import('@imgly/background-removal');
-            
             // Explicitly fetch and convert to blob to ensure compatibility
             const res = await fetch(photoSrc);
             const inputBlob = await res.blob();
             
-            // Configuration pointing to our newly copied static assets in 'public/models'
-            const config = {
+            // Using local models at version 1.4.5 for guaranteed compatibility.
+            // Pointing directly to our /resumy/models folder.
+            const { removeBackground } = await import('@imgly/background-removal');
+            
+            const resultBlob = await removeBackground(inputBlob, { 
                 output: { format: 'image/png', quality: 0.9 },
                 publicPath: `${window.location.origin}/resumy/models/`
-            };
-
-            const resultBlob = await removeBackground(inputBlob, config);
+            });
+            
             setRemovedBgUrl(URL.createObjectURL(resultBlob));
         } catch (err) {
             console.error('[BG REMOVE] Failed:', err);

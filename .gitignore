@@ -14,3 +14,6 @@ yarn-error.log*
 build/
 coverage/
 .prisma/
+
+# Background removal models
+frontend/public/models/

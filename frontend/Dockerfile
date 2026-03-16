@@ -7,13 +7,13 @@ WORKDIR /app
 COPY frontend/package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install && npm install @imgly/background-removal-data@latest
 
 # Copy the rest of the application
 COPY frontend .
 
-# Copy @imgly/background-removal assets to public so they are served as static assets
-RUN mkdir -p public/models && cp -R node_modules/@imgly/background-removal/dist/* public/models/
+# Copy @imgly/background-removal-data assets to public so they are served as static assets
+RUN mkdir -p public/models && cp -R node_modules/@imgly/background-removal-data/dist/* public/models/
 
 # Build the application
 # We need environment variables for the build if they are NEXT_PUBLIC
