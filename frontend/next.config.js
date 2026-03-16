@@ -35,7 +35,6 @@ const nextConfig = {
       },
     ];
   },
-  transpilePackages: ['@imgly/background-removal'],
   experimental: {
     serverComponentsExternalPackages: ['onnxruntime-node', 'onnxruntime-web', '@imgly/background-removal'],
   },
